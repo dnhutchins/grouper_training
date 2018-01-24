@@ -1,0 +1,6 @@
+<Context docBase="/opt/shibboleth-idp/webapp"
+         privileged="true"
+         antiResourceLocking="false"
+         path="/idp">
+	<Manager pathname="" /> 
+</Context>
