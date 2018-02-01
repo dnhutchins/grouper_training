@@ -45,6 +45,11 @@ RUN cp /usr/share/openldap-servers/DB_CONFIG.example /var/lib/ldap/DB_CONFIG \
 
 COPY container_files/conf/* /opt/grouper/grouper.apiBinary/conf/
 
+RUN rm /opt/grouper/grouper.apiBinary/conf/sources.xml \
+       /opt/grouper/grouper.ui/WEB-INF/classes/sources.xml \
+       /opt/grouper/grouper.ws/WEB-INF/classes/sources.xml \
+       /opt/grouper/grouper.scim/WEB-INF/classes/sources.xml
+
 RUN (/usr/sbin/slapd -h "ldap:/// ldaps:/// ldapi:///" -u ldap &) \
     && while ! curl -s ldap://localhost:389 > /dev/null; do echo waiting for ldap to start; sleep 1; done; \
     (mysqld_safe & ) \
