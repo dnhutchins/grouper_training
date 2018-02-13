@@ -82,6 +82,6 @@ RUN cp /opt/tier-support/grouper.xml /opt/tier-support/grouper-ws.xml /opt/tomca
     && chown -R tomcat /opt/shibboleth-idp/ \
     && chmod -R 700 /opt/shibboleth-idp/
 
-EXPOSE 389 3306
+EXPOSE 389 3306 4443
 
 CMD LD_LIBRARY_PATH=/opt/shibboleth/lib64:$LD_LIBRARY_PATH && exec /usr/bin/supervisord -c /opt/tier-support/supervisord-training.conf
