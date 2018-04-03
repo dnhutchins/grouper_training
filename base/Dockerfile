@@ -8,6 +8,9 @@ LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>" \
       ImageName=$imagename \
       ImageOS=centos7
 
+ENV ENV=training \
+    USERTOKEN=3.2.0_base
+
 RUN yum install -y epel-release \
     && yum install -y mariadb mariadb-server openldap openldap-clients openldap-servers \
     && yum clean all
@@ -73,15 +76,12 @@ COPY container_files/tier-support/* /opt/tier-support/
 COPY container_files/tls/host-key.pem  /etc/pki/tls/private/
 COPY container_files/tls/* /etc/pki/tls/certs/
 COPY container_files/ui/* /opt/grouper/grouper.ui/WEB-INF/
+COPY container_files/usr-local-bin/* /usr/local/bin/
 
 RUN cp /opt/tier-support/grouper.xml /opt/tier-support/grouper-ws.xml /opt/tomcat/conf/Catalina/localhost/ \
-    && . /usr/local/bin/library.sh \
-    && prepUI \
-    && prepWS \
-    && prepDaemon \
     && chown -R tomcat /opt/shibboleth-idp/ \
     && chmod -R 700 /opt/shibboleth-idp/
 
 EXPOSE 389 3306 4443
 
-CMD LD_LIBRARY_PATH=/opt/shibboleth/lib64:$LD_LIBRARY_PATH && exec /usr/bin/supervisord -c /opt/tier-support/supervisord-training.conf
+CMD ["grouper"]

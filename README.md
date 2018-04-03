@@ -6,7 +6,7 @@ A set of Grouper images that are used during I2/TIER training.
 ## Full Demo
 
 ```
-docker run -d -p 80:80 -p 443:443 -p 4443:4443 -p 3306:3306 \
+docker run -d -p 80:80 -p 389:389 -p 443:443 -p 3306:3306 -p 4443:4443 \
   --name grouper-demo tier/grouper_training_full_demo:latest
 ```
 
@@ -15,8 +15,8 @@ Browse to `https://localhost/grouper`
 ## Exercises
 
 ```
-docker run -d -p 80:80 -p 443:443 -p 4443:4443 -p 3306:3306 \
-  --name grouper-demo tier/grouper_training_full_ex###:latest
+docker run -d -p 80:80 -p 389:389 -p 443:443 -p 3306:3306 -p 4443:4443 \
+  --name grouper tier/grouper_training_ex###:latest
 ```
 
 Browse to `https://localhost/grouper`

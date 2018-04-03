@@ -6,9 +6,6 @@ LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>" \
       ImageName=$imagename \
       ImageOS=centos7
 
-COPY container_files/subject.properties /opt/grouper/conf
+ENV USERTOKEN=3.2.0_ex2
 
-RUN . /usr/local/bin/library.sh \
-    && prepDaemon \
-    && prepUI \
-    && prepWS
+COPY container_files/subject.properties /opt/grouper/conf

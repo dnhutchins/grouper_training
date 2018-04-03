@@ -1,0 +1,16 @@
+#!/bin/bash
+
+rm /tmp/logpipe
+
+. /usr/local/bin/library.sh
+
+prepDaemon
+prepUI
+prepWS
+
+export LD_LIBRARY_PATH=/opt/shibboleth/lib64:$LD_LIBRARY_PATH
+
+exec /usr/bin/supervisord -c /opt/tier-support/supervisord-training.conf
+
+
+
