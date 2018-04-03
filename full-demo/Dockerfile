@@ -15,6 +15,8 @@ RUN (/usr/sbin/slapd -h "ldap:/// ldaps:/// ldapi:///" -u ldap &) \
     && while ! curl -s ldap://localhost:389 > /dev/null; do echo waiting for ldap to start; sleep 1; done; \
     (mysqld_safe & ) \
     && while ! curl -s localhost:3306 > /dev/null; do echo waiting for mysqld to start; sleep 3; done; \
+    . /usr/local/bin/library.sh; \
+    prepDaemon; \
     cd /opt/grouper/grouper.apiBinary \
     && bin/gsh /seed-data/demo.gsh \
     && pkill -HUP slapd \

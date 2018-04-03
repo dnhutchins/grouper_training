@@ -4,7 +4,7 @@ addRootStem("ref", "ref");
 addRootStem("bundle", "bundle");
 addRootStem("app", "app");
 addRootStem("org", "org");
-addRootStem("test", "test");
+testStem = addRootStem("test", "test");
 
 
 addStem("ref", "course", "course")
@@ -15,7 +15,8 @@ setGroupAttr("etc:coursesLoader", "grouperLoaderDbName", "grouper");
 setGroupAttr("etc:coursesLoader", "grouperLoaderType", "SQL_GROUP_LIST");
 setGroupAttr("etc:coursesLoader", "grouperLoaderScheduleType", "CRON");
 setGroupAttr("etc:coursesLoader", "grouperLoaderQuartzCron", "0 * * * * ?");
-setGroupAttr("etc:coursesLoader", "grouperLoaderQuery", "select distinct id as SUBJECT_IDENTIFIER, CONCAT('ref:course:', courseID) as GROUP_NAME from SIS_Courses");
+setGroupAttr("etc:coursesLoader", "grouperLoaderQuartzCron", "0 * * * * ?");
+setGroupAttr("etc:coursesLoader", "grouperLoaderQuery", "select distinct id as SUBJECT_IDENTIFIER, 'ldap' as SUBJECT_SOURCE_ID, CONCAT('ref:course:', courseID) as GROUP_NAME from SIS_Courses");
 
 
 addStem("ref", "affiliation", "affiliation")
@@ -197,6 +198,7 @@ addGroup("app:vpn", "vpn_user", "vpn_user");
 addComposite("app:vpn:vpn_user", CompositeType.UNION, "app:vpn:vpn_user_allow", "app:vpn:vpn_user_deny")
 
 
+# Setup some user favorites
 subject = SubjectFinder.findById("banderson");
 group = GroupFinder.findByName(gs, "etc:sysadmingroup", true);
 GrouperUserDataApi.favoriteGroupAdd("etc:grouperUi:grouperUiUserData", subject, group);
@@ -205,7 +207,7 @@ stem = StemFinder.findByName(gs, "org:computerscience", true);
 GrouperUserDataApi.favoriteStemAdd("etc:grouperUi:grouperUiUserData", subject, stem);
 
 
-
+#Set up service definitions
 AttributeDef appServiceDef = new AttributeDefSave(gs).assignCreateParentStemsIfNotExist(true).assignAttributeDefType(AttributeDefType.service).assignName("etc:apps:appsServiceDefinition").assignToStem(true).save();
  
 AttributeDefName appService = new AttributeDefNameSave(gs, appServiceDef).assignCreateParentStemsIfNotExist(true).assignName("etc:apps:appsService").assignDisplayExtension("Central IT production Apps").save();
@@ -214,3 +216,17 @@ banner.getAttributeDelegate().assignAttribute(appService);
 portal.getAttributeDelegate().assignAttribute(appService);
 
 addMember("app:banner:banner_user_allow", "banderson");
+
+
+# Auto create the PSPNG attributes
+edu.internet2.middleware.grouper.pspng.FullSyncProvisionerFactory.getFullSyncer("pspng_groupOfUniqueNames");
+
+#Assign the PSPNG attributes
+AttributeDef pspngAttributeDef = AttributeDefFinder.findByName("etc:pspng:provision_to_def", true);
+AttributeDefName pspngAttribute = AttributeDefNameFinder.findByName("etc:pspng:provision_to", true);
+
+AttributeAssignSave attributeAssignSave = new AttributeAssignSave(gs).assignPrintChangesToSystemOut(true);
+attributeAssignSave.assignAttributeDefName(pspngAttribute);
+attributeAssignSave.assignOwnerStem(testStem);
+attributeAssignSave.addValue("pspng_groupOfUniqueNames");
+attributeAssignSave.save();
