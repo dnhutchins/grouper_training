@@ -10,6 +10,7 @@ ENV USERTOKEN=3.2.0_full_demo
 
 COPY container_files/demo.gsh /seed-data/
 COPY container_files/grouper-loader.properties /opt/grouper/conf/
+COPY container_files/subject.properties /opt/grouper/conf/
 
 RUN (/usr/sbin/slapd -h "ldap:/// ldaps:/// ldapi:///" -u ldap &) \
     && while ! curl -s ldap://localhost:389 > /dev/null; do echo waiting for ldap to start; sleep 1; done; \
