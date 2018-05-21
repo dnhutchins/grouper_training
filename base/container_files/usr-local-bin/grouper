@@ -1,7 +1,5 @@
 #!/bin/bash
 
-rm /tmp/logpipe
-
 . /usr/local/bin/library.sh
 
 prepDaemon
