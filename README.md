@@ -19,7 +19,7 @@ docker run -d -p 80:80 -p 389:389 -p 443:443 -p 3306:3306 -p 4443:4443 \
   --name grouper tier/grouper_training_ex###:latest
 ```
 
-Browse to `https://localhost/grouper`
+Browse to `https://localhost/grouper` for Grouper. There is also an app that dumps the SP user attributes at `https://localhost/app`.
 
 # Users
 - `banderson`/`password`: Grouper Administrator

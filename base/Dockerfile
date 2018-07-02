@@ -68,7 +68,7 @@ RUN (/usr/sbin/slapd -h "ldap:/// ldaps:/// ldapi:///" -u ldap &) \
 COPY --from=idp /opt/shibboleth-idp/ /opt/shibboleth-idp/
 
 COPY container_files/conf/ /opt/grouper/conf/
-COPY container_files/httpd/grouper-www.conf /etc/httpd/conf.d/
+COPY container_files/httpd/* /etc/httpd/conf.d/
 COPY container_files/shibboleth-idp/ /opt/shibboleth-idp/
 COPY container_files/shibboleth-sp/* /etc/shibboleth/
 COPY container_files/tomcat/ /opt/tomcat/
@@ -77,10 +77,12 @@ COPY container_files/tls/host-key.pem  /etc/pki/tls/private/
 COPY container_files/tls/* /etc/pki/tls/certs/
 COPY container_files/ui/* /opt/grouper/grouper.ui/WEB-INF/
 COPY container_files/usr-local-bin/* /usr/local/bin/
+COPY container_files/var-www-html/ /var/www/html/
 
 RUN cp /opt/tier-support/grouper.xml /opt/tier-support/grouper-ws.xml /opt/tomcat/conf/Catalina/localhost/ \
     && chown -R tomcat /opt/shibboleth-idp/ \
-    && chmod -R 700 /opt/shibboleth-idp/
+    && chmod -R 700 /opt/shibboleth-idp/ \
+    && chmod +rx /var/www/html/app/index.py
 
 EXPOSE 389 3306 4443
 

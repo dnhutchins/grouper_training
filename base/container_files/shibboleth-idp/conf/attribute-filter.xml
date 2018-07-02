@@ -21,15 +21,47 @@
     <afp:AttributeFilterPolicy id="example1">
         <afp:PolicyRequirementRule xsi:type="basic:AttributeRequesterString" value="https://grouperdemo/shibboleth" />
 
+        <afp:AttributeRule attributeID="cn">
+            <afp:PermitValueRule xsi:type="basic:ANY" />
+        </afp:AttributeRule>
+
+        <afp:AttributeRule attributeID="eduPersonAffiliation">
+            <afp:PermitValueRule xsi:type="basic:ANY" />
+        </afp:AttributeRule>
+
+        <afp:AttributeRule attributeID="eduPersonPrimaryAffiliation">
+            <afp:PermitValueRule xsi:type="basic:ANY" />
+        </afp:AttributeRule>
+
+        <afp:AttributeRule attributeID="eduPersonPrincipalEntitlement">
+            <afp:PermitValueRule xsi:type="basic:ANY" />
+        </afp:AttributeRule>
+
         <afp:AttributeRule attributeID="eduPersonPrincipalName">
             <afp:PermitValueRule xsi:type="basic:ANY" />
         </afp:AttributeRule>
 
-        <afp:AttributeRule attributeID="uid">
+        <afp:AttributeRule attributeID="eduPersonScopedAffiliation">
+            <afp:PermitValueRule xsi:type="basic:ANY" />
+        </afp:AttributeRule>
+
+        <afp:AttributeRule attributeID="employeeNumber">
+            <afp:PermitValueRule xsi:type="basic:ANY" />
+        </afp:AttributeRule>
+
+        <afp:AttributeRule attributeID="givenName">
             <afp:PermitValueRule xsi:type="basic:ANY" />
         </afp:AttributeRule>
 
         <afp:AttributeRule attributeID="mail">
+            <afp:PermitValueRule xsi:type="basic:ANY" />
+        </afp:AttributeRule>
+
+        <afp:AttributeRule attributeID="surname">
+            <afp:PermitValueRule xsi:type="basic:ANY" />
+        </afp:AttributeRule>
+
+        <afp:AttributeRule attributeID="uid">
             <afp:PermitValueRule xsi:type="basic:ANY" />
         </afp:AttributeRule>
 
