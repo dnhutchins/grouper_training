@@ -35,11 +35,13 @@ objectClass: organizationalPerson
 objectClass: person
 objectClass: top
 objectClass: inetOrgPerson
+objectClass: eduPerson
 givenName: Bob
 uid: banderson
 sn: Anderson
 cn: Bob Anderson
 userPassword: password
+eduPersonEntitlement: admin
 
 dn: cn=users,ou=Groups,dc=internet2,dc=edu
 objectClass: groupOfUniqueNames

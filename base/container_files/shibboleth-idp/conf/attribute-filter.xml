@@ -33,7 +33,7 @@
             <afp:PermitValueRule xsi:type="basic:ANY" />
         </afp:AttributeRule>
 
-        <afp:AttributeRule attributeID="eduPersonPrincipalEntitlement">
+        <afp:AttributeRule attributeID="eduPersonEntitlement">
             <afp:PermitValueRule xsi:type="basic:ANY" />
         </afp:AttributeRule>
 
