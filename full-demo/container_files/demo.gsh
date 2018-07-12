@@ -221,12 +221,26 @@ addMember("app:banner:banner_user_allow", "banderson");
 # Auto create the PSPNG attributes
 edu.internet2.middleware.grouper.pspng.FullSyncProvisionerFactory.getFullSyncer("pspng_groupOfUniqueNames");
 
-#Assign the PSPNG attributes
+
 AttributeDef pspngAttributeDef = AttributeDefFinder.findByName("etc:pspng:provision_to_def", true);
 AttributeDefName pspngAttribute = AttributeDefNameFinder.findByName("etc:pspng:provision_to", true);
-
 AttributeAssignSave attributeAssignSave = new AttributeAssignSave(gs).assignPrintChangesToSystemOut(true);
+
+#Assign the PSPNG attribute for the standard groups
 attributeAssignSave.assignAttributeDefName(pspngAttribute);
 attributeAssignSave.assignOwnerStem(testStem);
 attributeAssignSave.addValue("pspng_groupOfUniqueNames");
 attributeAssignSave.save();
+
+#Assign the PSPNG attribute for the entitlements
+AttributeAssignSave attributeAssignSave2 = new AttributeAssignSave(gs).assignPrintChangesToSystemOut(true);
+attributeAssignSave2.assignAttributeDefName(pspngAttribute);
+attributeAssignSave2.assignOwnerGroup(GroupFinder.findByName(gs, "app:vpn:vpn_user", true));
+attributeAssignSave2.addValue("pspng_entitlements");
+attributeAssignSave2.save();
+
+attributeAssignSave2 = new AttributeAssignSave(gs).assignPrintChangesToSystemOut(true);
+attributeAssignSave2.assignAttributeDefName(pspngAttribute);
+attributeAssignSave2.assignOwnerGroup(GroupFinder.findByName(gs, "app:banner:banner_user", true));
+attributeAssignSave2.addValue("pspng_entitlements");
+attributeAssignSave2.save();

@@ -1,4 +1,4 @@
-FROM tier/grouper_training_env:base
+FROM tier/grouper-training-env:base
 
 LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>" \
       Vendor="TIER" \

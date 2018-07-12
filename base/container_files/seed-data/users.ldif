@@ -41,7 +41,7 @@ uid: banderson
 sn: Anderson
 cn: Bob Anderson
 userPassword: password
-eduPersonEntitlement: admin
+eduPersonEntitlement: urn:mace:example.edu:admin
 
 dn: cn=users,ou=Groups,dc=internet2,dc=edu
 objectClass: groupOfUniqueNames
