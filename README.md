@@ -19,6 +19,15 @@ docker run -d -p 80:80 -p 389:389 -p 443:443 -p 3306:3306 -p 4443:4443 \
   --name grouper tier/grouper-training-env:exXXX
 ```
 
+Current tags:
+
+- ex401.1.1
+- ex401.1.2
+- ex401.1.3
+- ex401.1.4
+- ex401.1.5
+- ex401.1.end
+
 Browse to `https://localhost/grouper` for Grouper. There is also an app that dumps the SP user attributes at `https://localhost/app`.
 
 # Users

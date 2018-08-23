@@ -1,4 +1,4 @@
-FROM tier/grouper-training-env:base
+FROM tier/grouper-training-env:ex401.1.5
 
 LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>" \
       Vendor="TIER" \
@@ -6,6 +6,4 @@ LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>" \
       ImageName=$imagename \
       ImageOS=centos7
 
-ENV USERTOKEN=3.2.0_ex2
-
-COPY container_files/subject.properties /opt/grouper/conf
+ENV USERTOKEN=ex401.1.6

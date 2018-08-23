@@ -1,4 +1,4 @@
-FROM unicon/shibboleth-idp:3.3.2 as idp 
+FROM unicon/shibboleth-idp:3.3.3 as idp 
 
 FROM tier/grouper:latest
 
@@ -30,8 +30,8 @@ RUN mysql_install_db \
     && echo "mysql -e 'GRANT ALL PRIVILEGES ON *.* TO \"root\"@\"%\" WITH GRANT OPTION;'" >> /tmp/config \
     && echo "mysql -e 'CREATE DATABASE grouper CHARACTER SET utf8 COLLATE utf8_bin;'" >> /tmp/config \
     && bash /tmp/config \
-    && rm -f /tmp/config \
-    && mysql grouper < /seed-data/sisData.sql
+    && rm -f /tmp/config
+#    && mysql grouper < /seed-data/sisData.sql
 
 RUN cp /usr/share/openldap-servers/DB_CONFIG.example /var/lib/ldap/DB_CONFIG \
     && mkdir -p /var/ldap/example \
@@ -41,6 +41,7 @@ RUN cp /usr/share/openldap-servers/DB_CONFIG.example /var/lib/ldap/DB_CONFIG \
     ldapmodify -Y EXTERNAL -H ldapi:/// -f /seed-data/domain.ldif \
     && ldapadd -H ldapi:/// -f /etc/openldap/schema/cosine.ldif \
     && ldapadd -H ldapi:/// -f /etc/openldap/schema/inetorgperson.ldif \
+    && ldapadd -H ldapi:/// -f /seed-data/memberOf.ldif \
     && ldapadd -H ldapi:/// -f /seed-data/eduPerson.ldif \
     && ldapadd -x -D cn=root,dc=internet2,dc=edu -w password -f /seed-data/users.ldif \
     && pkill -HUP slapd \
