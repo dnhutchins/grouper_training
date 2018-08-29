@@ -7,7 +7,6 @@ group = GroupFinder.findByName(gs, "app:vpn:vpn_authorized");
 edu.internet2.middleware.grouper.pspng.FullSyncProvisionerFactory.getFullSyncer("pspng_groupOfNames");
 
 pspngAttribute = AttributeDefNameFinder.findByName("etc:pspng:provision_to", true);
-//pspngAttributeDef = AttributeDefFinder.findByName("etc:pspng:provision_to_def", true);
 AttributeAssignSave attributeAssignSave = new AttributeAssignSave(gs).assignPrintChangesToSystemOut(true);
 attributeAssignSave.assignAttributeDefName(pspngAttribute);
 attributeAssignSave.assignOwnerGroup(group);
