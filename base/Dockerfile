@@ -12,7 +12,7 @@ ENV ENV=training \
     USERTOKEN=3.2.0_base
 
 RUN yum install -y epel-release \
-    && yum install -y mariadb mariadb-server openldap openldap-clients openldap-servers \
+    && yum install -y mariadb mariadb-server openldap openldap-clients openldap-servers phpMyAdmin phpldapadmin \
     && yum clean all
 
 COPY container_files/seed-data/ /seed-data/
@@ -68,6 +68,7 @@ RUN (/usr/sbin/slapd -h "ldap:/// ldaps:/// ldapi:///" -u ldap &) \
 
 COPY --from=idp /opt/shibboleth-idp/ /opt/shibboleth-idp/
 
+COPY container_files/etc/ /etc/
 COPY container_files/conf/ /opt/grouper/conf/
 COPY container_files/httpd/* /etc/httpd/conf.d/
 COPY container_files/shibboleth-idp/ /opt/shibboleth-idp/

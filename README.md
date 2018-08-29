@@ -27,6 +27,10 @@ Current tags:
 - ex401.1.4
 - ex401.1.5
 - ex401.1.end
+- ex401.2.1
+- ex401.2.2
+- ex401.2.3
+- ex401.2.4
 
 Browse to `https://localhost/grouper` for Grouper. There is also an app that dumps the SP user attributes at `https://localhost/app`.
 
@@ -34,3 +38,8 @@ Browse to `https://localhost/grouper` for Grouper. There is also an app that dum
 - `banderson`/`password`: Grouper Administrator
 - `jsmith`/`password`: standard user
 - additional users can be found in <https://github.internet2.edu/docker/grouper_training/blob/master/base/container_files/seed-data/users.ldif#L56>
+
+# Help apps
+
+- phpMyAdmin - https://localhost/phpmyadmin/ - username: `root`, password: (blank)
+- phpLDAPadmin - https://localhost/phpldapadmin/ - username: `cn=root,dc=internet2,dc=edu`, password: `password`
