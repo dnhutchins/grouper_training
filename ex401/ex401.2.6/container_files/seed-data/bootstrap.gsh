@@ -1,0 +1,2 @@
+gs = GrouperSession.startRootSession();
+
