@@ -84,7 +84,9 @@ pipeline {
                         def builds = build(tagSet)
 
                         if(env.BRANCH_NAME == "master") {
-                            push(builds)
+                            //builds.each{ k, v -> echo ("push ${k}") } //for local testing
+                            builds.each{ k, v -> v.push(k) }
+
                         } else {
                             echo 'skipping push, since the SCM branch is not master'
                         }
@@ -119,6 +121,34 @@ def maintain() {
 def imagename() {
   def matcher = readFile('common.bash') =~ 'imagename="(.+)"'
   matcher ? matcher[0][1] : null
+}
+
+def generateTagSet() {
+    def tagSet = []
+
+    exceriseSets.each{ course, stepCountPerExercise -> 
+        stepCountPerExercise.eachWithIndex {stepCount, exIndex ->
+            for (int step = 0; step < stepCount; step++) {
+                tagSet.add("${course}.${exIndex+1}.${step+1}")
+            }
+    
+            tagSet.add("${course}.${exIndex+1}.end")
+        }
+    }
+
+    tagSet
+}
+
+def build(tagSet) {
+    def builds = [:]
+
+    for (String tag : tagSet) {
+        def baseImg = docker.build("$maintainer/$imagename", "--no-cache $tag")
+        echo "built ${tag}; adding to the push queue"
+        builds.put(tag, baseImg);
+    }
+
+    builds
 }
 
 def handleError(String message){
