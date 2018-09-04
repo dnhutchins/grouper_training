@@ -16,7 +16,7 @@ Browse to `https://localhost/grouper`
 
 ```
 docker run -d -p 80:80 -p 389:389 -p 443:443 -p 3306:3306 -p 4443:4443 \
-  --name grouper tier/grouper-training-env:exXXX
+  --name gte tier/grouper-training-env:exXXX
 ```
 
 Current tags:
