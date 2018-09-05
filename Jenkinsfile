@@ -69,8 +69,8 @@ pipeline {
         stage('Build Base') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com/',   "dockerhub-$maintainer") {
-                        def baseImg = docker.build("$maintainer/$imagename", "--no-cache --pull base")
+                    docker.withRegistry('https://registry.hub.docker.com/',   "dockerhub-${maintainer}") {
+                        def baseImg = docker.build("${maintainer}/${imagename}:base", "--no-cache --pull base")
                         baseImg.push("base")
                     }
                 }
@@ -79,7 +79,7 @@ pipeline {
         stage('Build Others') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com/',   "dockerhub-$maintainer") {
+                    docker.withRegistry('https://registry.hub.docker.com/',   "dockerhub-${maintainer}") {
                         def tagSet = generateTagSet()
                         def builds = build(tagSet)
 
@@ -97,7 +97,7 @@ pipeline {
         stage('Notify') {
             steps{
                 echo "$maintainer"
-                slackSend color: 'good', message: "$maintainer/$imagename set pushed to DockerHub"
+                slackSend color: 'good', message: "${maintainer}/${imagename} set pushed to DockerHub"
             }
         }
     }
@@ -143,7 +143,7 @@ def build(tagSet) {
     def builds = [:]
 
     for (String tag : tagSet) {
-        def baseImg = docker.build("$maintainer/$imagename", "--no-cache $tag")
+        def baseImg = docker.build("${maintainer}/${imagename}:${tag}", "--no-cache ${tag}")
         echo "built ${tag}; adding to the push queue"
         builds.put(tag, baseImg);
     }
