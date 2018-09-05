@@ -143,7 +143,7 @@ def build(tagSet) {
     def builds = [:]
 
     for (String tag : tagSet) {
-        def baseImg = docker.build("${maintainer}/${imagename}:${tag}", "--no-cache ${tag.split('.')[0]}/${tag}")
+        def baseImg = docker.build("${maintainer}/${imagename}:${tag}", "--no-cache ${tag.tokenize('.')[0]}/${tag}")
         echo "built ${tag}; adding to the push queue"
         builds.put(tag, baseImg);
     }
