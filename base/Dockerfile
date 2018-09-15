@@ -1,6 +1,6 @@
 FROM unicon/shibboleth-idp:3.3.3 as idp 
 
-FROM tier/grouper:latest
+FROM tier/grouper:2.4.0-a0-u0-w0-p0-test
 
 LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>" \
       Vendor="TIER" \
@@ -72,7 +72,7 @@ COPY container_files/tomcat/ /opt/tomcat/
 COPY container_files/tier-support/* /opt/tier-support/
 COPY container_files/tls/host-key.pem  /etc/pki/tls/private/
 COPY container_files/tls/* /etc/pki/tls/certs/
-COPY container_files/ui/* /opt/grouper/grouper.ui/WEB-INF/
+#COPY container_files/ui/* /opt/grouper/grouper.ui/WEB-INF/
 COPY container_files/usr-local-bin/* /usr/local/bin/
 COPY container_files/var-www-html/ /var/www/html/
 
