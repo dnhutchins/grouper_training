@@ -8,5 +8,4 @@ addGroup("app:vpn", "vpn_authorized", "vpn_authorized");
 
 addMember("app:vpn:vpn_authorized", "ref:faculty");
 addMember("app:vpn:vpn_authorized", "ref:staff");
-addMember("app:vpn:vpn_authorized", "ref:student");
 addMember("app:vpn:vpn_authorized", "app:vpn:ref:vpn_adhoc");

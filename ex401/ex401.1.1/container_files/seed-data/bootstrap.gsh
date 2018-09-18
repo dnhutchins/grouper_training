@@ -4,7 +4,7 @@ addRootStem("ref", "ref");
 addRootStem("bundle", "bundle");
 addRootStem("app", "app");
 addRootStem("org", "org");
-testStem = addRootStem("test", "test");
+addRootStem("test", "test");
 
 addGroup("etc","rolesLoader", "Roles Loader");
 groupAddType("etc:rolesLoader", "grouperLoader");

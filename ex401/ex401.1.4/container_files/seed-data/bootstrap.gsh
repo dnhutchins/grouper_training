@@ -1,6 +1,6 @@
 gs = GrouperSession.startRootSession();
 
-//Assign the PSPNG attribute for the standard groups
+//Assign the PSPNG attribute for the standard groups (needs to match 401.1.5's reset)
 group = GroupFinder.findByName(gs, "app:vpn:vpn_authorized");
 
 # Auto create the PSPNG attributes

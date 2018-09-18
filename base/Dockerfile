@@ -1,6 +1,6 @@
 FROM unicon/shibboleth-idp:3.3.3 as idp 
 
-FROM tier/grouper:2.4.0-a0-u0-w0-p0-test
+FROM tier/grouper:2.4.0-a2-u0-w0-p0-test
 
 LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>" \
       Vendor="TIER" \

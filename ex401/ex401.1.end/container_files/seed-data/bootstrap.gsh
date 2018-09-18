@@ -17,7 +17,6 @@ addMember("test:cisoQuestionableVpnUsersList","mwilliams144");
 addMember("test:cisoQuestionableVpnUsersList","lpeterson153");
 addMember("test:cisoQuestionableVpnUsersList","mvales154");
 
-
 addGroup("test", "whyvpnaccess", "Why Do They Have VPN Access");
 addComposite("test:whyvpnaccess", CompositeType.INTERSECTION, "app:vpn:vpn_authorized", "test:cisoQuestionableVpnUsersList");
 
