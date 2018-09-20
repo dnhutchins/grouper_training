@@ -16,6 +16,7 @@ docker build --pull --tag=tier/grouper-training-env:base base/ \
 && docker build --tag=tier/grouper-training-env:ex401.2.7 ex401/ex401.2.7 \
 && docker build --tag=tier/grouper-training-env:ex401.2.8 ex401/ex401.2.8 \
 && docker build --tag=tier/grouper-training-env:ex401.2.9 ex401/ex401.2.9 \
+&& docker build --tag=tier/grouper-training-env:ex401.2.end ex401/ex401.2.end \
 && docker build --tag=tier/grouper-training-env:ex401.3.1 ex401/ex401.3.1 \
 && docker build --tag=tier/grouper-training-env:ex401.3.2 ex401/ex401.3.2 \
 && docker build --tag=tier/grouper-training-env:ex401.3.3 ex401/ex401.3.3 \

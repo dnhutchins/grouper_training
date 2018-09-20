@@ -83,7 +83,7 @@
                     // Check for an attribute that authorizes use of first factor.
                     attribute = resCtx.getResolvedIdPAttributes().get("eduPersonEntitlement");
                     valueType =  Java.type("net.shibboleth.idp.attribute.StringAttributeValue");
-                    if (attribute != null && attribute.getValues().contains(new valueType("urn:mace:example.edu:mfa_enabled"))) {
+                    if (attribute != null && attribute.getValues().contains(new valueType("http://tier.internet2.edu/mfa/enabled"))) {
                         nextFlow = "authn/Gaspo";
                     }
 

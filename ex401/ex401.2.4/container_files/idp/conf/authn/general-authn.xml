@@ -122,9 +122,9 @@
             <property name="supportedPrincipals">
                 <list>
                     <bean parent="shibboleth.SAML2AuthnContextClassRef"
-                        c:classRef="http://tier.internet2.edu/mfa/enabled" />
+                        c:classRef="https://refeds.org/profile/mfa" />
                     <bean parent="shibboleth.SAML1AuthenticationMethod"
-                        c:method="http://tier.internet2.edu/mfa/enabled" />
+                        c:method="https://refeds.org/profile/mfa" />
                 </list>
             </property>
         </bean>
@@ -136,7 +136,7 @@
             The list below almost certainly requires changes, and should generally be the
             union of any of the separate factors you combine in your particular MFA flow
             rules. The example corresponds to the example in mfa-authn-config.xml that
-            combines IPAddress with Password.
+            combines GaspoMFA with Password.
             -->
             <property name="supportedPrincipals">
                 <list>
@@ -148,6 +148,11 @@
                         c:classRef="urn:oasis:names:tc:SAML:2.0:ac:classes:Password" />
                     <bean parent="shibboleth.SAML1AuthenticationMethod"
                         c:method="urn:oasis:names:tc:SAML:1.0:am:password" />
+                    <bean parent="shibboleth.SAML2AuthnContextClassRef"
+                        c:classRef="https://refeds.org/profile/mfa" />
+                    <bean parent="shibboleth.SAML1AuthenticationMethod"
+                        c:method="https://refeds.org/profile/mfa" />
+
                 </list>
             </property>
         </bean>

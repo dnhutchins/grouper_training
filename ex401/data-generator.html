@@ -54,7 +54,7 @@
 
         var departments = ["Computer Science", "Engineering", "Business", "Accounting",
             "Law", "Physical Education", "Language Arts", "Financial Aid",
-            "Information Technology", "Advising", "Purchasing", "Account Payable"
+            "Information Technology", "Advising", "Purchasing", "Accounts Payable"
         ];
 
         var affiliations = ["student", "staff", "faculty", "alum", "community"];
@@ -94,18 +94,23 @@
 
             //Add additional randomized characteristics sets here; 
             //keep the ordering the same to maintain deterministic capabilities between runs
+
+            //Assign departments
             for (index = 0; index < people.length; ++index) {
                 people[index]["department"] = departments[rng.nextRange(0, departments.length)];
             }
 
+            //Assign affiliations
             for (index = 0; index < people.length; ++index) {
                 people[index]["affiliations"] = selectUnduplicated(affiliations, 2);
             }
 
+            //Assign titles/primary affiliations
             for (index = 0; index < people.length; ++index) {
                 people[index]["title"] = rankAffiliations(people[index].affiliations);
             }
 
+            //Create Course Enrollments
             for (index = 0; index < people.length; ++index) {
                 people[index]["courses"] = [];
                 if (people[index]["affiliations"].indexOf("student") > -1 
@@ -114,13 +119,21 @@
                 }
             }
 
+            //Create vpn_users 
             for (index = 0; index < people.length; ++index) {
                 people[index].vpn_user = people[index].affiliations.indexOf('staff') >= 0 || people[index].affiliations.indexOf('faculty') >= 0 ?
-                    (rng.nextFloat() > 0.20): //grab most faculty and staff
+                    (rng.nextFloat() > 0.1): //grab most faculty and staff
                     rng.nextFloat() > 0.9; // and only a few others
             }
 
+            //Create vpn users ldap group
             makeQuestionableVpnUsersLists(people);
+
+            //Create Athletics users
+            makeAthleticsUsersLists(people);
+
+            //Create lists of non-faculty (staff) banner users
+            makeNonFacultyBannerUsersLists(people);
 
             console.log(people);
 
@@ -170,9 +183,6 @@
                 output += "eduPersonAffiliation: " + person.affiliations[i] + "\n";
             }
 
-            /*if (person.vpn_user == 1) {}
-            output += "member: cn=vpn_users,ou=Groups,dc=internet2,dc=edu\n";
-*/
             return output + "\n";
         }
 
@@ -303,9 +313,44 @@
                 }
             }
 
-            document.getElementById('csv').value = csvOutput;
-            document.getElementById('gsh').value = gshOutput;
+            document.getElementById('vpnCsv').value = csvOutput;
+            document.getElementById('vpnGsh').value = gshOutput;
         }
+
+        function makeAthleticsUsersLists(people) {
+            var csvOutput = "";
+            var gshOutput = 'addGroup("app:mfa:ref", "athletics_dept", "athletics_dept");\n';
+            var sampleCount = 15;
+
+            for (i = 0; i < people.length && sampleCount >  0; i++) {
+                if (people[i].affiliations.indexOf('staff') >= 0 & rng.nextFloat() > 0.75) {
+                    csvOutput = csvOutput + people[i].uid + "\n";
+                    gshOutput = gshOutput + 'addMember("app:mfa:ref:athletics_dept","' + people[i].uid + '");\n';
+                    sampleCount--;
+                }
+            }
+
+            document.getElementById('athleticsCsv').value = csvOutput;
+            document.getElementById('athleticsGsh').value = gshOutput;
+        }
+
+        function makeNonFacultyBannerUsersLists(people) {
+            var csvOutput = "";
+            var gshOutput = 'addGroup("app:mfa:ref", "NonFacultyBannerINB", "NonFacultyBannerINB");\n';
+            var sampleCount = 35;
+
+            for (i = 100; i < people.length && sampleCount >  0; i++) {
+                if (people[i].affiliations.indexOf('staff') >= 0 & rng.nextFloat() > 0.75) {
+                    csvOutput = csvOutput + people[i].uid + "\n";
+                    gshOutput = gshOutput + 'addMember("app:mfa:ref:NonFacultyBannerINB","' + people[i].uid + '");\n';
+                    sampleCount--;
+                }
+            }
+
+            document.getElementById('bannerCsv').value = csvOutput;
+            document.getElementById('bannerGsh').value = gshOutput;
+        }
+
     </script>
 </head>
 
@@ -318,16 +363,29 @@
     </form>
 
     <p>
-    Ldif: <br /><textarea cols="100" rows="15" id="ldif"></textarea><br />
+        Ldif: <br /><textarea cols="100" rows="15" id="ldif"></textarea><br />
     </p>
     <p>
         Sql: <br /><textarea cols="100" rows="15" id="sql"></textarea> <br />
     </p>
     <p>
-        Questionable VPN Users CSV: <br /><textarea cols="100" rows="15" id="csv"></textarea> <br />
+        Questionable VPN Users CSV: <br /><textarea cols="100" rows="15" id="vpnCsv"></textarea> <br />
     </p>
     <p>
-        Questionable VPN Users GSH: <br /><textarea cols="100" rows="15" id="gsh"></textarea> <br />
+        Questionable VPN Users GSH: <br /><textarea cols="100" rows="15" id="vpnGsh"></textarea> <br />
+    </p>
+
+    <p>
+        Athletic Dept CSV: <br /><textarea cols="100" rows="15" id="athleticsCsv"></textarea> <br />
+    </p>
+    <p>
+        Atheltics Dept GSH: <br /><textarea cols="100" rows="15" id="athleticsGsh"></textarea> <br />
+    </p>
+    <p>
+        Non-faculty Banner Users CSV: <br /><textarea cols="100" rows="15" id="bannerCsv"></textarea> <br />
+    </p>
+    <p>
+        Non-faculty Banner Users GSH: <br /><textarea cols="100" rows="15" id="bannerGsh"></textarea> <br />
     </p>
 </body>
 
