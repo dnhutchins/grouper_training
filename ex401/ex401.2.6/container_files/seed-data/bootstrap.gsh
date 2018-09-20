@@ -37,4 +37,11 @@ addMember("app:mfa:ref:NonFacultyBannerINB","lbutler643");
 addMember("app:mfa:ref:NonFacultyBannerINB","dmartinez657");
 
 
-addMember("app:mfa:mfa_enabled_allow", "app:mfa:ref:NonFacultyBannerINB");
+//Set expiration out 30 days
+java.util.Calendar cal = Calendar.getInstance();
+cal.setTime(new Date());
+cal.add(Calendar.DAY_OF_YEAR, 30);
+
+group = GroupFinder.findByName(gs, "app:mfa:mfa_enabled_allow", true);
+subject = GroupFinder.findByName(gs, "app:mfa:ref:NonFacultyBannerINB", true).toSubject();
+group.addOrEditMember(subject, false, true, cal.getTime(), null, true);
