@@ -14,7 +14,21 @@
         xsi:schemaLocation="urn:mace:shibboleth:2.0:afp http://shibboleth.net/schema/idp/shibboleth-afp.xsd">
 
     <!-- Release some attributes to an SP. -->
-    <AttributeFilterPolicy id="example1">
+
+<AttributeFilterPolicy id="boardeffect">
+    <PolicyRequirementRule xsi:type="Requester" value="https://college.boardeffect.com/sp" />
+
+        <AttributeRule attributeID="eduPersonEntitlement">
+            <PermitValueRule xsi:type="Value" value="https://college.boardeffect.com/sp" ignoreCase="true" />
+        </AttributeRule>
+
+        <AttributeRule attributeID="uid">
+            <PermitValueRule xsi:type="ANY" />
+        </AttributeRule>
+
+    </AttributeFilterPolicy>
+
+    <AttributeFilterPolicy id="grouper">
         <PolicyRequirementRule xsi:type="Requester" value="https://grouperdemo/shibboleth" />
 
         <AttributeRule attributeID="cn">

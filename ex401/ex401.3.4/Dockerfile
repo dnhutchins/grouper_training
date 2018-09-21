@@ -10,6 +10,8 @@ ENV USERTOKEN=ex401.3.4
 
 COPY container_files/seed-data/ /seed-data/
 COPY container_files/grouper-loader.properties /opt/grouper/conf/
+COPY container_files/grouper.client.properties /opt/grouper/conf/
+COPY container_files/attribute-filter.xml /opt/shibboleth-idp/conf/
 
 RUN . /usr/local/bin/library.sh \
     && prepConf; \

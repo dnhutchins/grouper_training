@@ -38,6 +38,16 @@ Current tags:
 - ex401.2.8
 - ex401.2.9
 - ex401.2.end
+- ex401.3.1
+- ex401.3.2
+- ex401.3.3
+- ex401.3.4
+- ex401.3.5
+- ex401.3.6
+- ex401.3.7
+- ex401.3.end
+- ex401.4.1
+- ex401.4.end
 
 Browse to `https://localhost/grouper` for Grouper. There is also an app that dumps the SP user attributes at `https://localhost/app`.
 
@@ -50,3 +60,26 @@ Browse to `https://localhost/grouper` for Grouper. There is also an app that dum
 
 - phpMyAdmin - https://localhost/phpmyadmin/ - username: `root`, password: (blank)
 - phpLDAPadmin - https://localhost/phpldapadmin/ - username: `cn=root,dc=internet2,dc=edu`, password: `password`
+
+
+# Course specific notes
+
+## Notes for the exercises in 401
+
+Before connecting to your SSH server, be sure to port forward a local port to the server's port `15672` as well.
+
+These exercises require Rabbit MQ to be started. Before starting the ex401 Grouper container, run:
+
+```
+docker run -d -p 15672:15672 --env RABBITMQ_NODENAME=docker-rabbit --hostname rabbitmq --name=rabbitmq rabbitmq:management
+```
+
+Now browse to http://localhost:15672/ and login with `guest`/`guest`, and create a new queue named `sampleQueue`.
+
+Now start the ex401 Grouper with this slightly modified command:
+
+```bash
+docker run -d -p 80:80 -p 389:389 -p 443:443 -p 3306:3306 -p 4443:4443 \
+  --link rabbitmq:rabbitmq --name gte tier/grouper-training-env:exXXX
+
+```
