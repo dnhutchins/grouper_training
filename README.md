@@ -6,7 +6,7 @@ A set of Grouper images that are used during I2/TIER training.
 ## Full Demo
 
 ```
-docker run -d -p 80:80 -p 389:389 -p 443:443 -p 3306:3306 -p 4443:4443 \
+docker run -d -p 80:80 -p 389:389 -p 8443:443 -p 3306:3306 \
   --name grouper-demo tier/grouper-training-env:full_demo
 ```
 
@@ -15,7 +15,7 @@ Browse to `https://localhost/grouper`
 ## Exercises
 
 ```
-docker run -d -p 80:80 -p 389:389 -p 443:443 -p 3306:3306 -p 4443:4443 \
+docker run -d -p 80:80 -p 389:389 -p 8443:443 -p 3306:3306 \
   --name gte tier/grouper-training-env:exXXX
 ```
 
@@ -49,7 +49,7 @@ Current tags:
 - ex401.4.1
 - ex401.4.end
 
-Browse to `https://localhost/grouper` for Grouper. There is also an app that dumps the SP user attributes at `https://localhost/app`.
+Browse to `https://localhost:8443/grouper` for Grouper. There is also an app that dumps the SP user attributes at `https://localhost/app`.
 
 # Users
 - `banderson`/`password`: Grouper Administrator
@@ -58,8 +58,8 @@ Browse to `https://localhost/grouper` for Grouper. There is also an app that dum
 
 # Help apps
 
-- phpMyAdmin - https://localhost/phpmyadmin/ - username: `root`, password: (blank)
-- phpLDAPadmin - https://localhost/phpldapadmin/ - username: `cn=root,dc=internet2,dc=edu`, password: `password`
+- phpMyAdmin - https://localhost:8443/phpmyadmin/ - username: `root`, password: (blank)
+- phpLDAPadmin - https://localhost:8443/phpldapadmin/ - username: `cn=root,dc=internet2,dc=edu`, password: `password`
 
 
 # Course specific notes
@@ -74,12 +74,12 @@ These exercises require Rabbit MQ to be started. Before starting the ex401 Group
 docker run -d -p 15672:15672 --env RABBITMQ_NODENAME=docker-rabbit --hostname rabbitmq --name=rabbitmq rabbitmq:management
 ```
 
-Now browse to http://localhost:15672/ and login with `guest`/`guest`, and create a new queue named `sampleQueue`.
+Now browse to http://localhost:15672/ and login with `guest`/`guest`, and create a new queue named `grouper`.
 
 Now start the ex401 Grouper with this slightly modified command:
 
 ```bash
-docker run -d -p 80:80 -p 389:389 -p 443:443 -p 3306:3306 -p 4443:4443 \
+docker run -d -p 80:80 -p 389:389 -p 8443:443 -p 3306:3306 \
   --link rabbitmq:rabbitmq --name gte tier/grouper-training-env:exXXX
 
 ```
