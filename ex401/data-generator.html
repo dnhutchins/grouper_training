@@ -135,6 +135,9 @@
             //Create lists of non-faculty (staff) banner users
             makeNonFacultyBannerUsersLists(people);
 
+            //Create lists of visiting scholars
+            makeVisitingScholarsLists(people);
+
             console.log(people);
 
             //Generate Output
@@ -142,7 +145,8 @@
             for (j = 0; j < people.length; j++) {
                 ldif += formatPersonLdif(people[j], peopleOu);
             }
-            ldif += formatGroupLdif(people, peopleOu);
+            ldif += formatVpnUsersGroupLdif(people, peopleOu);
+            ldif += formatCommunityGroupLdif(people, peopleOu);
             document.getElementById('ldif').value = ldif;
 
             var sql = "";
@@ -186,7 +190,7 @@
             return output + "\n";
         }
 
-        function formatGroupLdif(people, ou) {
+        function formatVpnUsersGroupLdif(people, ou) {
             var vpnOutput =
             "dn: cn=vpn_users,ou=groups,dc=internet2,dc=edu\n" +
             "objectClass: groupOfNames\n" +
@@ -201,6 +205,23 @@
 
             return vpnOutput + "\n";
         }
+
+        function formatCommunityGroupLdif(people, ou) {
+            var vpnOutput =
+            "dn: cn=community_members,ou=groups,dc=internet2,dc=edu\n" +
+            "objectClass: groupOfNames\n" +
+            "objectClass: top\n" +
+            "cn: community_members\n"
+
+            for (j = 0; j < people.length; j++) {
+                if (people[j].affiliations.indexOf('community') >= 0 ) {
+                    vpnOutput = vpnOutput + "member: uid=" + people[j].uid + ',' + ou + "\n"
+                }
+            }
+
+            return vpnOutput + "\n";
+        }
+
 
         function sqlHeader() {
             return "CREATE TABLE SIS_COURSES (\n" +
@@ -261,7 +282,8 @@
 
                 if (person.affiliations[i] == 'staff' 
                         || person.affiliations[i] == 'faculty'
-                        || person.affiliations[i] =='student') {
+                        || person.affiliations[i] =='student'
+                        || person.affiliations[i] =='community') {
                     temp = template.replace(/<id>/g, person.idNumber);
                     temp = temp.replace(/<role>/g, person.affiliations[i]);
                     output += temp;
@@ -351,6 +373,23 @@
             document.getElementById('bannerGsh').value = gshOutput;
         }
 
+        function makeVisitingScholarsLists(people) {
+            var csvOutput = "";
+            var gshOutput = 'addGroup("app:lms:ref", "visiting_scholars", "visiting_scholars");\n';
+            var sampleCount = 25;
+
+            for (i = 300; i < people.length && sampleCount >  0; i++) {
+                if (people[i].affiliations.indexOf('community') >= 0) {
+                    csvOutput = csvOutput + people[i].uid + "\n";
+                    gshOutput = gshOutput + 'addMember("app:lms:ref:visiting_scholars","' + people[i].uid + '");\n';
+                    sampleCount--;
+                }
+            }
+
+            document.getElementById('visitingScholarsCsv').value = csvOutput;
+            document.getElementById('visitingScholarsGsh').value = gshOutput;
+        }
+
     </script>
 </head>
 
@@ -387,6 +426,13 @@
     <p>
         Non-faculty Banner Users GSH: <br /><textarea cols="100" rows="15" id="bannerGsh"></textarea> <br />
     </p>
+    <p>
+        Visiting Scholars Users CSV: <br /><textarea cols="100" rows="15" id="visitingScholarsCsv"></textarea> <br />
+    </p>
+    <p>
+        Visiting Scholars Users GSH: <br /><textarea cols="100" rows="15" id="visitingScholarsGsh"></textarea> <br />
+    </p>
+
 </body>
 
 </html>
