@@ -137,7 +137,9 @@
         
 
             //Create lists of visiting scholars
-            makeVisitingScholarsLists(people);
+            //makeVisitingScholarsLists(people);
+
+            makeTransferStudents(people);
 
             console.log(people);
 
@@ -379,6 +381,23 @@
             document.getElementById('visitingScholarsGsh').value = gshOutput;
         }
 
+        function makeTransferStudents(people) {
+            var csvOutput = "";
+            var gshOutput = 'addGroup("basis:student", "transfer_student", "transfer_student");\n';
+            var sampleCount = 25;
+
+            for (i = 300; i < people.length && sampleCount >  0; i++) {
+                if (people[i].affiliations.indexOf('student') >= 0) {
+                    csvOutput = csvOutput + people[i].uid + "\n";
+                    gshOutput = gshOutput + 'addMember("basis:student:transfer_student","' + people[i].uid + '");\n';
+                    sampleCount--;
+                }
+            }
+
+            document.getElementById('transferStudentsCsv').value = csvOutput;
+            document.getElementById('transferStudentsGsh').value = gshOutput;
+        }
+
     </script>
 </head>
 
@@ -398,10 +417,10 @@
     </p>
   
     <p>
-        Visiting Scholars Users CSV: <br /><textarea cols="100" rows="15" id="visitingScholarsCsv"></textarea> <br />
+        Transfer Students CSV: <br /><textarea cols="100" rows="15" id="transferStudentsCsv"></textarea> <br />
     </p>
     <p>
-        Visiting Scholars Users GSH: <br /><textarea cols="100" rows="15" id="visitingScholarsGsh"></textarea> <br />
+        Transfer Students GSH: <br /><textarea cols="100" rows="15" id="transferStudentsGsh"></textarea> <br />
     </p>
 
 </body>
