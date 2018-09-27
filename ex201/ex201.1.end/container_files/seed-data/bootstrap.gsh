@@ -2,6 +2,7 @@ gs = GrouperSession.startRootSession();
 
 
 // ex201.1.1
+addStem("ref", "student", "student")
 addGroup("ref:student", "students", "students");
 
 addGroup("ref:student", "class2019", "class2019");
