@@ -135,11 +135,18 @@
             }
 
 
+            makeOtherStudents(people)
+            
+            //Not In SIS
+            makeExchangeStudents(people)                
+
+            //Not In SIS
             makeTransferStudents(people)
-            /*makeExpelledStudents(people);
+
+            makeExpelledStudents(people);
             makeResignedStudents(people);
             makeTransferedStudents(people);
-            makeLoaStudents(people)*/
+            makeLoaStudents(people)
 
 
             console.log(people);
@@ -382,13 +389,44 @@
             document.getElementById('visitingScholarsGsh').value = gshOutput;
         }
 
+        function makeOtherStudents(people) {            
+            var gshOutput = 'addGroup("basis:student", "student_no_class_year", "student_no_class_year");\n';
+            var sampleCount = 25;
+
+            for (i = 100; i < people.length && sampleCount >  0; i++) {
+                if (people[i].affiliations.indexOf('student') >= 0) {                    
+                    people[i].terms = []
+                    gshOutput = gshOutput + 'addMember("basis:student:student_no_class_year","' + people[i].uid + '");\n';
+                    sampleCount--;
+                }
+            }            
+            document.getElementById('otherStudents').value = gshOutput;
+        }
+
+        function makeExchangeStudents(people) {            
+            var gshOutput = 'addGroup("basis:student", "exchange_students", "exchange_students");\n';
+            var sampleCount = 10;
+
+            for (i = 200; i < people.length && sampleCount >  0; i++) {
+                if (people[i].affiliations.indexOf('student') >= 0) {                    
+                    gshOutput = gshOutput + 'addMember("basis:student:exchange_students","' + people[i].uid + '");\n';
+                    //Remove from SIS
+                    people.splice(i, 1)
+                    sampleCount--;
+                }
+            }            
+            document.getElementById('exchangeStudents').value = gshOutput;
+        }
+
         function makeTransferStudents(people) {            
             var gshOutput = 'addGroup("basis:student", "transfer_student", "transfer_student");\n';
             var sampleCount = 25;
 
-            for (i = 400; i < people.length && sampleCount >  0; i++) {
+            for (i = 300; i < people.length && sampleCount >  0; i++) {
                 if (people[i].affiliations.indexOf('student') >= 0) {                    
                     gshOutput = gshOutput + 'addMember("basis:student:transfer_student","' + people[i].uid + '");\n';
+                    //Remove from SIS
+                    people.splice(i, 1)
                     sampleCount--;
                 }
             }            
@@ -399,7 +437,7 @@
             var gshOutput = 'addGroup("basis:student", "expelled_32_days", "expelled_32_days");\n';
             var sampleCount = 5;
 
-            for (i = 300; i < people.length && sampleCount >  0; i++) {
+            for (i = 400; i < people.length && sampleCount >  0; i++) {
                 if (people[i].affiliations.indexOf('student') >= 0) {                    
                     people[i].terms = []
                     gshOutput = gshOutput + 'addMember("basis:student:expelled_32_days","' + people[i].uid + '");\n';
@@ -413,7 +451,7 @@
             var gshOutput = 'addGroup("basis:student", "resigned_32_days", "resigned_32_days");\n';
             var sampleCount = 5;
 
-            for (i = 200; i < people.length && sampleCount >  0; i++) {
+            for (i = 500; i < people.length && sampleCount >  0; i++) {
                 if (people[i].affiliations.indexOf('student') >= 0) {                    
                     people[i].terms = []
                     gshOutput = gshOutput + 'addMember("basis:student:resigned_32_days","' + people[i].uid + '");\n';
@@ -427,7 +465,7 @@
             var gshOutput = 'addGroup("basis:student", "transfered_32_days", "transfered_32_days");\n';
             var sampleCount = 5;
 
-            for (i = 100; i < people.length && sampleCount >  0; i++) {
+            for (i = 600; i < people.length && sampleCount >  0; i++) {
                 if (people[i].affiliations.indexOf('student') >= 0) {                    
                     people[i].terms = []
                     gshOutput = gshOutput + 'addMember("basis:student:transfered_32_days","' + people[i].uid + '");\n';
@@ -441,7 +479,7 @@
             var gshOutput = 'addGroup("basis:student", "loa_4_years", "");\n';
             var sampleCount = 3;
 
-            for (i = 150; i < people.length && sampleCount >  0; i++) {
+            for (i = 700; i < people.length && sampleCount >  0; i++) {
                 if (people[i].affiliations.indexOf('student') >= 0) {                    
                     people[i].terms = []
                     gshOutput = gshOutput + 'addMember("basis:student:loa_4_years","' + people[i].uid + '");\n';
@@ -470,7 +508,31 @@
     </p>
   
     <p>
+        Other Students: <br /><textarea cols="100" rows="15" id="otherStudents"></textarea> <br />
+    </p>
+
+    <p>
+        Exchange Students: <br /><textarea cols="100" rows="15" id="exchangeStudents"></textarea> <br />
+    </p>
+
+    <p>
         Transfer Students: <br /><textarea cols="100" rows="15" id="transferStudents"></textarea> <br />
+    </p>
+
+    <p>
+        Expelled Students: <br /><textarea cols="100" rows="15" id="expelledStudents"></textarea> <br />
+    </p>
+
+    <p>
+        Resigned Students: <br /><textarea cols="100" rows="15" id="resignedStudents"></textarea> <br />
+    </p>
+
+    <p>
+        Transfered Students: <br /><textarea cols="100" rows="15" id="transferedStudents"></textarea> <br />
+    </p>
+
+    <p>
+        LOA Students: <br /><textarea cols="100" rows="15" id="loaStudents"></textarea> <br />
     </p>
 
 

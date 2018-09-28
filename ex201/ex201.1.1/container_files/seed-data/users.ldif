@@ -3525,23 +3525,6 @@ userPassword: password
 eduPersonAffiliation: community
 eduPersonAffiliation: staff
 
-dn: uid=jnielson201,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Nielson
-givenName: Jeremy
-cn: Jeremy Nielson
-uid: jnielson201
-title: student
-employeeNumber: 80000202
-mail: jnielson201@example.edu
-businessCategory:Advising
-userPassword: password
-eduPersonAffiliation: student
-
 dn: uid=pvales202,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
 objectClass: person
@@ -3593,23 +3576,6 @@ businessCategory:Physical Education
 userPassword: password
 eduPersonAffiliation: alum
 eduPersonAffiliation: staff
-
-dn: uid=aprice205,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Price
-givenName: Ava
-cn: Ava Price
-uid: aprice205
-title: student
-employeeNumber: 80000206
-mail: aprice205@example.edu
-businessCategory:Physical Education
-userPassword: password
-eduPersonAffiliation: student
 
 dn: uid=wdavis206,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
@@ -3715,23 +3681,6 @@ userPassword: password
 eduPersonAffiliation: community
 eduPersonAffiliation: alum
 
-dn: uid=cmorrison212,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Morrison
-givenName: Christina
-cn: Christina Morrison
-uid: cmorrison212
-title: student
-employeeNumber: 80000213
-mail: cmorrison212@example.edu
-businessCategory:Law
-userPassword: password
-eduPersonAffiliation: student
-
 dn: uid=lvales213,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
 objectClass: person
@@ -3748,24 +3697,6 @@ mail: lvales213@example.edu
 businessCategory:Computer Science
 userPassword: password
 eduPersonAffiliation: community
-
-dn: uid=nroberts214,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Roberts
-givenName: Nancy
-cn: Nancy Roberts
-uid: nroberts214
-title: faculty
-employeeNumber: 80000215
-mail: nroberts214@example.edu
-businessCategory:Physical Education
-userPassword: password
-eduPersonAffiliation: faculty
-eduPersonAffiliation: student
 
 dn: uid=jlangenberg215,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
@@ -3802,24 +3733,6 @@ businessCategory:Engineering
 userPassword: password
 eduPersonAffiliation: alum
 eduPersonAffiliation: community
-
-dn: uid=ehenderson217,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Henderson
-givenName: Eric
-cn: Eric Henderson
-uid: ehenderson217
-title: student
-employeeNumber: 80000218
-mail: ehenderson217@example.edu
-businessCategory:Advising
-userPassword: password
-eduPersonAffiliation: alum
-eduPersonAffiliation: student
 
 dn: uid=nanderson218,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
@@ -3942,24 +3855,6 @@ userPassword: password
 eduPersonAffiliation: staff
 eduPersonAffiliation: alum
 
-dn: uid=lthompson225,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Thompson
-givenName: Lexi
-cn: Lexi Thompson
-uid: lthompson225
-title: student
-employeeNumber: 80000226
-mail: lthompson225@example.edu
-businessCategory:Computer Science
-userPassword: password
-eduPersonAffiliation: alum
-eduPersonAffiliation: student
-
 dn: uid=slewis226,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
 objectClass: person
@@ -3993,24 +3888,6 @@ mail: mclark227@example.edu
 businessCategory:Financial Aid
 userPassword: password
 eduPersonAffiliation: staff
-
-dn: uid=mvales228,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Vales
-givenName: Maddie
-cn: Maddie Vales
-uid: mvales228
-title: student
-employeeNumber: 80000229
-mail: mvales228@example.edu
-businessCategory:Purchasing
-userPassword: password
-eduPersonAffiliation: alum
-eduPersonAffiliation: student
 
 dn: uid=lbrown229,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
@@ -4063,24 +3940,6 @@ mail: cthompson231@example.edu
 businessCategory:Engineering
 userPassword: password
 eduPersonAffiliation: community
-
-dn: uid=ddavis232,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Davis
-givenName: David
-cn: David Davis
-uid: ddavis232
-title: faculty
-employeeNumber: 80000233
-mail: ddavis232@example.edu
-businessCategory:Computer Science
-userPassword: password
-eduPersonAffiliation: faculty
-eduPersonAffiliation: student
 
 dn: uid=agasper233,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
@@ -4258,24 +4117,6 @@ businessCategory:Language Arts
 userPassword: password
 eduPersonAffiliation: staff
 
-dn: uid=jpeterson243,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Peterson
-givenName: James
-cn: James Peterson
-uid: jpeterson243
-title: student
-employeeNumber: 80000244
-mail: jpeterson243@example.edu
-businessCategory:Accounts Payable
-userPassword: password
-eduPersonAffiliation: student
-eduPersonAffiliation: alum
-
 dn: uid=dlewis244,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
 objectClass: person
@@ -4361,24 +4202,6 @@ mail: dhenderson248@example.edu
 businessCategory:Information Technology
 userPassword: password
 eduPersonAffiliation: community
-eduPersonAffiliation: alum
-
-dn: uid=mlee249,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Lee
-givenName: Marie
-cn: Marie Lee
-uid: mlee249
-title: student
-employeeNumber: 80000250
-mail: mlee249@example.edu
-businessCategory:Accounting
-userPassword: password
-eduPersonAffiliation: student
 eduPersonAffiliation: alum
 
 dn: uid=mnielson250,ou=people,dc=internet2,dc=edu
@@ -5471,24 +5294,6 @@ userPassword: password
 eduPersonAffiliation: faculty
 eduPersonAffiliation: alum
 
-dn: uid=lmartinez312,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Martinez
-givenName: Lori
-cn: Lori Martinez
-uid: lmartinez312
-title: staff
-employeeNumber: 80000313
-mail: lmartinez312@example.edu
-businessCategory:Physical Education
-userPassword: password
-eduPersonAffiliation: student
-eduPersonAffiliation: staff
-
 dn: uid=cbutler313,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
 objectClass: person
@@ -5576,24 +5381,6 @@ userPassword: password
 eduPersonAffiliation: alum
 eduPersonAffiliation: community
 
-dn: uid=awhite318,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: White
-givenName: Amber
-cn: Amber White
-uid: awhite318
-title: student
-employeeNumber: 80000319
-mail: awhite318@example.edu
-businessCategory:Purchasing
-userPassword: password
-eduPersonAffiliation: student
-eduPersonAffiliation: alum
-
 dn: uid=amartinez319,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
 objectClass: person
@@ -5628,23 +5415,6 @@ mail: snielson320@example.edu
 businessCategory:Advising
 userPassword: password
 eduPersonAffiliation: staff
-
-dn: uid=mclark321,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Clark
-givenName: Mark
-cn: Mark Clark
-uid: mclark321
-title: student
-employeeNumber: 80000322
-mail: mclark321@example.edu
-businessCategory:Computer Science
-userPassword: password
-eduPersonAffiliation: student
 
 dn: uid=jsmith322,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
@@ -5822,23 +5592,6 @@ businessCategory:Language Arts
 userPassword: password
 eduPersonAffiliation: staff
 
-dn: uid=ascott332,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Scott
-givenName: Anna
-cn: Anna Scott
-uid: ascott332
-title: student
-employeeNumber: 80000333
-mail: ascott332@example.edu
-businessCategory:Accounting
-userPassword: password
-eduPersonAffiliation: student
-
 dn: uid=lgonazles333,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
 objectClass: person
@@ -5856,24 +5609,6 @@ businessCategory:Physical Education
 userPassword: password
 eduPersonAffiliation: alum
 eduPersonAffiliation: faculty
-
-dn: uid=aroberts334,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Roberts
-givenName: Adian
-cn: Adian Roberts
-uid: aroberts334
-title: student
-employeeNumber: 80000335
-mail: aroberts334@example.edu
-businessCategory:Law
-userPassword: password
-eduPersonAffiliation: student
-eduPersonAffiliation: community
 
 dn: uid=dgasper335,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
@@ -5944,24 +5679,6 @@ businessCategory:Purchasing
 userPassword: password
 eduPersonAffiliation: alum
 
-dn: uid=jsmith339,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Smith
-givenName: Jo
-cn: Jo Smith
-uid: jsmith339
-title: faculty
-employeeNumber: 80000340
-mail: jsmith339@example.edu
-businessCategory:Law
-userPassword: password
-eduPersonAffiliation: faculty
-eduPersonAffiliation: student
-
 dn: uid=csmith340,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
 objectClass: person
@@ -5996,23 +5713,6 @@ businessCategory:Information Technology
 userPassword: password
 eduPersonAffiliation: faculty
 
-dn: uid=klee342,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Lee
-givenName: Karl
-cn: Karl Lee
-uid: klee342
-title: student
-employeeNumber: 80000343
-mail: klee342@example.edu
-businessCategory:Accounts Payable
-userPassword: password
-eduPersonAffiliation: student
-
 dn: uid=mnielson343,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
 objectClass: person
@@ -6029,23 +5729,6 @@ mail: mnielson343@example.edu
 businessCategory:Engineering
 userPassword: password
 eduPersonAffiliation: staff
-
-dn: uid=elopez344,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Lopez
-givenName: Erik
-cn: Erik Lopez
-uid: elopez344
-title: student
-employeeNumber: 80000345
-mail: elopez344@example.edu
-businessCategory:Computer Science
-userPassword: password
-eduPersonAffiliation: student
 
 dn: uid=mpeterson345,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
@@ -6203,24 +5886,6 @@ businessCategory:Engineering
 userPassword: password
 eduPersonAffiliation: alum
 
-dn: uid=gdavis354,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Davis
-givenName: Greg
-cn: Greg Davis
-uid: gdavis354
-title: student
-employeeNumber: 80000355
-mail: gdavis354@example.edu
-businessCategory:Financial Aid
-userPassword: password
-eduPersonAffiliation: community
-eduPersonAffiliation: student
-
 dn: uid=hpeterson355,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
 objectClass: person
@@ -6237,24 +5902,6 @@ mail: hpeterson355@example.edu
 businessCategory:Law
 userPassword: password
 eduPersonAffiliation: community
-eduPersonAffiliation: student
-
-dn: uid=glopez356,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Lopez
-givenName: Greg
-cn: Greg Lopez
-uid: glopez356
-title: staff
-employeeNumber: 80000357
-mail: glopez356@example.edu
-businessCategory:Accounting
-userPassword: password
-eduPersonAffiliation: staff
 eduPersonAffiliation: student
 
 dn: uid=clee357,ou=people,dc=internet2,dc=edu
@@ -6325,24 +5972,6 @@ businessCategory:Language Arts
 userPassword: password
 eduPersonAffiliation: staff
 
-dn: uid=jclark361,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Clark
-givenName: Jeremy
-cn: Jeremy Clark
-uid: jclark361
-title: faculty
-employeeNumber: 80000362
-mail: jclark361@example.edu
-businessCategory:Business
-userPassword: password
-eduPersonAffiliation: faculty
-eduPersonAffiliation: student
-
 dn: uid=aprice362,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
 objectClass: person
@@ -6378,24 +6007,6 @@ businessCategory:Language Arts
 userPassword: password
 eduPersonAffiliation: community
 eduPersonAffiliation: faculty
-
-dn: uid=svales364,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Vales
-givenName: Steve
-cn: Steve Vales
-uid: svales364
-title: student
-employeeNumber: 80000365
-mail: svales364@example.edu
-businessCategory:Law
-userPassword: password
-eduPersonAffiliation: student
-eduPersonAffiliation: community
 
 dn: uid=sthompson365,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
@@ -6538,24 +6149,6 @@ userPassword: password
 eduPersonAffiliation: staff
 eduPersonAffiliation: community
 
-dn: uid=aclark373,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Clark
-givenName: Adian
-cn: Adian Clark
-uid: aclark373
-title: student
-employeeNumber: 80000374
-mail: aclark373@example.edu
-businessCategory:Business
-userPassword: password
-eduPersonAffiliation: student
-eduPersonAffiliation: community
-
 dn: uid=pmartinez374,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
 objectClass: person
@@ -6590,24 +6183,6 @@ mail: plopez375@example.edu
 businessCategory:Financial Aid
 userPassword: password
 eduPersonAffiliation: alum
-
-dn: uid=mgrady376,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Grady
-givenName: Michael
-cn: Michael Grady
-uid: mgrady376
-title: student
-employeeNumber: 80000377
-mail: mgrady376@example.edu
-businessCategory:Language Arts
-userPassword: password
-eduPersonAffiliation: alum
-eduPersonAffiliation: student
 
 dn: uid=mhenderson377,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
@@ -6695,24 +6270,6 @@ mail: gbutler381@example.edu
 businessCategory:Advising
 userPassword: password
 eduPersonAffiliation: community
-
-dn: uid=lscott382,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Scott
-givenName: Lori
-cn: Lori Scott
-uid: lscott382
-title: staff
-employeeNumber: 80000383
-mail: lscott382@example.edu
-businessCategory:Business
-userPassword: password
-eduPersonAffiliation: staff
-eduPersonAffiliation: student
 
 dn: uid=clopez383,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
@@ -6819,24 +6376,6 @@ businessCategory:Business
 userPassword: password
 eduPersonAffiliation: staff
 
-dn: uid=mvales389,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Vales
-givenName: Mary
-cn: Mary Vales
-uid: mvales389
-title: faculty
-employeeNumber: 80000390
-mail: mvales389@example.edu
-businessCategory:Physical Education
-userPassword: password
-eduPersonAffiliation: faculty
-eduPersonAffiliation: student
-
 dn: uid=mlewis390,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
 objectClass: person
@@ -6854,24 +6393,6 @@ businessCategory:Law
 userPassword: password
 eduPersonAffiliation: staff
 
-dn: uid=mroberts391,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Roberts
-givenName: Marie
-cn: Marie Roberts
-uid: mroberts391
-title: staff
-employeeNumber: 80000392
-mail: mroberts391@example.edu
-businessCategory:Financial Aid
-userPassword: password
-eduPersonAffiliation: staff
-eduPersonAffiliation: student
-
 dn: uid=bthompson392,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
 objectClass: person
@@ -6888,24 +6409,6 @@ mail: bthompson392@example.edu
 businessCategory:Information Technology
 userPassword: password
 eduPersonAffiliation: staff
-
-dn: uid=jdavis393,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Davis
-givenName: John
-cn: John Davis
-uid: jdavis393
-title: student
-employeeNumber: 80000394
-mail: jdavis393@example.edu
-businessCategory:Business
-userPassword: password
-eduPersonAffiliation: alum
-eduPersonAffiliation: student
 
 dn: uid=sthompson394,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
@@ -6975,24 +6478,6 @@ businessCategory:Accounting
 userPassword: password
 eduPersonAffiliation: alum
 
-dn: uid=llopez398,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Lopez
-givenName: Lisa
-cn: Lisa Lopez
-uid: llopez398
-title: staff
-employeeNumber: 80000399
-mail: llopez398@example.edu
-businessCategory:Advising
-userPassword: password
-eduPersonAffiliation: student
-eduPersonAffiliation: staff
-
 dn: uid=mlewis399,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
 objectClass: person
@@ -7009,23 +6494,6 @@ mail: mlewis399@example.edu
 businessCategory:Advising
 userPassword: password
 eduPersonAffiliation: faculty
-eduPersonAffiliation: student
-
-dn: uid=ewilliams400,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Williams
-givenName: Eric
-cn: Eric Williams
-uid: ewilliams400
-title: student
-employeeNumber: 80000401
-mail: ewilliams400@example.edu
-businessCategory:Physical Education
-userPassword: password
 eduPersonAffiliation: student
 
 dn: uid=evales401,ou=people,dc=internet2,dc=edu
@@ -7080,24 +6548,6 @@ userPassword: password
 eduPersonAffiliation: alum
 eduPersonAffiliation: community
 
-dn: uid=dwalters404,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Walters
-givenName: David
-cn: David Walters
-uid: dwalters404
-title: student
-employeeNumber: 80000405
-mail: dwalters404@example.edu
-businessCategory:Accounting
-userPassword: password
-eduPersonAffiliation: community
-eduPersonAffiliation: student
-
 dn: uid=jwilliams405,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
 objectClass: person
@@ -7132,24 +6582,6 @@ businessCategory:Accounting
 userPassword: password
 eduPersonAffiliation: faculty
 eduPersonAffiliation: staff
-
-dn: uid=ldoe407,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Doe
-givenName: Lori
-cn: Lori Doe
-uid: ldoe407
-title: student
-employeeNumber: 80000408
-mail: ldoe407@example.edu
-businessCategory:Financial Aid
-userPassword: password
-eduPersonAffiliation: student
-eduPersonAffiliation: community
 
 dn: uid=lbrown408,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
@@ -7379,24 +6811,6 @@ userPassword: password
 eduPersonAffiliation: staff
 eduPersonAffiliation: alum
 
-dn: uid=mhenderson421,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Henderson
-givenName: Megan
-cn: Megan Henderson
-uid: mhenderson421
-title: student
-employeeNumber: 80000422
-mail: mhenderson421@example.edu
-businessCategory:Engineering
-userPassword: password
-eduPersonAffiliation: alum
-eduPersonAffiliation: student
-
 dn: uid=jlewis422,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
 objectClass: person
@@ -7415,23 +6829,6 @@ userPassword: password
 eduPersonAffiliation: faculty
 eduPersonAffiliation: alum
 
-dn: uid=mgonazles423,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Gonazles
-givenName: Michael
-cn: Michael Gonazles
-uid: mgonazles423
-title: student
-employeeNumber: 80000424
-mail: mgonazles423@example.edu
-businessCategory:Accounting
-userPassword: password
-eduPersonAffiliation: student
-
 dn: uid=sroberts424,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
 objectClass: person
@@ -7449,24 +6846,6 @@ businessCategory:Language Arts
 userPassword: password
 eduPersonAffiliation: faculty
 eduPersonAffiliation: community
-
-dn: uid=bhenderson425,ou=people,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-surname: Henderson
-givenName: Blake
-cn: Blake Henderson
-uid: bhenderson425
-title: student
-employeeNumber: 80000426
-mail: bhenderson425@example.edu
-businessCategory:Financial Aid
-userPassword: password
-eduPersonAffiliation: alum
-eduPersonAffiliation: student
 
 dn: uid=dwalters426,ou=people,dc=internet2,dc=edu
 objectClass: organizationalPerson
@@ -17613,7 +16992,6 @@ member: uid=wdavis206,ou=people,dc=internet2,dc=edu
 member: uid=cgasper209,ou=people,dc=internet2,dc=edu
 member: uid=agasper211,ou=people,dc=internet2,dc=edu
 member: uid=lvales213,ou=people,dc=internet2,dc=edu
-member: uid=nroberts214,ou=people,dc=internet2,dc=edu
 member: uid=jlangenberg215,ou=people,dc=internet2,dc=edu
 member: uid=clangenberg219,ou=people,dc=internet2,dc=edu
 member: uid=ksmith221,ou=people,dc=internet2,dc=edu
@@ -17623,7 +17001,6 @@ member: uid=kgasper224,ou=people,dc=internet2,dc=edu
 member: uid=mclark227,ou=people,dc=internet2,dc=edu
 member: uid=lbrown229,ou=people,dc=internet2,dc=edu
 member: uid=rwilliams230,ou=people,dc=internet2,dc=edu
-member: uid=ddavis232,ou=people,dc=internet2,dc=edu
 member: uid=lwalters236,ou=people,dc=internet2,dc=edu
 member: uid=ewhite238,ou=people,dc=internet2,dc=edu
 member: uid=tnielson240,ou=people,dc=internet2,dc=edu
@@ -17675,7 +17052,6 @@ member: uid=jlangenberg330,ou=people,dc=internet2,dc=edu
 member: uid=dgrady331,ou=people,dc=internet2,dc=edu
 member: uid=lgonazles333,ou=people,dc=internet2,dc=edu
 member: uid=alopez337,ou=people,dc=internet2,dc=edu
-member: uid=jsmith339,ou=people,dc=internet2,dc=edu
 member: uid=mvales341,ou=people,dc=internet2,dc=edu
 member: uid=mnielson343,ou=people,dc=internet2,dc=edu
 member: uid=mpeterson345,ou=people,dc=internet2,dc=edu
@@ -17684,11 +17060,9 @@ member: uid=edoe348,ou=people,dc=internet2,dc=edu
 member: uid=mgrady349,ou=people,dc=internet2,dc=edu
 member: uid=gscott350,ou=people,dc=internet2,dc=edu
 member: uid=hpeterson355,ou=people,dc=internet2,dc=edu
-member: uid=glopez356,ou=people,dc=internet2,dc=edu
 member: uid=iwilliams358,ou=people,dc=internet2,dc=edu
 member: uid=gnielson359,ou=people,dc=internet2,dc=edu
 member: uid=sdoe360,ou=people,dc=internet2,dc=edu
-member: uid=jclark361,ou=people,dc=internet2,dc=edu
 member: uid=aprice362,ou=people,dc=internet2,dc=edu
 member: uid=mwalters363,ou=people,dc=internet2,dc=edu
 member: uid=sthompson365,ou=people,dc=internet2,dc=edu
@@ -17698,23 +17072,16 @@ member: uid=rbutler368,ou=people,dc=internet2,dc=edu
 member: uid=rnielson369,ou=people,dc=internet2,dc=edu
 member: uid=kvales371,ou=people,dc=internet2,dc=edu
 member: uid=sdavis372,ou=people,dc=internet2,dc=edu
-member: uid=mgrady376,ou=people,dc=internet2,dc=edu
 member: uid=mhenderson377,ou=people,dc=internet2,dc=edu
 member: uid=mbutler380,ou=people,dc=internet2,dc=edu
-member: uid=lscott382,ou=people,dc=internet2,dc=edu
 member: uid=edoe384,ou=people,dc=internet2,dc=edu
 member: uid=cprice385,ou=people,dc=internet2,dc=edu
 member: uid=pgonazles386,ou=people,dc=internet2,dc=edu
 member: uid=wlee388,ou=people,dc=internet2,dc=edu
-member: uid=mvales389,ou=people,dc=internet2,dc=edu
 member: uid=mlewis390,ou=people,dc=internet2,dc=edu
-member: uid=mroberts391,ou=people,dc=internet2,dc=edu
 member: uid=cclark395,ou=people,dc=internet2,dc=edu
 member: uid=pmorrison396,ou=people,dc=internet2,dc=edu
-member: uid=llopez398,ou=people,dc=internet2,dc=edu
 member: uid=mlewis399,ou=people,dc=internet2,dc=edu
-member: uid=ewilliams400,ou=people,dc=internet2,dc=edu
-member: uid=dwalters404,ou=people,dc=internet2,dc=edu
 member: uid=amorrison406,ou=people,dc=internet2,dc=edu
 member: uid=lbrown408,ou=people,dc=internet2,dc=edu
 member: uid=ajohnson409,ou=people,dc=internet2,dc=edu
@@ -18125,17 +17492,13 @@ member: uid=bbutler317,ou=people,dc=internet2,dc=edu
 member: uid=mwilliams323,ou=people,dc=internet2,dc=edu
 member: uid=jgrady326,ou=people,dc=internet2,dc=edu
 member: uid=ewalters329,ou=people,dc=internet2,dc=edu
-member: uid=aroberts334,ou=people,dc=internet2,dc=edu
 member: uid=mgrady336,ou=people,dc=internet2,dc=edu
-member: uid=gdavis354,ou=people,dc=internet2,dc=edu
 member: uid=hpeterson355,ou=people,dc=internet2,dc=edu
 member: uid=clee357,ou=people,dc=internet2,dc=edu
 member: uid=mwalters363,ou=people,dc=internet2,dc=edu
-member: uid=svales364,ou=people,dc=internet2,dc=edu
 member: uid=sthompson365,ou=people,dc=internet2,dc=edu
 member: uid=iwhite370,ou=people,dc=internet2,dc=edu
 member: uid=sdavis372,ou=people,dc=internet2,dc=edu
-member: uid=aclark373,ou=people,dc=internet2,dc=edu
 member: uid=pmartinez374,ou=people,dc=internet2,dc=edu
 member: uid=anielson378,ou=people,dc=internet2,dc=edu
 member: uid=adavis379,ou=people,dc=internet2,dc=edu
@@ -18144,8 +17507,6 @@ member: uid=clopez383,ou=people,dc=internet2,dc=edu
 member: uid=apeterson387,ou=people,dc=internet2,dc=edu
 member: uid=dbrown402,ou=people,dc=internet2,dc=edu
 member: uid=snielson403,ou=people,dc=internet2,dc=edu
-member: uid=dwalters404,ou=people,dc=internet2,dc=edu
-member: uid=ldoe407,ou=people,dc=internet2,dc=edu
 member: uid=mclark413,ou=people,dc=internet2,dc=edu
 member: uid=elopez415,ou=people,dc=internet2,dc=edu
 member: uid=csmith416,ou=people,dc=internet2,dc=edu
