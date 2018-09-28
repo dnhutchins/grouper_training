@@ -3,8 +3,6 @@ gs = GrouperSession.startRootSession();
 addStem("ref", "iam", "iam");
 addGroup("ref:iam", "global_deny", "global_deny");
 
-addGroup("app:vpn", "vpn_allow", "vpn_allow");
-addGroup("app:vpn", "vpn_deny", "vpn_deny");
 addMember("app:vpn:vpn_deny", "ref:iam:global_deny");
 
 group=addGroup("app:vpn:ref", "vpn_ajohnson409", "vpn_ajohnson409");
@@ -20,14 +18,6 @@ group=addGroup("app:vpn:ref", "vpn_consultants", "vpn_consultants");
 group.setDescription("Consultants, must be approved by VP and have expiration date set");
 group.store();
 
-//Refactoring group membership
-delGroup("app:vpn:vpn_authorized");
-addGroup("app:vpn", "vpn_authorized", "vpn_authorized");
-addComposite("app:vpn:vpn_authorized", CompositeType.COMPLEMENT, "app:vpn:vpn_allow", "app:vpn:vpn_deny");
-
-//Assign the PSPNG attribute for the standard groups (needs to match 401.1.4's initial settings)
-group = GroupFinder.findByName(gs, "app:vpn:vpn_authorized");
-
 # Auto create the PSPNG attributes
 # edu.internet2.middleware.grouper.pspng.FullSyncProvisionerFactory.getFullSyncer("pspng_groupOfNames");
 
@@ -39,10 +29,6 @@ attributeAssignSave.addValue("pspng_groupOfNames");
 attributeAssignSave.save();
 
 
-addMember("app:vpn:vpn_allow", "ref:faculty");
-addMember("app:vpn:vpn_allow", "ref:staff");
-addMember("app:vpn:vpn_allow", "ref:student");
-addMember("app:vpn:vpn_allow", "app:vpn:ref:vpn_adhoc");
 addMember("app:vpn:ref:vpn_adhoc", "app:vpn:ref:vpn_ajohnson409");
 addMember("app:vpn:ref:vpn_adhoc", "app:vpn:ref:vpn_consultants");
 
@@ -72,7 +58,7 @@ attributeAssignSave.addAttributeAssignOnThisAssignment(attributeAssignOnAssignSa
 attributeAssign = attributeAssignSave.save();
 
 
-# Groovy Script - Auto set expiration date on membership:
+// Groovy Script - Auto set expiration date on membership:
 numDays = 32;
 actAs = SubjectFinder.findRootSubject();
 vpn_adhoc = getGroups("app:vpn:ref:vpn_adhoc")[0];
