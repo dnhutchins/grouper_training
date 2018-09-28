@@ -1,7 +1,7 @@
 gs = GrouperSession.startRootSession();
 
 addStem("ref", "iam", "iam");
-addGroup("ref:iam", "gobal_deny", "gobal_deny");
+addGroup("ref:iam", "global_deny", "global_deny");
 
 addGroup("app:vpn", "vpn_allow", "vpn_allow");
 addGroup("app:vpn", "vpn_deny", "vpn_deny");
