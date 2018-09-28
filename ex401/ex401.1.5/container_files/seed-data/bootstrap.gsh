@@ -5,7 +5,7 @@ addGroup("ref:iam", "global_deny", "global_deny");
 
 addGroup("app:vpn", "vpn_allow", "vpn_allow");
 addGroup("app:vpn", "vpn_deny", "vpn_deny");
-addMember("app:vpn:vpn_deny", "ref:iam:gobal_deny");
+addMember("app:vpn:vpn_deny", "ref:iam:global_deny");
 
 group=addGroup("app:vpn:ref", "vpn_ajohnson409", "vpn_ajohnson409");
 group.setDescription("special project managed by ajohnson409");
