@@ -90,6 +90,7 @@
                     givenName: givenName,
                     idNumber: idNumber,
                     terms: [],
+                    nonSis: false
                 };
 
                 people.push(person);
@@ -137,7 +138,7 @@
 
             makeOtherStudents(people)
             
-            //Not In SIS
+            //Not In SIS        
             makeExchangeStudents(people)                
 
             //Not In SIS
@@ -163,9 +164,11 @@
             var sql = "";
             sql += sqlHeader();
             for (k = 0; k < people.length; k++) {
-                sql += formatSqlSubjects(people[k]);
-                sql += formatSqlCourses(people[k]);
-                sql += formatSqlStudentTerms(people[k]);
+                if(!people[k].nonSis) {
+                    sql += formatSqlSubjects(people[k]);
+                    sql += formatSqlCourses(people[k]);
+                    sql += formatSqlStudentTerms(people[k]);
+                }
             }
             document.getElementById('sql').value = sql;
         }
@@ -410,8 +413,7 @@
             for (i = 200; i < people.length && sampleCount >  0; i++) {
                 if (people[i].affiliations.indexOf('student') >= 0) {                    
                     gshOutput = gshOutput + 'addMember("basis:student:exchange_students","' + people[i].uid + '");\n';
-                    //Remove from SIS
-                    people.splice(i, 1)
+                    people[i].nonSis = true
                     sampleCount--;
                 }
             }            
@@ -419,18 +421,20 @@
         }
 
         function makeTransferStudents(people) {            
+            var csvOutput = "";
             var gshOutput = 'addGroup("basis:student", "transfer_student", "transfer_student");\n';
             var sampleCount = 25;
 
             for (i = 300; i < people.length && sampleCount >  0; i++) {
                 if (people[i].affiliations.indexOf('student') >= 0) {                    
                     gshOutput = gshOutput + 'addMember("basis:student:transfer_student","' + people[i].uid + '");\n';
-                    //Remove from SIS
-                    people.splice(i, 1)
+                    csvOutput = csvOutput + people[i].uid + "\n";
+                    people[i].nonSis = true
                     sampleCount--;
                 }
             }            
             document.getElementById('transferStudents').value = gshOutput;
+            document.getElementById('transferStudentsCsv').value = csvOutput;
         }
 
         function makeExpelledStudents(people) {            
@@ -517,6 +521,10 @@
 
     <p>
         Transfer Students: <br /><textarea cols="100" rows="15" id="transferStudents"></textarea> <br />
+    </p>
+
+    <p>
+        Transfer Students: <br /><textarea cols="100" rows="15" id="transferStudentsCsv"></textarea> <br />
     </p>
 
     <p>
