@@ -9,7 +9,7 @@ delGroup("app:mfa:etc:mfa_opt_in_access");
 delGroup("app:mfa:etc:mfa_opt_in_access_allow");
 delGroup("app:mfa:etc:mfa_opt_in_access_deny");
 delGroup("app:mfa:ref:mfa_opt_in");
-delGroup("app:mfa:ref:bypass-not-opt-in");
+delGroup("app:mfa:ref:mfa_bypass_not_opt_in");
 delGroup("app:mfa:ref:BannerUsersMinusFaculty");
 delGroup("app:mfa:ref:NonFacultyBannerINB");
 delGroup("app:mfa:ref:athletics_dept");
