@@ -74,18 +74,14 @@ makeStemInheritable(this, stem.name, view_group.name, 'read');
 admin_group.revokePriv(mgr_group.toMember().getSubject(), AccessPrivilege.UPDATE);
 
 
-addGroup("ref", "community", "community");
-
 
 #addStem("app", "lms", "lms");
 group = addGroup("app:lms", "lms_authorized", "lms_authorized");
-addGroup("app:lms", "lms_allow", "lms_allow");
-addGroup("app:lms", "lms_deny", "lms_deny");
-addComposite("app:lms:lms_authorized", CompositeType.COMPLEMENT, "app:lms:lms_allow", "app:lms:lms_deny");
+addGroup("app:lms", "lms_authorized_allow", "lms_authorized_allow");
+addGroup("app:lms", "lms_authorized_deny", "lms_authorized_deny");
+addComposite("app:lms:lms_authorized", CompositeType.COMPLEMENT, "app:lms:lms_authorized_allow", "app:lms:lms_authorized_deny");
 
-addMember("app:lms:lms_allow", "ref:community");
-
-
+addMember("app:lms:lms_authorized_allow", "ref:legacy:community_members");
 
 pspngAttribute = AttributeDefNameFinder.findByName("etc:pspng:provision_to", true);
 AttributeAssignSave attributeAssignSave = new AttributeAssignSave(gs).assignPrintChangesToSystemOut(true);
@@ -93,10 +89,6 @@ attributeAssignSave.assignAttributeDefName(pspngAttribute);
 attributeAssignSave.assignOwnerGroup(group);
 attributeAssignSave.addValue("pspng_groupOfNames");
 attributeAssignSave.save();
-
-
-addGroup("app:lms", "lms_missing_community_members", "lms_missing_community_members");
-addComposite("app:lms:lms_missing_community_members", CompositeType.COMPLEMENT, "ref:legacy:community_members", "app:lms:lms_authorized");
 
 
 addStem("app:lms", "ref", "ref");
@@ -130,7 +122,7 @@ addMember("app:lms:ref:visiting_scholars","clopez383");
 addMember("app:lms:ref:visiting_scholars","apeterson387");
 
 
-addMember("app:lms:lms_allow", "app:lms:ref:visiting_scholars");
+addMember("app:lms:lms_authorized_allow", "app:lms:ref:visiting_scholars");
 
 pspngAttribute = AttributeDefNameFinder.findByName("etc:pspng:provision_to", true);
 AttributeAssignSave attributeAssignSave = new AttributeAssignSave(gs).assignPrintChangesToSystemOut(true);

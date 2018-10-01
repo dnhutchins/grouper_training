@@ -1,7 +1,7 @@
 docker build --pull --tag=tier/grouper-training-env:base base/ \
 && docker build --tag=tier/grouper-training-env:full_demo full-demo \
 && docker build --tag=tier/grouper-training-env:ex201.1.1 ex201/ex201.1.1 \
-&& docker build --tag=tier/grouper-training-env:ex201.1.end ex201/ex201.1.end
+&& docker build --tag=tier/grouper-training-env:ex201.1.end ex201/ex201.1.end \
 && docker build --tag=tier/grouper-training-env:ex401.1.1 ex401/ex401.1.1 \
 && docker build --tag=tier/grouper-training-env:ex401.1.2 ex401/ex401.1.2 \
 && docker build --tag=tier/grouper-training-env:ex401.1.3 ex401/ex401.1.3 \
