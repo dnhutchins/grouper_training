@@ -12,7 +12,7 @@ ENV ENV=training \
     USERTOKEN=3.2.0_base
 
 RUN yum install -y epel-release \
-    && yum install -y mariadb mariadb-server openldap openldap-clients openldap-servers phpMyAdmin phpldapadmin \
+    && yum install -y emacs mariadb mariadb-server nano openldap openldap-clients openldap-servers phpMyAdmin phpldapadmin \
     && yum clean all
 
 COPY container_files/seed-data/ /seed-data/

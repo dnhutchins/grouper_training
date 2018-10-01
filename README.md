@@ -79,7 +79,7 @@ Now browse to http://localhost:15672/ and login with `guest`/`guest`, and create
 Now start the ex401 Grouper with this slightly modified command:
 
 ```bash
-docker run -d -p 80:80 -p 389:389 -p 8443:443 -p 3306:3306 \
+docker run -d -p 389:389 -p 8443:443 -p 3306:3306 \
   --link rabbitmq:rabbitmq --name gte tier/grouper-training-env:exXXX
 
 ```
