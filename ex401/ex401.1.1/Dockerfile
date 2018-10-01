@@ -10,6 +10,7 @@ ENV USERTOKEN=ex401.1.1
 
 COPY container_files/seed-data/ /seed-data/
 COPY container_files/grouper-loader.properties /opt/grouper/conf/
+COPY container_files/grouper.client.properties /opt/grouper/conf/
 COPY container_files/subject.properties /opt/grouper/conf/
 
 RUN (/usr/sbin/slapd -h "ldap:/// ldaps:/// ldapi:///" -u ldap &) \
