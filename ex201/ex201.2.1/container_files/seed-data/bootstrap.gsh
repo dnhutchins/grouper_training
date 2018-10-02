@@ -1,5 +1,5 @@
 
-gs = GrouperSession.startRootSession()
+GrouperSession.startRootSession()
 
 addStem("app", "vpn", "vpn")
 addGroup("app:vpn", "vpn_authorized", "vpn_authorized")
