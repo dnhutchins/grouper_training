@@ -27,4 +27,4 @@ addStem("ref:app", "vpn", "vpn")
 addStem("ref:app:vpn", "etc", "etc")
 addGroup("ref:app:vpn:etc", "vpn_admins", "vpn_admins")
 
-grantPriv("ref:app:vpn", "ref:app:vpn:etc:vpn_admins", AccessPrivilege.ADMIN)
+grantPriv("ref:app:vpn", "ref:app:vpn:etc:vpn_admins", NamingPrivilege.STEM)
