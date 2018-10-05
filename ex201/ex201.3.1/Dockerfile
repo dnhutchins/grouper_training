@@ -1,4 +1,4 @@
-FROM tier/grouper-training-env:ex201.1.end
+FROM tier/grouper-training-env:ex201.2.end
 
 LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>" \
       Vendor="TIER" \
@@ -6,7 +6,7 @@ LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>" \
       ImageName=$imagename \
       ImageOS=centos7
 
-ENV USERTOKEN=ex201.2.1
+ENV USERTOKEN=ex201.3.1
 
 COPY container_files/seed-data/ /seed-data/
 

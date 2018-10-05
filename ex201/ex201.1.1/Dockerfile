@@ -12,7 +12,9 @@ COPY container_files/seed-data/ /seed-data/
 COPY container_files/grouper-loader.properties /opt/grouper/conf/
 COPY container_files/subject.properties /opt/grouper/conf/
 
-RUN (/usr/sbin/slapd -h "ldap:/// ldaps:/// ldapi:///" -u ldap &) \
+RUN . /usr/local/bin/library.sh \
+    && prepConf; \
+    (/usr/sbin/slapd -h "ldap:/// ldaps:/// ldapi:///" -u ldap &) \
     && while ! curl -s ldap://localhost:389 > /dev/null; do echo waiting for ldap to start; sleep 1; done; \
     (mysqld_safe & ) \
     && while ! curl -s localhost:3306 > /dev/null; do echo waiting for mysqld to start; sleep 3; done; \
