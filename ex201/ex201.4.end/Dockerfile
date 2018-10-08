@@ -9,6 +9,7 @@ LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>" \
 ENV USERTOKEN=ex201.4.end
 
 COPY container_files/seed-data/ /seed-data/
+COPY container_files/attribute-filter.xml /opt/shibboleth-idp/conf/
 
 RUN (/usr/sbin/slapd -h "ldap:/// ldaps:/// ldapi:///" -u ldap &) \
     && while ! curl -s ldap://localhost:389 > /dev/null; do echo waiting for ldap to start; sleep 1; done; \

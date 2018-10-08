@@ -6,9 +6,9 @@ addStem("app:wiki", "service", "service");
 addStem("app:wiki:service", "policy", "policy");
 
 addGroup("app:wiki:service:policy", "wiki_authorized", "wiki_authorized");
-addGroup("app:wiki:service:policy", "wiki_authorized", "wiki_authorized");
+addGroup("app:wiki:service:policy", "wiki_authorized_allow", "wiki_authorized_allow");
 addGroup("app:wiki:service:policy", "wiki_authorized_deny",  "wiki_authorized_deny");
-addComposite("app:wiki:service:policy:wiki_authorized", CompositeType.COMPLEMENT, "app:wiki:service:policy:wiki_authorized", "app:wiki:service:policy:wiki_authorized_deny");
+addComposite("app:wiki:service:policy:wiki_authorized", CompositeType.COMPLEMENT, "app:wiki:service:policy:wiki_authorized_allow", "app:wiki:service:policy:wiki_authorized_deny");
 
 //ex201.4.2
 addStem("app:wiki", "security", "security");
@@ -17,6 +17,7 @@ grantPriv("app:wiki:service", "app:wiki:security:wiki_admin", NamingPrivilege.ST
 
 //ex201.4.3
 addMember("app:wiki:service:policy:wiki_authorized_allow", "ref:student:students");
+addGroup("ref:iam", "global_deny", "global_deny");
 addMember("app:wiki:service:policy:wiki_authorized_deny", "ref:iam:global_deny");
 
 //ex201.4.4
@@ -36,7 +37,7 @@ attributeAssignSave.save();
 
 
 //ex201.4.5
-(nothing)
+//(nothing)
 
 //ex201.4.6
-(nothing)
+//(nothing)

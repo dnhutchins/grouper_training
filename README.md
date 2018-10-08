@@ -49,7 +49,7 @@ Current tags:
 - ex401.4.1
 - ex401.4.end
 
-Browse to `https://localhost:8443/grouper` for Grouper. There is also an app that dumps the SP user attributes at `https://localhost/app`.
+Browse to `https://localhost:8443/grouper` for Grouper. There is also an app that dumps the SP user attributes at `https://localhost:8443/app`.
 
 # Users
 - `banderson`/`password`: Grouper Administrator
