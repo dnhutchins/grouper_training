@@ -5,6 +5,10 @@ pushd ex201
 ./manualBuild.sh
 popd
 
+pushd ex301
+./manualBuild.sh
+popd
+
 pushd ex401
 ./manualBuild.sh
 popd
