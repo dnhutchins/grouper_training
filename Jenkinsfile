@@ -16,7 +16,7 @@
 exceriseSets = [
 //    'ex101' : [3, 2],
     'ex201' : [1, 1, 1, 1, 1],
-//    'ex301' : [2, 2, 5, 6],
+//    'ex301' : [2, 2, 5, 6], manually built with a single image
     'ex401' : [6, 9, 7, 1]
 ]
 
@@ -77,7 +77,7 @@ pipeline {
                 }
             }
         }
-        stage('Build Others') {
+        stage('Build exceriseSets') {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com/',   "dockerhub-${maintainer}") {
@@ -91,6 +91,16 @@ pipeline {
                         } else {
                             echo 'skipping push, since the SCM branch is not master'
                         }
+                    }
+                }
+            }
+        }
+        stage('Build Oddballs') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com/',   "dockerhub-${maintainer}") {
+                        def baseImg = docker.build("${maintainer}/${imagename}:ex301.4.1", "--no-cache --pull ex301/ex301.4.1")
+                        baseImg.push("ex301.4.1")
                     }
                 }
             }
