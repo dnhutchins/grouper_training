@@ -9,7 +9,6 @@ LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>" \
 ENV USERTOKEN=ex401.1.4
 
 COPY container_files/seed-data/ /seed-data/
-COPY container_files/grouper-loader.properties /opt/grouper/conf/
 
 RUN . /usr/local/bin/library.sh \
     && prepConf; \
