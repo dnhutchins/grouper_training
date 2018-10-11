@@ -1,7 +1,15 @@
 docker build --pull --tag=tier/grouper-training-env:base base/ \
 && docker build --tag=tier/grouper-training-env:full_demo full-demo \
 
+pushd ex101
+./manualBuild.sh
+popd
+
 pushd ex201
+./manualBuild.sh
+popd
+
+pushd ex211
 ./manualBuild.sh
 popd
 
