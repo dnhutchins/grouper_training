@@ -33,12 +33,12 @@ pipeline {
                 script {
                     maintainer = maintain()
                     imagename = imagename()
-/*                    if(env.BRANCH_NAME == "master") {
+                    if(env.BRANCH_NAME == "master") {
                        tag = "latest"
                     } else {
                        tag = env.BRANCH_NAME
                     }
-*/
+
                     if(!imagename){
                         echo "You must define an imagename in common.bash"
                         currentBuild.result = 'FAILURE'
@@ -99,14 +99,14 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com/',   "dockerhub-${maintainer}") {
-                        def baseImg = docker.build("${maintainer}/${imagename}:ex101.1.1", "--no-cache --pull ex101/ex101.1.1")
-                        baseImg.push("ex101.1.1")
+                        def baseImg = docker.build("${maintainer}/${imagename}:101.1.1", "--no-cache --pull ex101/ex101.1.1")
+                        baseImg.push("ex101.1.1-${tag}")
 
-                        baseImg = docker.build("${maintainer}/${imagename}:ex211.1.1", "--no-cache --pull ex211/ex211.1.1")
-                        baseImg.push("ex211.1.1")
+                        baseImg = docker.build("${maintainer}/${imagename}:211.1.1", "--no-cache --pull ex211/ex211.1.1")
+                        baseImg.push("ex211.1.1-${tag}")
 
-                        baseImg = docker.build("${maintainer}/${imagename}:ex301.4.1", "--no-cache --pull ex301/ex301.4.1")
-                        baseImg.push("ex301.4.1")
+                        baseImg = docker.build("${maintainer}/${imagename}:301.4.1", "--no-cache --pull ex301/ex301.4.1")
+                        baseImg.push("ex301.4.1-${tag}")
                     }
                 }
             }
