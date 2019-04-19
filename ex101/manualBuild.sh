@@ -1,4 +1,4 @@
-docker build --tag=tier/grouper-training-env:ex101.1.1 ex101.1.1
+docker build --tag=tier/gte:101-$tag ex101-$tag
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   say exercises for 101 build complete
