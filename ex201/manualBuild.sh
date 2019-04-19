@@ -1,4 +1,4 @@
-docker build --tag=tier/grouper-training-env:ex201.1.1 ex201.1.1 \
+docker build --tag=tier/gte:ex201.1.1-$tag ex201.1.1-$tag \
 && docker build --tag=tier/grouper-training-env:ex201.1.end ex201.1.end \
 && docker build --tag=tier/grouper-training-env:ex201.2.1 ex201.2.1 \
 && docker build --tag=tier/grouper-training-env:ex201.2.end ex201.2.end \
