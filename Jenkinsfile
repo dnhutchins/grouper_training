@@ -145,10 +145,10 @@ def generateTagSet() {
     exceriseSets.each{ course, stepCountPerExercise -> 
         stepCountPerExercise.eachWithIndex {stepCount, exIndex ->
             for (int step = 0; step < stepCount; step++) {
-                tagSet.add("${course}.${exIndex+1}.${step+1}")
+                tagSet.add("${course}.${exIndex+1}.${step+1}-${tag}")
             }
     
-            tagSet.add("${course}.${exIndex+1}.end")
+            tagSet.add("${course}.${exIndex+1}.end-${tag}")
         }
     }
 
