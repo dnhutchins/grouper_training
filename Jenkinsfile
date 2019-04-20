@@ -17,7 +17,7 @@ exceriseSets = [
 //    'ex101' : [3, 2],
     '201' : [1, 1, 1, 1, 1],
 //    'ex301' : [2, 2, 5, 6], manually built with a single image
-    '401' : [6, 9, 7, 1]
+// just build 201 for now    '401' : [6, 9, 7, 1]
 ]
 
 pipeline {
@@ -98,13 +98,13 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com/',   "dockerhub-${maintainer}") {
-                        def baseImg = docker.build("${maintainer}/${imagename}:101.1.1-${tag}", "--no-cache --pull ex101/ex101.1.1")
+                        def baseImg = docker.build("${maintainer}/${imagename}:101.1.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex101/ex101.1.1")
                         baseImg.push("101.1.1-${tag}")
 
-                        baseImg = docker.build("${maintainer}/${imagename}:211.1.1-${tag}", "--no-cache --pull ex211/ex211.1.1")
+                        baseImg = docker.build("${maintainer}/${imagename}:211.1.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex211/ex211.1.1")
                         baseImg.push("211.1.1-${tag}")
 
-                        baseImg = docker.build("${maintainer}/${imagename}:301.4.1-${tag}", "--no-cache --pull ex301/ex301.4.1")
+                        baseImg = docker.build("${maintainer}/${imagename}:301.4.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex301/ex301.4.1")
                         baseImg.push("301.4.1-${tag}")
                     }
                 }
@@ -159,7 +159,7 @@ def build(tagSet) {
     def builds = [:]
 
     for (String tags : tagSet) {
-        def baseImg = docker.build("${maintainer}/${imagename}:${tags}-${tag}", "--no-cache ex${tags.tokenize('.')[0]}/ex${tags}")
+        def baseImg = docker.build("${maintainer}/${imagename}:${tags}-${tag}", "--no-cache --build-arg VERSION_TAG=${tag} ex${tags.tokenize('.')[0]}/ex${tags}")
         echo "built ${tags}-${tag}; adding to the push queue"
         builds.put("${tags}-${tag}", baseImg);
     }
