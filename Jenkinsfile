@@ -83,12 +83,12 @@ pipeline {
                         def tagSet = generateTagSet()
                         def builds = build(tagSet)
 
-                        if(env.BRANCH_NAME == "master") {
+                        if(env.BRANCH_NAME == "master" || env.BRANC_NAME == "201906") {
                             //builds.each{ k, v -> echo ("push ${k}") } //for local testing
                             builds.each{ k, v -> v.push(k) }
 
                         } else {
-                            echo 'skipping push, since the SCM branch is not master'
+                            echo 'skipping push, since the SCM branch is not master or 201906'
                         }
                     }
                 }
@@ -98,13 +98,13 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com/',   "dockerhub-${maintainer}") {
-                        def baseImg = docker.build("${maintainer}/${imagename}:101.1.1", "--no-cache --pull ex101/ex101.1.1")
+                        def baseImg = docker.build("${maintainer}/${imagename}:101.1.1-${tag}", "--no-cache --pull ex101/ex101.1.1")
                         baseImg.push("101.1.1-${tag}")
 
-                        baseImg = docker.build("${maintainer}/${imagename}:211.1.1", "--no-cache --pull ex211/ex211.1.1")
+                        baseImg = docker.build("${maintainer}/${imagename}:211.1.1-${tag}", "--no-cache --pull ex211/ex211.1.1")
                         baseImg.push("211.1.1-${tag}")
 
-                        baseImg = docker.build("${maintainer}/${imagename}:301.4.1", "--no-cache --pull ex301/ex301.4.1")
+                        baseImg = docker.build("${maintainer}/${imagename}:301.4.1-${tag}", "--no-cache --pull ex301/ex301.4.1")
                         baseImg.push("301.4.1-${tag}")
                     }
                 }
@@ -145,10 +145,10 @@ def generateTagSet() {
     exceriseSets.each{ course, stepCountPerExercise -> 
         stepCountPerExercise.eachWithIndex {stepCount, exIndex ->
             for (int step = 0; step < stepCount; step++) {
-                tagSet.add("${course}.${exIndex+1}.${step+1}-${tag}")
+                tagSet.add("${course}.${exIndex+1}.${step+1}")
             }
     
-            tagSet.add("${course}.${exIndex+1}.end-${tag}")
+            tagSet.add("${course}.${exIndex+1}.end")
         }
     }
 
@@ -158,10 +158,10 @@ def generateTagSet() {
 def build(tagSet) {
     def builds = [:]
 
-    for (String tag : tagSet) {
-        def baseImg = docker.build("${maintainer}/${imagename}:${tag}", "--no-cache ${tag.tokenize('.')[0]}/${tag}")
-        echo "built ${tag}; adding to the push queue"
-        builds.put(tag, baseImg);
+    for (String tags : tagSet) {
+        def baseImg = docker.build("${maintainer}/${imagename}:${tags}-${tag}", "--no-cache ex${tags.tokenize('.')[0]}/ex${tags}")
+        echo "built ${tags}-${tag}; adding to the push queue"
+        builds.put("${tags}-${tag}", baseImg);
     }
 
     builds
