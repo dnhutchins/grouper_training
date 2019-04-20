@@ -1,4 +1,5 @@
-FROM tier/grouper-training-env:ex201.4.end
+ARG VERSION_TAG
+FROM tier/gte:201.4.end-$VERSION_TAG
 
 LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>" \
       Vendor="TIER" \
