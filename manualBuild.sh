@@ -1,5 +1,5 @@
-docker build --pull --tag=tier/grouper-training-env:base base/ \
-&& docker build --tag=tier/grouper-training-env:full_demo full-demo \
+docker build --pull --tag=tier/gte:base-201906 base/ \
+&& docker build --tag=tier/gte:full_demo-201906 full-demo \
 
 pushd ex101
 ./manualBuild.sh
