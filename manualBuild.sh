@@ -1,9 +1,7 @@
 source ./buildVersion.sh
 echo "Building tier/gte version ${VERSION_TAG}"
-docker build --pull --tag=tier/gte:base-${VERSION_TAG} base/
-
-# \
-#&& docker build --tag=tier/gte:full_demo-${VERSION_TAG} full-demo \
+docker build --pull --tag=tier/gte:base-${VERSION_TAG} base/ \
+&& docker build --build-arg VERSION_TAG=${VERSION_TAG} --tag=tier/gte:full_demo-${VERSION_TAG} full-demo \
 
 pushd ex101
 ./manualBuild.sh
@@ -12,8 +10,6 @@ popd
 pushd ex201
 ./manualBuild.sh
 popd
-
-exit 1
 
 pushd ex211
 ./manualBuild.sh
