@@ -116,7 +116,7 @@ pipeline {
         stage('Notify') {
             steps{
                 echo "$maintainer"
-                slackSend color: 'good', message: "${maintainer}/${imagename} set pushed to DockerHub"
+                slackSend color: 'good', message: "${maintainer}/${imagename} version ${tag} pushed to DockerHub"
             }
         }
     }
@@ -126,7 +126,7 @@ pipeline {
         }
         failure {
             // slackSend color: 'good', message: "Build failed"
-            handleError("BUILD ERROR: There was a problem building ${maintainer}/${imagename}:${tag}.")
+            handleError("BUILD ERROR: There was a problem building ${maintainer}/${imagename} version ${tag}.")
         }
     }
 }
