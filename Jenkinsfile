@@ -17,7 +17,7 @@ exceriseSets = [
 //    'ex101' : [3, 2],
     '201' : [1, 1, 1, 1, 1],
 //    'ex301' : [2, 2, 5, 6], manually built with a single image
-// just build 201 for now    '401' : [6, 9, 7, 1]
+    '401' : [6, 9, 7, 1]
 ]
 
 pipeline {
@@ -106,6 +106,9 @@ pipeline {
 
                         baseImg = docker.build("${maintainer}/${imagename}:301.4.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex301/ex301.4.1")
                         baseImg.push("301.4.1-${tag}")
+						
+                        baseImg = docker.build("${maintainer}/${imagename}:full_demo-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} full-demo")
+                        baseImg.push("full_demo-${tag}")
                     }
                 }
             }
