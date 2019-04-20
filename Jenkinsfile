@@ -70,8 +70,8 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com/',   "dockerhub-${maintainer}") {
-                        def baseImg = docker.build("${maintainer}/${imagename}:base", "--no-cache --pull base")
-                        baseImg.push("base")
+                        def baseImg = docker.build("${maintainer}/${imagename}:base-${tag}", "--no-cache --pull base")
+                        baseImg.push("base-${tag}")
                     }
                 }
             }
