@@ -98,13 +98,13 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com/',   "dockerhub-${maintainer}") {
-                        def baseImg = docker.build("${maintainer}/${imagename}:101.1.1", "--no-cache --pull 101/ex101.1.1")
+                        def baseImg = docker.build("${maintainer}/${imagename}:101.1.1", "--no-cache --pull ex101/ex101.1.1")
                         baseImg.push("101.1.1-${tag}")
 
-                        baseImg = docker.build("${maintainer}/${imagename}:211.1.1", "--no-cache --pull 211/ex211.1.1")
+                        baseImg = docker.build("${maintainer}/${imagename}:211.1.1", "--no-cache --pull ex211/ex211.1.1")
                         baseImg.push("211.1.1-${tag}")
 
-                        baseImg = docker.build("${maintainer}/${imagename}:301.4.1", "--no-cache --pull 301/ex301.4.1")
+                        baseImg = docker.build("${maintainer}/${imagename}:301.4.1", "--no-cache --pull ex301/ex301.4.1")
                         baseImg.push("301.4.1-${tag}")
                     }
                 }
