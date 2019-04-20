@@ -1,4 +1,5 @@
-FROM tier/gte:base-201906
+ARG VERSION_TAG
+FROM tier/gte:base-$VERSION_TAG
 
 LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>" \
       Vendor="TIER" \
