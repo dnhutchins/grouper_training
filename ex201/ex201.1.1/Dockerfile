@@ -7,7 +7,7 @@ LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>" \
       ImageName=$imagename \
       ImageOS=centos7
 
-ENV USERTOKEN=ex201.1.1
+ENV USERTOKEN=gte-201.1.1
 
 COPY container_files/seed-data/ /seed-data/
 COPY container_files/grouper-loader.properties /opt/grouper/conf/

@@ -7,7 +7,7 @@ LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>" \
       ImageName=$imagename \
       ImageOS=centos7
 
-ENV USERTOKEN=ex401.2.4
+ENV USERTOKEN=gte-401.2.4
 
 COPY container_files/seed-data/ /seed-data/
 COPY container_files/idp/ /opt/shibboleth-idp/

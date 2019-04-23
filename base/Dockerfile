@@ -10,7 +10,7 @@ LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>" \
       ImageOS=centos7
 
 ENV ENV=training \
-    USERTOKEN=3.2.0_base
+    USERTOKEN=gte-base
 
 RUN yum install -y epel-release \
     && yum install -y emacs mariadb mariadb-server nano openldap openldap-clients openldap-servers phpMyAdmin phpldapadmin \
