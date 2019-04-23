@@ -1,4 +1,5 @@
-FROM unicon/shibboleth-idp:3.3.3 as idp 
+FROM tier/shib-idp:3.4.3_20190201 as idp
+#FROM tier/shib-idp:3.4.3_20190201 as idp
 
 # Grouper version for the entire GTE
 FROM tier/grouper:latest
