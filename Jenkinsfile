@@ -9,14 +9,14 @@
 
 
 /** Each class has a set of modules with a set of steps. 
- *  For examples, ex101.1.1, ex101.1.2, ex101.1.3, ex101.2.1, ex101.2.2, etc.
- *  Each step is an image.
- *  The exceriseSets has the class name and an array of the number of steps for module.     
+ *  For examples, 101.1.1, 101.1.2, 101.1.3, 101.2.1, 101.2.2, etc.
+ *  Each step is an associated docker image.
+ *  exceriseSets has the class name and an array of the number of steps for module.     
 **/
 exceriseSets = [
-//    'ex101' : [3, 2],
+//    '101' : [3, 2],
     '201' : [1, 1, 1, 1, 1],
-//    'ex301' : [2, 2, 5, 6], manually built with a single image
+//    '301' : [2, 2, 5, 6], manually built with a single image
     '401' : [6, 9, 7, 1]
 ]
 
@@ -83,32 +83,25 @@ pipeline {
                         def tagSet = generateTagSet()
                         def builds = build(tagSet)
 
-                        if(env.BRANCH_NAME == "master" || env.BRANCH_NAME == "201906") {
+                        if(env.BRANCH_NAME == "201906") {
                             //builds.each{ k, v -> echo ("push ${k}") } //for local testing
                             builds.each{ k, v -> v.push(k) }
+							
+	                        def build = docker.build("${maintainer}/${imagename}:101.1.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex101/ex101.1.1")
+	                        build.push("101.1.1-${tag}")
+
+	                        build = docker.build("${maintainer}/${imagename}:211.1.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex211/ex211.1.1")
+	                        build.push("211.1.1-${tag}")
+
+	                        build = docker.build("${maintainer}/${imagename}:301.4.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex301/ex301.4.1")
+	                        build.push("301.4.1-${tag}")
+						
+	                        build = docker.build("${maintainer}/${imagename}:full_demo-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} full-demo")
+	                        build.push("full_demo-${tag}")
 
                         } else {
-                            echo 'skipping push, since the SCM branch is not master or 201906'
+                            echo 'not building images, since the SCM branch is not 201906'
                         }
-                    }
-                }
-            }
-        }
-        stage('Build Oddballs') {
-            steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com/',   "dockerhub-${maintainer}") {
-                        def baseImg = docker.build("${maintainer}/${imagename}:101.1.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex101/ex101.1.1")
-                        baseImg.push("101.1.1-${tag}")
-
-                        baseImg = docker.build("${maintainer}/${imagename}:211.1.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex211/ex211.1.1")
-                        baseImg.push("211.1.1-${tag}")
-
-                        baseImg = docker.build("${maintainer}/${imagename}:301.4.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex301/ex301.4.1")
-                        baseImg.push("301.4.1-${tag}")
-						
-                        baseImg = docker.build("${maintainer}/${imagename}:full_demo-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} full-demo")
-                        baseImg.push("full_demo-${tag}")
                     }
                 }
             }
