@@ -1,97 +1,49 @@
-# grouper_training
-A set of Grouper images that are used during I2/TIER training.
-
-# Images
-
-## Full Demo
-
-```
-docker run -d -p 389:389 -p 8443:443 -p 3306:3306 \
-  --name grouper-demo tier/gte:full_demo-201906
-```
-
-Browse to `https://localhost:8443/grouper`
-
-## Exercises
-
+# Grouper Training Environment (gte)
+The gte is a set of docker images that contain all the software components, configuration, and setup neccesary to complete the InCommon Grouper Training course. Each docker image tag coorelates to a particular module, exercise, step, and the overall gte version. For example, the gte image tag for 101 Gouper Basics is 101.1.1-201906. The docker command to run the image for the 101 course is:
 ```
 docker run -d -p 80:80 -p 389:389 -p 8443:443 -p 3306:3306 \
-  --name gte tier/gte:XXX.X.{X|end}-201906
+  --name gte-101.1.1 tier/gte:101.1.1-201906
 ```
-
-Current tags:
-- 101.1.1-201906
-- 201.1.1-201906
-- 201.1.end-201906
-- 201.2.1-201906
-- 201.2.end-201906
-- 201.3.1-201906
-- 201.3.end-201906
-- 201.4.1-201906
-- 201.4.end-201906
-- 201.5.1-201906
-- 201.5.end-201906
-- 211.1.1-201906
-- 301.4.1-201906
-- 401.1.1-201906
-- 401.1.2-201906
-- 401.1.3-201906
-- 401.1.4-201906
-- 401.1.5-201906
-- 401.1.6-201906
-- 401.1.end-201906
-- 401.2.1-201906
-- 401.2.2-201906
-- 401.2.3-201906
-- 401.2.4-201906
-- 401.2.5-201906
-- 401.2.6-201906
-- 401.2.7-201906
-- 401.2.8-201906
-- 401.2.9-201906
-- 401.2.end-201906
-- 401.3.1-201906
-- 401.3.2-201906
-- 401.3.3-201906
-- 401.3.4-201906
-- 401.3.5-201906
-- 401.3.6-201906
-- 401.3.7-201906
-- 401.3.end-201906
-- 401.4.1-201906
-- 401.4.end-201906
-
-Browse to `https://localhost:8443/grouper` for Grouper. There is also an app that dumps the SP user attributes at `https://localhost:8443/app`.
-
-# Users
+This will start Grouper, a Shibboleth IdP, OpenLDAP, mySQL, and other components. It will take a little while for the container to get into a "Running" status. You can check that with this command:
+```
+docker ps --format "{{.Names}} {{.Status}}"
+```
+Once the container is in a `Running` state, browse to `https://localhost:8443/grouper` to access the Grouper UI and log in with one of the following:
 - `banderson`/`password`: Grouper Administrator
 - `jsmith`/`password`: standard user
 - additional users can be found in <https://github.internet2.edu/docker/grouper_training/blob/master/base/container_files/seed-data/users.ldif#L56>
 
-# Help apps
+The container has a few other applications running. phpMyAdmin provides an admin interface to the Grouper mySQL database. phpLDAPadmin provides an admin interface to OpenLDAP. Finally, there is a sample application the uses the Shibboleth SP to display subject attributes for the logged in user.
+- phpMyAdmin `https://localhost:8443/phpmyadmin/`
+  - username: `root`, password: (blank)
+- phpLDAPadmin `https://localhost:8443/phpldapadmin/`
+  - username: `cn=root,dc=internet2,dc=edu`, password: `password`
+- Shibboleth SP user attributes `https://localhost:8443/app`
 
-- phpMyAdmin - https://localhost:8443/phpmyadmin/ - username: `root`, password: (blank)
-- phpLDAPadmin - https://localhost:8443/phpldapadmin/ - username: `cn=root,dc=internet2,dc=edu`, password: `password`
+All of the gte image tags are published to `https://hub.docker.com/r/tier/gte`. To use a particular image tag, run:
+```
+docker run -d -p 80:80 -p 389:389 -p 8443:443 -p 3306:3306 \
+  --name {VERSION_TAG} tier/gte:{VERSION_TAG}
+```
+Where {VERSION_TAG} takes the form of {course}.{module}.{step}-{version}. For example:
+```
+docker run -d -p 80:80 -p 389:389 -p 8443:443 -p 3306:3306 \
+  --name 101.1.1-201906 tier/gte:101.1.1-201906
+```
 
+More information about Grouper Training can be found on the Internet2 wiki: 
+`https://spaces.at.internet2.edu/display/Grouper/Grouper+Training+Environment`.
 
-# Course specific notes
-
-## Notes for the exercises in 401
-
-Before connecting to your SSH server, be sure to port forward a local port to the server's port `15672` as well.
-
-These exercises require Rabbit MQ to be started. Before starting the ex401 Grouper container, run:
-
+# Rabbit MQ for 401 exercises
+The 401 exercises require Rabbit MQ. Before starting the 401 docker images, start Rabbit MQ:
 ```
 docker run -d -p 15672:15672 --env RABBITMQ_NODENAME=docker-rabbit --hostname rabbitmq --name=rabbitmq rabbitmq:management
 ```
 
-Now browse to http://localhost:15672/ and login with `guest`/`guest`, and create a new queue named `grouper`.
+Then browse to http://localhost:15672/ and login with `guest`/`guest`, and create a new queue named `grouper`.
 
-Now start the ex401 Grouper with this slightly modified command:
-
-```bash
+Finally, start the 401 Grouper with this slightly modified command:
+```
 docker run -d -p 389:389 -p 8443:443 -p 3306:3306 \
   --link rabbitmq:rabbitmq --name tier/gte:401.{X.X|end}-201906
-
 ```
