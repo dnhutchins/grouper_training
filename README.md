@@ -9,8 +9,10 @@ This will start Grouper, a Shibboleth IdP, OpenLDAP, mySQL, and other components
 docker ps --format "{{.Names}} {{.Status}}"
 ```
 Once the container is in a `Running` state, browse to <https://localhost:8443/grouper> to access the Grouper UI and log in with one of the following:
-- `banderson`/`password`: Grouper Administrator
-- `jsmith`/`password`: standard user
+- Grouper Administrator
+  - username: `banderson`, password: `password`
+- Normal User
+  - username: `jsmith`, password: `password`
 
 The container has a few other applications running. phpMyAdmin provides an admin interface to the Grouper mySQL database. phpLDAPadmin provides an admin interface to OpenLDAP. Finally, there is a sample application that displays subject attributes for the user that is logged in.
 - phpMyAdmin <https://localhost:8443/phpmyadmin/>
