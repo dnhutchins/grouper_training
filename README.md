@@ -7,59 +7,59 @@ A set of Grouper images that are used during I2/TIER training.
 
 ```
 docker run -d -p 389:389 -p 8443:443 -p 3306:3306 \
-  --name grouper-demo tier/grouper-training-env:full_demo
+  --name grouper-demo tier/gte:full_demo-201906
 ```
 
-Browse to `https://localhost/grouper`
+Browse to `https://localhost:8443/grouper`
 
 ## Exercises
 
 ```
 docker run -d -p 80:80 -p 389:389 -p 8443:443 -p 3306:3306 \
-  --name gte tier/grouper-training-env:exXXX
+  --name gte tier/gte:XXX.X.{X|end}-201906
 ```
 
 Current tags:
-- ex101.1.1
-- ex201.1.1
-- ex201.1.end
-- ex201.2.1
-- ex201.2.end
-- ex201.3.1
-- ex201.3.end
-- ex201.4.1
-- ex201.4.end
-- ex201.5.1
-- ex201.5.end
-- ex211.1.1
-- ex301.4.1
-- ex401.1.1
-- ex401.1.2
-- ex401.1.3
-- ex401.1.4
-- ex401.1.5
-- ex401.1.6
-- ex401.1.end
-- ex401.2.1
-- ex401.2.2
-- ex401.2.3
-- ex401.2.4
-- ex401.2.5
-- ex401.2.6
-- ex401.2.7
-- ex401.2.8
-- ex401.2.9
-- ex401.2.end
-- ex401.3.1
-- ex401.3.2
-- ex401.3.3
-- ex401.3.4
-- ex401.3.5
-- ex401.3.6
-- ex401.3.7
-- ex401.3.end
-- ex401.4.1
-- ex401.4.end
+- 101.1.1-201906
+- 201.1.1-201906
+- 201.1.end-201906
+- 201.2.1-201906
+- 201.2.end-201906
+- 201.3.1-201906
+- 201.3.end-201906
+- 201.4.1-201906
+- 201.4.end-201906
+- 201.5.1-201906
+- 201.5.end-201906
+- 211.1.1-201906
+- 301.4.1-201906
+- 401.1.1-201906
+- 401.1.2-201906
+- 401.1.3-201906
+- 401.1.4-201906
+- 401.1.5-201906
+- 401.1.6-201906
+- 401.1.end-201906
+- 401.2.1-201906
+- 401.2.2-201906
+- 401.2.3-201906
+- 401.2.4-201906
+- 401.2.5-201906
+- 401.2.6-201906
+- 401.2.7-201906
+- 401.2.8-201906
+- 401.2.9-201906
+- 401.2.end-201906
+- 401.3.1-201906
+- 401.3.2-201906
+- 401.3.3-201906
+- 401.3.4-201906
+- 401.3.5-201906
+- 401.3.6-201906
+- 401.3.7-201906
+- 401.3.end-201906
+- 401.4.1-201906
+- 401.4.end-201906
 
 Browse to `https://localhost:8443/grouper` for Grouper. There is also an app that dumps the SP user attributes at `https://localhost:8443/app`.
 
@@ -92,6 +92,6 @@ Now start the ex401 Grouper with this slightly modified command:
 
 ```bash
 docker run -d -p 389:389 -p 8443:443 -p 3306:3306 \
-  --link rabbitmq:rabbitmq --name gte tier/grouper-training-env:exXXX
+  --link rabbitmq:rabbitmq --name tier/gte:401.{X.X|end}-201906
 
 ```
