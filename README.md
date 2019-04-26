@@ -38,7 +38,8 @@ More information about Grouper Training can be found on the Internet2 wiki:
 # Rabbit MQ for 401 exercises
 The 401 exercises require Rabbit MQ. Before starting the 401 docker images, start Rabbit MQ:
 ```
-docker run -d -p 15672:15672 --env RABBITMQ_NODENAME=docker-rabbit --hostname rabbitmq --name=rabbitmq rabbitmq:management
+docker run -d -p 15672:15672 --env RABBITMQ_NODENAME=docker-rabbit \
+  --hostname rabbitmq --name=rabbitmq rabbitmq:management
 ```
 
 Then browse to <http://localhost:15672/> and login with `guest`/`guest`, and create a new queue named `grouper`.
