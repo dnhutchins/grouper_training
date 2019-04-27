@@ -4,11 +4,11 @@ The gte is a set of docker images that contain all the software components, conf
 docker run -d -p 80:80 -p 389:389 -p 8443:443 -p 3306:3306 \
   --name gte-101.1.1 tier/gte:101.1.1-201906
 ```
-This will start Grouper, a Shibboleth IdP, OpenLDAP, mySQL, and other components. It will take a little while for the container to get into a "Running" status. You can check that with this command:
+This will start Grouper, a Shibboleth IdP, OpenLDAP, mySQL, and other components. It will take a little while for the container to get into an `Up` status. You can check that with this command:
 ```
 docker ps --format "{{.Names}} {{.Status}}"
 ```
-Once the container is in a `Running` state, browse to <https://localhost:8443/grouper> to access the Grouper UI and log in with one of the following:
+Once the container is in an `Up` state, browse to <https://localhost:8443/grouper> to access the Grouper UI and log in with one of the following:
 - Grouper Administrator
   - username: `banderson`, password: `password`
 - Normal User
