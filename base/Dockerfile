@@ -3,6 +3,9 @@ FROM tier/shib-idp:3.4.3_20190201 as idp
 # Grouper version for the entire GTE
 FROM tier/grouper:latest
 
+# Disable docker HEALTHCHECK inherited from tier/shib-sp
+HEALTHCHECK NONE
+
 LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>" \
       Vendor="TIER" \
       ImageType="Grouper Training" \
