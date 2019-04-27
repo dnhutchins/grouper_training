@@ -1,3 +1,4 @@
 localManualBuild.sh
 runContainer.sh
 tmp
+.vscode/spellright.dict
