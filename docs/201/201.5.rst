@@ -1,0 +1,85 @@
+
+======================================
+GTE 201.5 ACM3 Subject to Role Mapping
+======================================
+
+-------------------
+Learning Objectives
+-------------------
+
+* Understand ACM3 and how to use grouper policy groups  with application specific roles
+* Implement delegated access control
+* Configure attestation
+
+--------------
+Lab Components
+--------------
+
+* Grouper
+* `Grouper Deployment Guide`_
+
+--------
+Overview
+--------
+
+In applications with sophisticated RBAC capabilities, fine-grained permission
+sets are typically configured via an administrative interface within the
+application itself.  These permission sets are then associated with a role name
+that can be mapped to a set of users.  In this model, the user to role mapping
+is done in Grouper by pairing a normal access control group with the role name
+defined at the target service.  The policy indicating which subjects are mapped
+to application roles (permissions sets) can be attribute based or a simple
+access control list, or some combination of both.
+
+ACM3 is implemented using Grouper as follows:
+
+* Subject |rightarrow| Role assignment is made in Grouper.  Access control policies are used to represent Roles.
+* Fine-grained permission sets are managed at the target service and assigned a Role Name
+* Grouper access control groups are mapped to target service Role Name, completing the User |rightarrow| Role mapping
+* PAP split between Grouper and target service, PDP and PEP at service
+
+----------------
+Exercise 201.5.1
+----------------
+
+*Create application folder and group set*
+
+Use wizard template (or gsh script) to create new application folder/group set.
+
+#. Create `app:cognos:service:security:cg_adv_manager`.
+#. Create `app:cognos:service:ref` folder.
+#. Create `app:cognos:service:policy` folder.
+#. Create `app:congos:service:policy:cg_adv_report_reader|allow|deny`.
+#. Create `app:congos:service:policy:cg_adv_report_writer|allow|deny`.
+
+----------------
+Exercise 201.5.2
+----------------
+
+*Add reference groups to policy*
+
+#. Add `ref:dept:advancement` to `cg_adv_report_reader_allow`.
+
+----------------
+Exercise 201.5.3
+----------------
+
+*Create app specific reference group for advancement report writers*
+
+#. Create `app:congos:service:ref:advancement_report_writer`.
+#. Add `...:ref:advancement_report_writers` to `...:cg_adv_report_writer_allow`.
+#. Add read/update privileges to `cg_adv_manager` to `cg_adv_report_writer_allow`.
+
+----------------
+Exercise 201.5.4
+----------------
+
+*Add attestation*
+
+#. Add attestation requirement for `advancement_report_writer`.
+
+
+
+.. |rightarrow| unicode:: U+2192
+
+.. _Grouper Deployment Guide: https://spaces.at.internet2.edu/display/Grouper/Grouper+Deployment+Guide+Work+-TIER+Program

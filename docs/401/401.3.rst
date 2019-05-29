@@ -1,0 +1,224 @@
+===============================
+401.3 Board Effect Provisioning
+===============================
+
+-------------------
+Learning Objectives
+-------------------
+
+
+--------------
+Lab Components
+--------------
+
+* Shibboleth IdP
+* InCommon Federation
+* Grouper
+* RabbitMQ
+* Grouper ESBChangeLog Consumer
+* `Grouper Deployment Guide`_
+
+--------
+Overview
+--------
+
+We have been asked to deploy a SaaS application called Board Effect. The
+service is already an InCommon member and honors an `eduPersonEntitlement`
+for "front door" access. Permission management within the application is
+centered around "work rooms".  Each work room provide access to specific
+documents, chat, mailing lists, etc.  The system will be used by trustees,
+executives, and various committee members.
+
+Thankfully the service is an InCommon member and using `eduPersonEntitlement`
+values.  However, it turns out users still need to have accounts provisioned
+in order to get access. We will need two different kinds of policy groups.
+The first, the account policy group, will be mapped to an `eduPersonEntitlement`
+value and also be used for provisioning accounts.  The second type,
+authorization groups, will provide subject to role mapping, and are mapped
+to work rooms created in Board Effect. This is an example of access control
+model 3 described in the `Grouper Deployment Guide`_.
+
+----------------
+Exercise 401.3.1
+----------------
+
+*Create a application policy folder and groups*
+
+Rather than create the basic structure manually, use a
+:ref:`GSH script <apdx-401.3.1-app-skeleton>`.
+
+
+----------------
+Exercise 401.3.2
+----------------
+
+*Workrooms (i.e. authorization groups) can be updated via the Board Effect
+REST API.  Create Grouper authorization groups to manage those.*
+
+A new workroom call Committee on Finance has been created in Board Effect.
+Need to create authorization group in grouper and configure provisioning.
+
+#. Create `app:boardeffect:wr_cmt_fin_authorized|allow|deny`.
+#. Configure grouperESB to send membership changes to rabbitMQ exchange.
+
+   .. literalinclude:: examples/401.3.2-grouper-loader.properties
+        :language: properties
+        :lines: 102-118
+        :caption: grouper-loader.properties
+        :linenos:
+
+   .. literalinclude:: examples/401.3.2-grouper.client.properties
+        :language: properties
+        :lines: 61-112
+        :caption: grouper.client.properties
+        :linenos:
+
+#. Write provisioner component to read rabbitMQ and update BoardEffect via REST API.
+
+   .. note::
+
+        This step is what logically should happen next to process the messages.
+        You aren't expected to actually accomplish this step during the lab.
+
+----------------
+Exercise 401.3.3
+----------------
+
+*Board Effect account provisioning*
+
+#. Create `app:boardeffect:boardeffect_authorized`.
+#. Add `...:wr_cmt_fin_authorized` to `boardeffect_authorized_allow`.
+#. Configure PSPNG to write `eduPersonEntitlement` value
+   **https://college.boardeffect.com/** to LDAP and release via Shibboleth only
+   for Boardeffect.
+
+   .. literalinclude:: examples/401.3.2-grouper-loader.properties
+        :language: properties
+        :lines: 92-100
+        :emphasize-lines: 6
+        :caption: grouper-loader.properties
+        :linenos:
+
+Subject to role mapping in place and provisioners working, but how do we get
+reference groups for committees? Ann in President’s Office knows.
+
+----------------
+Exercise 401.3.4
+----------------
+
+*Distributed Reference Group Management*
+
+Amy maintains list of committee members. Use these to build application specific
+reference groups.
+
+#. Create `app:boardeffect:ref:cmt_fin`.
+#. Add `...:ref:cmt_fin` to `...:wr_cmt_fin_allow`.
+#. Add `ref:global_deny` to `...:wr_cmt_fin_deny`.
+#. Give Ann admin access to `app:boardeffect:ref` by adding account 
+   **amartinez410** to `app:boardeffect:etc:boardeffect_admins`.
+
+Log in as Ann Martinez (**amartinez410**).  Under *My Groups* you should see
+the reference groups and policies Ann can manage.
+
+----------------
+Exercise 401.3.5
+----------------
+
+*Committee member helpers*
+
+Joe Trustee is on committee, but Joe’s assistant also needs access to
+committee work group.
+
+#. Create app specific ref group `app:boardeffect:ref:cmt_fin_helpers`.
+#. Add `...:cmt_fin_helpers. to `...:wr_cmt_fin_allow`.
+
+.. note::
+
+    By *not* adding the helper subject to `app:boardeffect:ref:cmt_fin`,
+    we preserve the truth of the subject attributes.  Members of `cmt_fin`
+    *are* members of the Finance Committee.  The helpers are *not* members
+    of the committee, but they *are* granted access to the workroom by
+    the policy.
+
+This works great for specific assistants, but there are also general helpers
+who need access to all workrooms *temporarily* during board meetings.
+
+#. Create app specific ref group `app:boardeffect:ref:workroom_helpers`.
+#. Run :ref:`GSH script <apdx-401.3.5-temp-access>` to add age off rule
+   to `workroom_helpers`.
+#. Add `workroom_helpers` to all workroom allow groups.
+
+Workrooms created in Boardeffect.  Grouper policy groups map to workroom, and
+are kept up to date via Grouper provisioners.  We could create workrooms
+automatically based on policy group creation-- exercise left to student at home.
+
+----------------
+Exercise 401.3.6
+----------------
+
+*Anna's Grouper Privileges*
+
+Anna was added as a direct member of `app:boardeffect:etc:boardeffect_admins`,
+but we can do better!  Responsibility for committee member management goes to
+the president's executive assistant, whoever that might be.
+
+#. Create a new reference group (role), `ref:roles:president_assistant`
+   for president executive assistant.
+#. Add Anna's account to `president_assistant`.
+
+This is better, but does Anna really need full admin privileges to
+`app:boardeffect`?  Probably only needs update / read.
+
+#. Add `ref:roles:president_assistant` to `app:boardeffect:etc:boardeffect_managers`.
+#. Remove Anna from `app:boardeffect:etc:boardeffect_admins`.
+
+
+----------------
+Exercise 401.3.7
+----------------
+
+*Global Committee reference groups*
+
+All working great-- new system request comes in with policy based on board
+committees.  Need to elevate app-specific ref groups to global ref groups.
+
+#. Create `ref:board` folder for board committee ref groups.
+#. Move `app:boardeffect:ref:cmt_fin` to `ref:board:cmt_fin`.
+
+    .. note::
+
+        The Board Effect policies are not impacted by moving the location of
+        the reference groups!
+
+#. Create `ref:board:etc` security folder.
+#. Create `ref:board:etc:board_managers` security group.
+#. Assign *UPDATE* and *READ* rights on reference groups to `board_managers`.
+#. Revoke *UPDATE* and *READ* rights of reference groups from `app:board_effect:etc:boardeffect_managers`.
+
+    .. warning::
+
+        Moving our reference groups did *not* remove the access we had granted
+        on them from application-specific security groups.  After moving a
+        reference group, it is good practive to review its permissions.
+
+#. Add `president_assistant` to `ref:board:etc:board_managers`.
+
+
+--------
+Epilogue
+--------
+
+New request comes in for four advisory councils. Each will have their own
+workroom in Board Effect.  Initially you are handed a spreadsheet with the
+council members and you import them into app-specific reference groups 
+(e.g. `app:boardeffect:ref:advisory_council_northeast`).  Later you find
+out that council membership is available in Banner, so you create loader
+jobs for those.  As it turns out, the spreadsheets were old and had the wrong
+members.  Thank goodness for loader jobs!  Alas, not all advisory council
+members have NetIDs.  To get them access we add them as sponsored accounts
+in COmanage.
+
+The End
+
+
+.. _Grouper Deployment Guide: https://spaces.at.internet2.edu/display/Grouper/Grouper+Deployment+Guide+Work+-TIER+Program
