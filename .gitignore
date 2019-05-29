@@ -3,3 +3,5 @@ runContainer.sh
 tmp
 .vscode/spellright.dict
 .vscode/settings.json
+.DS_Store
+_build
