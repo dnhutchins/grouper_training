@@ -185,7 +185,7 @@ Exercise 201.1.7 What do you mean by "student"?
 
 The `student` reference group is used in access policy for student services.
 Being a "student" means access to a broad array of student services. This
-instutionally meaning cohort is well defined, easily understood, and capable
+instutionally meaningful cohort is well defined, easily understood, and capable
 of being extended in a rational way. Review the `students` reference group
 definition by using the Grouper Visualization feature. (students -> More
 actions -> Visualization)
