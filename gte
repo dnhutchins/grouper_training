@@ -9,5 +9,5 @@ fi
 docker stop "$1" 2> /dev/null
 docker rm "$1" 2> /dev/null
 docker run -d -p 80:80 -p 389:389 -p 8443:443 -p 3306:3306 \
-  --link rabbitmq:rabbitmq --name $1 tier/gte:"$1"-201906-201-updates
+  --link rabbitmq:rabbitmq --name $1 tier/gte:"$1"-201906
 
