@@ -1,7 +1,7 @@
 Grouper Access Governance (201)
 ===============================
 
-This course explores access governance approach described in the `Grouper
+This course explores the access governance strategy described in the `Grouper
 Deployment Guide`_. After completing this course, the student will understand
 how to use Grouper primitives to achieve access governance capabilities, and be
 able to translate natural language policy into digital policy.
