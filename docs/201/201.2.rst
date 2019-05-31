@@ -1,13 +1,13 @@
-
-==============================
-GTE 201.2 Access Policy Groups
-==============================
+============================
+Access Policy Groups (201.2)
+============================
 
 -------------------
 Learning Objectives
 -------------------
 
-* Translate a natural language policy group into digital policy using access policy groups.
+* Translate a natural language policy group into digital policy using access
+  policy groups.
 * Understand the difference between policy groups and reference groups.
 
 --------------
@@ -23,91 +23,114 @@ Overview
 
 `NIST SP 800-162`_ describes how natural language policy, that is access policy
 stated in common language, must be converted to digital policy for any access
-control mechanism to effectively operate.  Digital policy is manifest in
+control mechanism to effectively operate. Digital policy is manifest in
 Grouper via access policy groups. Subject membership in an access policy group
-be indirect and represents a precomputed access policy decision based on subject
-attributes (i.e. the subject’s membership in various reference groups).
+should be indirect and represents a precomputed access policy decision based on
+subject attributes (i.e. a subject’s membership in various reference groups).
 
 An **access policy** group is a composite group whose membership is composed of
 an include group (i.e. the allow group) minus an exclude group (i.e. the deny
-group).  Subject membership in both the allow group and the deny group should be
-indirect (i.e. through reference groups) and have a clear mapping to the natural
-language policy.  When exceptions to policy are necessary, locally scoped
-reference groups should be added.
+group). Subject membership in both the allow group and the deny group should
+be indirect (i.e. through reference groups) and have a clear mapping to the
+natural language policy. When exceptions to policy are necessary, locally
+scoped reference groups should be added.
 
 Limiting policy groups to indirect membership assignments via reference groups
-ensures that as subject attributes change, effective membership is up to date and
-access control decisions are correct.  It also enables the direct mapping from
-natural language policy to digital policy and vice versa.  Individual exceptions to
-policy, while not expressly recommended, can be accommodated by adding subjects
-directly to the allow/deny groups.
+ensures that as subject attributes change, effective membership is up to date
+and access control decisions are correct. It also enables the direct mapping
+from natural language policy to digital policy and vice versa. Individual
+exceptions to policy, while not expressly recommended, can be accommodated by
+adding subjects directly to the allow/deny groups.
 
-Membership within an access policy group is often kept in sync directly with a target
-service or an intermediary like an LDAP based enterprise directory service.
-Services can also query Grouper directly for membership assignment.
+Membership within an access policy group is often kept in sync directly with a
+target service or an intermediary like an LDAP based enterprise directory
+service. Services can also query Grouper directly for membership assignment.
 
-----------------
-Exercise 201.2.1
-----------------
+--------------------------------------------
+Exercise 201.2.1 Application folder template
+--------------------------------------------
 
-*Application folder structure*
+Generally, access policy groups are organzied in a set of folders following a
+common convention descripted in the Grouper Deployment Guide. A template for
+this structure is available in the Grouper UI. Use the Application Template to
+create a new structure for our VPN service policy.
 
-#. Create `app:vpn:vpn_authorized`.
-#. Create `app:vpn:vpn_allow`.
-#. Create `app:vpn:vpn_deny`.
-#. Make `vpn_authorized` a composite of `vpn_allow` minus `vpn_deny`.
+#. Navigate to the `app` folder
+#. Create a new `vpn` application structure using the Application Template
+   (More actions -> New template)
 
-----------------
-Exercise 201.2.2
-----------------
+.. figure:: ../figures/201-new-vpn-app.png
 
-*Create digital policy from natural language policy*
+3. Navigate to the `app:vpn:service:policy` folder
 
-Natural language policy is "all faculty, staff have access to vpn, unless denied
-by CISO or the account is in a closure state".  Reference groups are already
-available.
+4. Create a new vpn_authorized policy group using the Policy Group Template
+   (More actions -> New template)
+
+.. figure:: ../figures/201-new-vpn-policy.png
+
+[ this should be replaced with policy template when ready ]
+
+5. Create `app:vpn:vpn_authorized`.
+6. Create `app:vpn:vpn_allow`.
+7. Create `app:vpn:vpn_deny`.
+8. Make `vpn_authorized` a composite of `vpn_allow` minus `vpn_deny`.
+
+.. figure:: ../figures/201-vpn-composite.png
+
+-------------------------------------------------------------------
+Exercise 201.2.2 Create digital policy from natural language policy
+-------------------------------------------------------------------
+
+The natural language policy is "all faculty and staff have access to vpn,
+unless denied by CISO or the account is in a closure state".  Reference groups
+are already available.
 
 #. Add `ref:employee:fac_staff` to `vpn_allow`.
 #. Add `ref:security:locked_by_ciso` to `vpn_deny`.
 #. Add `ref:iam:closure` to `vpn_deny`.
+#. Review the `vpn_authorized` policy definition
+   (vpn_authorized -> More actions -> Visualization)
 
-----------------
-Exercise 201.2.3
-----------------
+.. figure:: ../figures/201-vpn-authorized.png
 
-*Update policy to also allow institutional review board members access to VPN*
+----------------------------------------------------------------------------
+Exercise 201.2.3 Update policy to include institutional review board members
+----------------------------------------------------------------------------
 
-New natural language policy is "all faculty, staff and members of the institutional
-review board have access to vpn, unless denied by CISO or the account is in a closure
-state".
+The new natural language policy is "all faculty, staff, and members of the
+institutional review board have access to vpn, unless denied by CISO or the
+account is in a closure state".
 
 #. Add `org:irb:ref:irb_members` to `vpn_allow`.
 #. Add *jsmith* to `org:irb:ref:irb_members`.
-#. Trace membership for *jsmith* from `vpn_authorized`.
-#. View the audit log on `vpn_allow`.
+#. Trace membership for *jsmith* from `vpn_authorized`. (jsmith -> Choose
+   action -> Actions -> Trace membership)
 
-----------------
-Exercise 201.2.4
-----------------
+.. figure:: ../figures/201-jsmith-trace.png
 
-*Create security groups for policy*
+4. View the audit log on `vpn_allow`. (vpn_allow -> More actions -> View audit
+   log)
 
-#. Create `ref:app:vpn:etc` folder.
-#. Create `ref:app:vpn:etc:vpn_admins` group.
-#. Assign **ADMIN** privilege to `vpn_admins` for `ref:app:vpn`.
-#. Inherit privileges to all sub folders (and objects).
+.. figure:: ../figures/201-vpn-allow-audit.png
 
-    #. Navigate to `app:vpn`.
-    #. :guilabel:`More` |rightarrow| :guilabel:`Privileges inherited to objects in folder`
-    #. Click :guilabel:`Add Members`, and add `vpn_admins`.
-    #. Add admin privileges for folder, group, and attributes.
+5. Review policy definition for `vpn_authorized`.
+   (vpn_authorized -> More actions -> Visualization)
 
-#. Navigate to `ref:app:vpn:ref:vpn_allow`.
-#. Click :guilabel:`Privileges` |rightarrow| :guilabel:`Actions` |rightarrow| :guilabel:`Trace Priviliges`.
+.. figure:: ../figures/201-vpn-authorized2.png
 
+------------------------------------------------------------
+Exercise 201.2.4 Review Application template security groups
+------------------------------------------------------------
 
+Adminstrative access to the application template folders and groups is
+controlled by security groups in `app:vpn:security`. Security groups are
+essentially policy groups for Grouper access. Review the default privileges on
+`vpn_allow`.
 
-.. |rightarrow| unicode:: U+2192
+#. Naviage to `ref:app:vpn:service:policy:vpn_allow`.
+#. Click on the Privileges tab.
+
+.. figure:: ../figures/201-vpn-allow-privileges.png
 
 .. _NIST SP 800-162: https://csrc.nist.gov/publications/detail/sp/800-162/final
 .. _Grouper Deployment Guide: https://spaces.at.internet2.edu/display/Grouper/Grouper+Deployment+Guide+Work+-TIER+Program

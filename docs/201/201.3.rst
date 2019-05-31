@@ -1,7 +1,7 @@
 
-===================================
-GTE 201.3 ACM1 eduPersonAffiliation
-===================================
+=======================================================
+Access Control Model 1 eduPersonAffiliation (GTE 201.3)
+=======================================================
 
 -------------------
 Learning Objectives
@@ -27,17 +27,18 @@ Lab Components
 Overview
 --------
 
-`Grouper Deployment Guide`_ access control model 1 is all about subject attribute
-management.  This model is useful for cases where there exists a loose relationship
-between the institution and the service provider.  Assuming both are in a
-federation like InCommon, and a locally defined notion of eduPersonAffiliation_ is
-sufficient for access control, a broad set of services can be enabled fairly easily.
+`Grouper Deployment Guide`_ access control model 1 (ACM1) is all about subject
+attribute management. This model is useful for cases where there exists a loose
+relationship between the institution and the service provider. Assuming both
+are in a multilateral SAML federation like InCommon, and a locally defined
+notion of eduPersonAffiliation_ is sufficient for access control, a broad set
+of services can be enabled fairly easily.
 
 .. warning::
 
     This access control model is based on making subject attributes directly
     available to services and allowing the service to make access control decisions
-    based on those attributes.  This approach has several shortcomings:
+    based on those attributes. This approach has several shortcomings:
 
     * The subject attributes provided often lack sufficient **context** to make
       informed access control decisions.
@@ -62,38 +63,44 @@ sufficient for access control, a broad set of services can be enabled fairly eas
       affiliations based on the service provider requesting authentication (*policy
       decisions become opaque*).
     * Alternatively, exceptions may be handled by configuring them directly at
-      the service provider (*policy decisions become opaque*). 
+      the service provider (*policy decisions become opaque*).
 
-----------------
-Exercise 201.3.1
-----------------
+------------------------------------------------------------------
+Exercise 201.3.1 Create app folder for eduPersonAffiliation values
+------------------------------------------------------------------
+#. Navigate to the `app` folder
+#. Create a new `eduPersonAffiliation` application structure using the
+   Application Template (More actions -> New template)
 
-*Create app folder to master eduPersonAffiliation*
+.. figure:: ../figures/201-eduPersonAffiliation-app-template.png
 
-#. Create folder `app:eduPersonAffiliation`.
-#. Create groups `...:eduPersonAffiliation:ePA_student|staff|...` to represent
-   eduPersonAffiliation values. 
+#. Create the following policy groups in
+   `app:eduPersonAffiliation:service:policy:`
 
-----------------
-Exercise 201.3.2
-----------------
+* `ePA_student`
+* `ePA_faculty`
+* `ePA_staff`
 
-*Add reference groups that constitute local policy for eduPersonAffiliation values*
+.. figure:: ../figures/201-ePA-policy-groups.png
 
-    Therefore each institution will decide the criteria for membership in each
-    affiliation classification.  What is desirable is that a reasonable person
-    should find an institution's definition of the affiliation plausible.
+---------------------------------------------------------------------------
+Exercise 201.3.2 Add reference groups to eduPersonAffiliation policy groups
+---------------------------------------------------------------------------
+
+The eduPerson object class specification states:
+  "Therefore each institution will decide the criteria for membership in each
+  affiliation classification. What is desirable is that a reasonable person
+  should find an institution's definition of the affiliation plausible."
 
 #. Add `ref:student:students` to `...:eduPersonAffiliation:ePA_student`.
 
-----------------
-Exercise 201.3.3
-----------------
+----------------------------------------------------------------------
+Exercise 201.3.3 Create eduPersonAffiliation policy group for "member"
+----------------------------------------------------------------------
 
-*Create "member"*
-
-The "member" affiliation MUST be asserted for people carrying one or more of
-the following affiliations: *faculty* or *staff* or *student* or *employee*.
+The eduPerson object class specification states:
+  "The "member" affiliation MUST be asserted for people carrying one or more of
+  the following affiliations: *faculty* or *staff* or *student* or *employee*."
 
 .. note:
 
@@ -102,17 +109,16 @@ the following affiliations: *faculty* or *staff* or *student* or *employee*.
     faculty, staff and students.
 
 #. Create `app:eduPersonAffiliation:ePA_member`.
-#. Add `...:ePA_faculty|staff|student|employee` to `...:ePA_member`.
+#. Add `...:ePA_faculty | staff | student` to `...:ePA_member`.
+#. Review `ePA_member` defintion (ePA_member -> More actions -> Visualization)
 
-----------------
-Exercise 201.3.4
-----------------
+.. figure:: ../figures/201-ePA-member-vis.png
 
-*Configure PSPNG to reflect ePA values to LDAP*
+--------------------------------------------------------------
+Exercise 201.3.4 Configure PSPNG to reflect ePA values to LDAP
+--------------------------------------------------------------
 
-#. Assign PSPNG *provision_to* attribute to `ePA_student` with a value of
-   **pspng_affiliations**.
-#. Configure PSPNG to sync group membership to LDAP values for 
+#. Configure PSPNG to sync group membership to LDAP values for
    **eduPersonAffiliation**.
 
    .. literalinclude:: examples/201-3-4.pspng-epa.grouper-loader.properties
@@ -120,14 +126,22 @@ Exercise 201.3.4
         :caption: grouper-loader.properties
         :linenos:
 
-----------------
-Exercise 201.3.5
-----------------
+#. Assign PSPNG *provision_to* attribute to `ePA_member` with a value of
+   **pspng_affiliations**.
 
-*Releasing ePA in SAML*
+.. figure:: ../figures/201-ePA-pspng.png
 
-The demo shibboleth IdP has been configured to release the ePA attribute to
-the demo SP.  The relevant configuration is below:
+3. Review and "Run job now" the PSPNG affiliations change log consumer daemon
+   job (Miscellaneous -> All daemon jobs)
+
+.. figure:: ../figures/201-ePA-pspng-run.png
+
+---------------------------------------------------------------------
+Exercise 201.3.5 Configure Shibboleth to release eduPersonAffiliation
+---------------------------------------------------------------------
+
+The demo Shibboleth IdP has been configured to release the ePA attribute to
+the demo SP. The relevant configuration is below:
 
 .. literalinclude:: examples/201-3-5.attribute-filter.xml
     :language: xml
@@ -136,13 +150,9 @@ the demo SP.  The relevant configuration is below:
     :emphasize-lines: 9
     :linenos:
 
-    
+1. Log in to https://localhost:8443/app with username `aclark706` and password `password`.
 
-
-
-
-
-
+.. figure:: ../figures/201-ePA-attribute-release.png
 
 .. _eduPersonAffiliation: https://www.internet2.edu/media/medialibrary/2013/09/04/internet2-mace-dir-eduperson-201203.html#eduPersonAffiliation
 .. _Grouper Deployment Guide: https://spaces.at.internet2.edu/display/Grouper/Grouper+Deployment+Guide+Work+-TIER+Program
