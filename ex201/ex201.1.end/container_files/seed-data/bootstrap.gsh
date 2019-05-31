@@ -1,4 +1,6 @@
 gs = GrouperSession.startRootSession();
+delStem("201.1.1")
+addRootStem("201.1.end", "201.1.end")
 
 // ex201.1.1
 // addStem("ref", "student", "student")
