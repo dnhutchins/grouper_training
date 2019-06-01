@@ -1,7 +1,6 @@
-
-===================================
-GTE 201.4 ACM2 eduPersonEntitlement
-===================================
+===================================================
+201.4 Access Control Model 2 eduPersonEntitlement
+===================================================
 
 -------------------
 Learning Objectives
@@ -9,9 +8,8 @@ Learning Objectives
 
 * Understand ACM2 model and how to implement attribute based access control
 * Implement grouper security model
-* Configure PSPNG to convert membership to **eduPersonEntitlement** values in LDAP
-* Configure Shibboleth to release specific **eduPersonEntitlement** values to SP
-
+* Configure PSPNG to provision **eduPersonEntitlement** values
+* Configure Shibboleth to release **eduPersonEntitlement** values
 
 --------------
 Lab Components
@@ -23,67 +21,70 @@ Lab Components
 * `Grouper Deployment Guide`_
 * `eduPerson Object Class Specification`_ 
 
-
 --------
 Overview
 --------
 
-`Grouper Deployment Guide`_ access control model 2 is all about subject attribute
-based access control.  ACM2 is applicable across a broad range of services where
-access control policy can be based on subject attributes, the policy decision can
-be precomputed, and simple subject attributes are sufficient to drive the enforcement
-point.
+`Grouper Deployment Guide`_ access control model 2 (ACM2) is all about
+attribute based access control (ABAC) as defined in `NIST SP 800-162`_.  ACM2 is
+applicable across a broad range of services where access control policy can be
+based on subject attributes, policy decisions can be precomputed, and simple
+subject attributes are sufficient to drive the policy enforcement point.
 
-""""
-ACM2
-""""
+In cases where the SAML Service Provider will accept an
+**eduPersonEntitlement** value for enforcing access control, implementing ACM2
+can be distilled to these basic steps:
 
-Implementing ACM2 can be distilled to these basic steps:
+#. Convert the natural language policy into reference and policy groups
+#. Provision policy group membership to OpenLDAP via PSPNG
+#. Release SP-specfiic **eduPersonEntitlement** values via Shibboleth
 
-#. Convert natural language policy to reference groups and policy groups
-#. Provisioning to LDAP-- Grouper group |rightarrow| LDAP attribute via PSPNG
-#. Release **eduPersonEntitlement** value in SAML authentication response
+---------------------------------------------------
+Exercise 201.4.1 Create policy for wiki application
+---------------------------------------------------
 
+#. Navigate to the  `app` folder.
+#. Create a new `wiki` application using the Application Template
+   (More actions -> New template)
 
-----------------
-Exercise 201.4.1
-----------------
+.. figure:: ../figures/201-wiki-app.png
 
-*Create policy for wiki application*
+[ use new policy template to create wiki_user]
+`app:wiki:service:policy:wiki_authorized|allow|deny`.
+Edit composite `wiki_authorized` to make it `wiki_allow` minus `wiki_deny`.
 
-#. Create folder `app:wiki`.
-#. Create policy groups `app:wiki:service:policy:wiki_authorized|allow|deny`.
-#. Edit composite `wiki_authorized` to make it `wiki_allow` minus `wiki_deny`.
+---------------------------------------------------
+Exercise 201.4.2 Review application security groups
+---------------------------------------------------
 
-----------------
-Exercise 201.4.2
-----------------
+`app:wiki:security`
 
-*Create security group*
+.. figure:: ../figures/201-wiki-security.png
 
-#. Create folder `app:wiki:security`.
-#. Create security group `app:wiki:security:wiki_admin`.
-#. Add **ADMIN** privileges to `wiki_admin` for `app:wiki:service`, and inherit
-   to all child objects (folders, groups, and attributes).
+-----------------------------------------------
+Exercise 201.4.3 Add reference groups to policy
+-----------------------------------------------
 
-----------------
-Exercise 201.4.3
-----------------
-
-*Add reference groups to policy*
+`wiki_user` is an application-secific role. Subjects in this role have general
+access to the wiki. The natural language policy is, "All students have access
+to the student wiki, unless they are in the global deny group".
 
 #. Add `ref:student:students` to `app:wiki:service:policy:wiki_allow`.
 #. Add `ref:iam:global_deny` to `app:wiki:service:policy:wiki_deny`.
+#. Review policy defintion (wiki_user -> More -> Visualization)
 
-----------------
-Exercise 201.4.4
-----------------
+.. figure:: ../figures/201-wiki-policy.png
 
-*Configure PSPNG to reflect policy to eduPersonEntitlement in LDAP*
+-------------------------------------------------------------------------------
+Exercise 201.4.4 Configure PSPNG to provision wiki_user to eduPersonEntitlement
+-------------------------------------------------------------------------------
 
-#. Assign PSPNG attribute, **provision_to**  to `wiki_authorized` with a value
+#. Assign PSPNG attribute, **provision_to**  to `wiki_user` with a value
    of *pspng_entitlements*.
-#. Configure PSPNG to convert membership to ePE value of http://sp.example.org/wiki
+
+.. figure:: ../figures/201-wiki-user-pspng.png
+
+2. Configure PSPNG to convert membership to ePE value of http://sp.example.org/wiki
    and review in LDAP.  The relevent configuration is below:
 
    .. literalinclude:: examples/201-4-4.pspng-epe.grouper-loader.properties
@@ -91,14 +92,18 @@ Exercise 201.4.4
         :caption: grouper-loader.properties
         :linenos:
 
-----------------
-Exercise 201.4.5
-----------------
+2. Run CHANGE_LOG_consumer_pspng_entitlements
+   (Miscellaneous -> All daemon jobs -> Job actions -> Run job now)
 
-*Configure Shib to release ePE value for our SP*
+.. figure:: ../figures/201-pspng-entitlements-run-job.png
 
-The demo shibboleth IdP has been configured to release the ePE attribute to
-the demo SP.  The relevant configuration is below:
+---------------------------------------------------------------
+Exercise 201.4.5 Configure Shib to release ePE value for our SP
+---------------------------------------------------------------
+
+The demo Shibboleth IdP has been configured to release the
+**eduPersonEntitlement** attribute to the demo SP. The relevant configuration
+is below:
 
 .. literalinclude:: examples/201-4-5.attribute-filter.xml
     :language: xml
@@ -107,21 +112,21 @@ the demo SP.  The relevant configuration is below:
     :emphasize-lines: 17
     :linenos:
 
-----------------
-Exercise 201.4.6
-----------------
+1. Open a new browser to https://localhost:8443/app
+2. Log in with username `aclark706` and password `password`
+3. Check eduPersonEntitlement value
 
-*(Thought exercise!) Create accounts at target SP*
+.. figure:: ../figures/201-ePE-value.png
 
-Use policy groups to create/manage accounts at target SP.
+----------------------------------------------------------------
+Exercise 201.4.6 Thought exercise! Create accounts at target SP?
+----------------------------------------------------------------
+Can we use policy groups to create/manage accounts at target SP?
 
 * Native grouper SP specific provisioning components
-* RabbitMQ based provisioning / deprovisioning
+* RabbitMQ based provisioning
 * midPoint
-
-
-
-.. |rightarrow| unicode:: U+2192
 
 .. _eduPerson Object Class Specification: http://software.internet2.edu/eduperson/internet2-mace-dir-eduperson-201602.html
 .. _Grouper Deployment Guide: https://spaces.at.internet2.edu/display/Grouper/Grouper+Deployment+Guide+Work+-TIER+Program
+.. _NIST SP 800-162: https://csrc.nist.gov/publications/detail/sp/800-162/final
