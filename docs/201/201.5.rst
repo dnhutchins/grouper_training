@@ -6,7 +6,7 @@
 Learning Objectives
 -------------------
 
-* Understand ACM3 and how to use grouper policy groups  with application specific roles
+* Understand ACM3 and how to use policy groups with application specific roles
 * Implement delegated access control
 * Configure attestation
 
@@ -23,62 +23,120 @@ Overview
 
 In applications with sophisticated RBAC capabilities, fine-grained permission
 sets are typically configured via an administrative interface within the
-application itself.  These permission sets are then associated with a role name
-that can be mapped to a set of users.  In this model, the user to role mapping
-is done in Grouper by pairing a normal access control group with the role name
-defined at the target service.  The policy indicating which subjects are mapped
-to application roles (permissions sets) can be attribute based or a simple
-access control list, or some combination of both.
+application itself. These permission sets are then associated with a role name
+that can be mapped to a set of users. In this model, the user to role mapping
+is done in Grouper by pairing a access policy group with the role name
+defined at the target service. The policy indicating which subjects are mapped
+to application roles (permissions sets) can be attribute based, a simple access
+control list, or some combination of both.
 
-ACM3 is implemented using Grouper as follows:
+In AC3, the policy adminstration point is split between Grouper and the target
+service. Policy decision point and policy enforcement point are with the target
+service.
 
-* Subject |rightarrow| Role assignment is made in Grouper.  Access control policies are used to represent Roles.
-* Fine-grained permission sets are managed at the target service and assigned a Role Name
-* Grouper access control groups are mapped to target service Role Name, completing the User |rightarrow| Role mapping
-* PAP split between Grouper and target service, PDP and PEP at service
+ACM3 is implemented in Grouper as follows:
 
-----------------
-Exercise 201.5.1
-----------------
+#. Permission sets are managed at the target service and assigned a Role Name
+#. Grouper policy groups are mapped to target service Role Name
+#. Subject to Role assignment is made in Grouper
 
-*Create application folder and group set*
+-------------------------------------------------------------------
+Exercise 201.5.1 Create a `congos` application folder and group set
+-------------------------------------------------------------------
 
-Use wizard template (or gsh script) to create new application folder/group set.
+1. Use the Application template to create the `cognos` application folder and
+   group set in the `app` folder.
+2. Use the Policy template to create two new policy groups in 
+   `app:cognos:service`
 
-#. Create `app:cognos:service:security:cg_adv_manager`.
-#. Create `app:cognos:service:ref` folder.
-#. Create `app:cognos:service:policy` folder.
-#. Create `app:congos:service:policy:cg_adv_report_reader|allow|deny`.
-#. Create `app:congos:service:policy:cg_adv_report_writer|allow|deny`.
+------------------------------------------------------
+Exercise 201.5.2 Implement Report Reader Access Policy
+------------------------------------------------------
 
-----------------
-Exercise 201.5.2
-----------------
+All finance employees have read access to finance reports.
 
-*Add reference groups to policy*
+1. Implement the reader policy by adding `ref:dept:finance` to
+   `cg_adv_report_reader_allow`.
 
-#. Add `ref:dept:advancement` to `cg_adv_report_reader_allow`.
+.. figure:: ../figures/201-fin-report-reader.png
 
-----------------
-Exercise 201.5.3
-----------------
+------------------------------------------------------
+Exercise 201.5.3 Implement Report Writer Access Policy
+------------------------------------------------------
 
-*Create app specific reference group for advancement report writers*
+Only employees authorized by the Finance Manager have access to write reports
 
-#. Create `app:congos:service:ref:advancement_report_writer`.
-#. Add `...:ref:advancement_report_writers` to `...:cg_adv_report_writer_allow`.
-#. Add read/update privileges to `cg_adv_manager` to `cg_adv_report_writer_allow`.
+This policy will require an application specific reference group the we will
+use as an access control list managed by the Finanance Manager.
 
-----------------
-Exercise 201.5.4
-----------------
+1. Create a `app:congos:service:ref:finance_report_writer` group.
+2. Add `finance_report_writer` to `cg_fin_report_write_allow`.
 
-*Add attestation*
+.. figure:: ../figures/201-fin-report-writer.png
+
+---------------------------------------------------------------
+Exercise 201.5.4 Delegate access control to the Finance Manager
+---------------------------------------------------------------
+
+The Finance Manager will directly managed the `finance_report_writer` access
+control list.
+
+1. Create a `ref:role:Finanance Manager` institutional reference group
+2. Grant UPDATE and READ on `finance_report_writer` to `Finance Manager`
+
+.. figure:: ../figures/201-priv-grant-fin-mgr.png
+
+3. Add `asmith989` to `ref:role:Finance Manager`
+4. Review privileges on `finance_report_writer`
+
+.. figure:: ../figures/201-review-priv-fin-mgr.png
+
+5. Trace privileges for Anna Smith
+   (Choose action -> Actions -> Trace privileges)
+
+.. figure:: ../figures/201-anna-smith-trace-priv.png
+
+.. figure:: ../figures/201-anna-smith-trace.png
+
+6. Open a seperate browser and log in with username `asmith989` and password
+   `password`. Add `bthompson392` to `finance_report_writer`
+
+7. Go back to `banderson` browser and review audit log for
+   `finance_report_writer` (finance_report_writer -> More actions -> View audit
+   log)
+
+.. figure:: ../figures/201-fin-report-write-audit.png
+
+----------------------------------------------------------
+Exercise 201.5.4 Add attestation for finance_report_writer
+----------------------------------------------------------
+
+ABAC policy groups are kept in sync automatically as subject attributes change
+in the underlying business systems. Access control lists, on the otherhand,
+tend to drift as soon as they are created. Grouper provides an attestation
+feature that reminds group managers and owners to review group memberships and
+keeps an audit of attestation actions.
 
 #. Add attestation requirement for `advancement_report_writer`.
+   (finance_report_writer -> More actions -> Attestation ->
+   Attestation actions -> Edit attestation settings)
 
+.. figure:: ../figures/201-fin-report-writer-attestation.png
 
+2. Log back in as `asmith989`. Review and attest the
+   `finance_report_writer` membership.
 
-.. |rightarrow| unicode:: U+2192
+.. figure:: ../figures/201-asmith989-attest.png
+
+3. Log back in as `bandereson`. Review attestation audit log.
+   (finance_report_writer -> More actions -> Attestation ->
+   View audit log)
+
+.. figure:: ../figures/201-fin-report-attest-audit-log.png
+
+Congrats! Your Congos access policy is clear, consistent, automated,
+delegated, auditable, and attestable!
+
+Welcome to Grouper Guru Level 7! :)
 
 .. _Grouper Deployment Guide: https://spaces.at.internet2.edu/display/Grouper/Grouper+Deployment+Guide+Work+-TIER+Program
