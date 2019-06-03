@@ -6,14 +6,20 @@ addRootStem("app", "app");
 addRootStem("org", "org");
 addRootStem("test", "test");
 
-addGroup("etc","rolesLoader", "Roles Loader");
+//delStem("401.1.end")
+addRootStem("401.4.1", "401.4.1")
+
+addStem("ref", "iam", "iam");
+addGroup("ref:iam", "global_deny", "global_deny");
+
+group = addGroup("etc","rolesLoader", "Roles Loader");
 groupAddType("etc:rolesLoader", "grouperLoader");
 setGroupAttr("etc:rolesLoader", "grouperLoaderDbName", "grouper");
 setGroupAttr("etc:rolesLoader", "grouperLoaderType", "SQL_GROUP_LIST");
 setGroupAttr("etc:rolesLoader", "grouperLoaderScheduleType", "CRON");
 setGroupAttr("etc:rolesLoader", "grouperLoaderQuartzCron", "0 * * * * ?");
-setGroupAttr("etc:rolesLoader", "grouperLoaderQuartzCron", "0 * * * * ?");
 setGroupAttr("etc:rolesLoader", "grouperLoaderQuery", "select distinct id as SUBJECT_IDENTIFIER, 'ldap' as SUBJECT_SOURCE_ID, CONCAT('ref:', role) as GROUP_NAME from HR_PEOPLE_ROLES");
+loaderRunOneJob(group);
 
 group = new GroupSave(gs).assignName("etc:deptLoader").assignCreateParentStemsIfNotExist(true).save();
 group.getAttributeDelegate().assignAttribute(LoaderLdapUtils.grouperLoaderLdapAttributeDefName()).getAttributeAssign();
@@ -29,3 +35,4 @@ attributeAssign.getAttributeValueDelegate().assignValue(LoaderLdapUtils.grouperL
 attributeAssign.getAttributeValueDelegate().assignValue(LoaderLdapUtils.grouperLoaderLdapSubjectExpressionName(), '${subjectAttributes["subjectId"]}');
 attributeAssign.getAttributeValueDelegate().assignValue(LoaderLdapUtils.grouperLoaderLdapGroupNameExpressionName(), 'ref:dept:${groupAttribute}');
 attributeAssign.getAttributeValueDelegate().assignValue(LoaderLdapUtils.grouperLoaderLdapGroupDisplayNameExpressionName(), '${groupAttribute}');
+loaderRunOneJob(group);

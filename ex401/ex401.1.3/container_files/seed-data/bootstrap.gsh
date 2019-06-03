@@ -1,15 +1,19 @@
 gs = GrouperSession.startRootSession();
 
 addStem("app", "vpn", "vpn");
-addStem("app:vpn", "ref", "ref");
+addStem("app:vpn", "service", "service");
+addStem("app:vpn", "security", "security");
 
-addGroup("app:vpn:ref", "vpn_adhoc", "vpn_adhoc");
-addGroup("app:vpn", "vpn_authorized", "vpn_authorized");
-addGroup("app:vpn", "vpn_allow", "vpn_allow");
-addGroup("app:vpn", "vpn_deny", "vpn_deny");
+addStem("app:vpn:service", "ref", "ref")
+addStem("app:vpn:service", "policy", "policy")
 
-addMember("app:vpn:vpn_allow", "ref:faculty");
-addMember("app:vpn:vpn_allow", "ref:staff");
-addMember("app:vpn:vpn_allow", "app:vpn:ref:vpn_adhoc");
+addGroup("app:vpn:service:ref", "vpn_adhoc", "vpn_adhoc");
+addGroup("app:vpn:service:policy", "vpn_authorized", "vpn_authorized");
+addGroup("app:vpn:service:policy", "vpn_authorized_allow", "vpn_authorized_allow");
+addGroup("app:vpn:service:policy", "vpn_authorized_deny", "vpn_authorized_deny");
 
-addComposite("app:vpn:vpn_authorized", CompositeType.COMPLEMENT, "app:vpn:vpn_allow", "app:vpn:vpn_deny");
+addMember("app:vpn:service:policy:vpn_authorized_allow", "ref:faculty");
+addMember("app:vpn:service:policy:vpn_authorized_allow", "ref:staff");
+addMember("app:vpn:service:policy:vpn_authorized_allow", "app:vpn:service:ref:vpn_adhoc");
+
+addComposite("app:vpn:service:policy:vpn_authorized", CompositeType.COMPLEMENT, "app:vpn:service:policy:vpn_authorized_allow", "app:vpn:service:policy:vpn_authorized_deny");
