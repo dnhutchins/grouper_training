@@ -56,25 +56,26 @@ addMember("app:vpn:service:policy:vpn_authorized_allow", "app:vpn:service:ref:vp
 
 addComposite("app:vpn:service:policy:vpn_authorized", CompositeType.COMPLEMENT, "app:vpn:service:policy:vpn_authorized_allow", "app:vpn:service:policy:vpn_authorized_deny");
 
-// 401.1.3
+// 401.1.3 - not sure what this isn't working... comment out for now.
 // Auto create the PSPNG attributes
-edu.internet2.middleware.grouper.pspng.FullSyncProvisionerFactory.getFullSyncer("pspng_groupOfNames");
-
-pspngAttribute = AttributeDefNameFinder.findByName("etc:pspng:provision_to", true);
-AttributeAssignSave attributeAssignSave = new AttributeAssignSave(gs).assignPrintChangesToSystemOut(true);
-attributeAssignSave.assignAttributeDefName(pspngAttribute);
-attributeAssignSave.assignOwnerGroup(vpn_authorized);
-attributeAssignSave.addValue("pspng_groupOfNames");
-attributeAssignSave.save();
+// edu.internet2.middleware.grouper.pspng.FullSyncProvisionerFactory.getFullSyncer("pspng_groupOfNames");
+// pspngAttribute = AttributeDefNameFinder.findByName("etc:pspng:provision_to", true);
+// AttributeAssignSave attributeAssignSave = new AttributeAssignSave(gs).assignPrintChangesToSystemOut(true);
+// attributeAssignSave.assignAttributeDefName(pspngAttribute);
+// attributeAssignSave.assignOwnerGroup(vpn_authorized);
+// attributeAssignSave.addValue("pspng_groupOfNames");
+// attributeAssignSave.save();
 
 // 401.1.4
 group=addGroup("app:vpn:service:ref", "vpn_consultants", "vpn_consultants");
 group.setDescription("Consultants, must be approved by VP and have expiration date set");
 group.store();
+addMember("app:vpn:service:ref:vpn_adhoc","app:vpn:service:ref:vpn_consultants");
 
 group=addGroup("app:vpn:service:ref", "vpn_ajohnson409", "vpn_ajohnson409");
 group.setDescription("Special project managed by ajohnson409");
 group.store();
+addMember("app:vpn:service:ref:vpn_adhoc","app:vpn:service:ref:vpn_ajohnson409");
 
 addGroup("app:vpn:security", "vpn_ajohnson409_mgr", "vpn_ajohnson409_mgr");
 grantPriv("app:vpn:service:ref:vpn_ajohnson409", "app:vpn:security:vpn_ajohnson409_mgr", AccessPrivilege.UPDATE);
@@ -84,8 +85,10 @@ addMember("app:vpn:security:vpn_ajohnson409_mgr", "ajohnson409")
 GrouperSession.start(findSubject("ajohnson409"))
 addMember("app:vpn:service:ref:vpn_ajohnson409", "bsmith458")
 
+
 // 401.1.5
 // Attestation requirement
+gs = GrouperSession.startRootSession();
 group = GroupFinder.findByName(gs, "app:vpn:service:ref:vpn_ajohnson409");
 attribute = AttributeDefNameFinder.findByName("etc:attribute:attestation:attestation", true);
 attributeAssignSave = new AttributeAssignSave(gs).assignPrintChangesToSystemOut(true);
@@ -125,22 +128,22 @@ addMember("app:vpn:service:ref:vpn_consultants", "jsmith")
 
 // 401.1.4 VPN access audit for list of NetIDs
 addGroup("test:vpn", "vpn_audit_list", "vpn_audit_list");
-addMember("vpn_audit_list","ahenderson36");
-addMember("vpn_audit_list","cpeterson37");
-addMember("vpn_audit_list","jclark39");
-addMember("vpn_audit_list","kbrown62");
-addMember("vpn_audit_list","tpeterson63");
-addMember("vpn_audit_list","pjohnson64");
-addMember("vpn_audit_list","aroberts95");
-addMember("vpn_audit_list","sdavis107");
-addMember("vpn_audit_list","mhenderson109");
-addMember("vpn_audit_list","jvales117");
-addMember("vpn_audit_list","sgrady139");
-addMember("vpn_audit_list","mprice142");
-addMember("vpn_audit_list","mwilliams144");
-addMember("vpn_audit_list","lpeterson153");
-addMember("vpn_audit_list","mvales154");
-addMember("vpn_audit_list","bsmith458");
+addMember("test:vpn:vpn_audit_list","ahenderson36");
+addMember("test:vpn:vpn_audit_list","cpeterson37");
+addMember("test:vpn:vpn_audit_list","jclark39");
+addMember("test:vpn:vpn_audit_list","kbrown62");
+addMember("test:vpn:vpn_audit_list","tpeterson63");
+addMember("test:vpn:vpn_audit_list","pjohnson64");
+addMember("test:vpn:vpn_audit_list","aroberts95");
+addMember("test:vpn:vpn_audit_list","sdavis107");
+addMember("test:vpn:vpn_audit_list","mhenderson109");
+addMember("test:vpn:vpn_audit_list","jvales117");
+addMember("test:vpn:vpn_audit_list","sgrady139");
+addMember("test:vpn:vpn_audit_list","mprice142");
+addMember("test:vpn:vpn_audit_list","mwilliams144");
+addMember("test:vpn:vpn_audit_list","lpeterson153");
+addMember("test:vpn:vpn_audit_list","mvales154");
+addMember("test:vpn:vpn_audit_list","bsmith458");
 
 addGroup("test:vpn", "vpn_audit", "vpn_audit");
 addComposite("test:vpn:vpn_audit", CompositeType.INTERSECTION, "app:vpn:service:policy:vpn_authorized", "test:vpn:vpn_audit_list");
