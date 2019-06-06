@@ -1,6 +1,6 @@
 gs = GrouperSession.startRootSession();
 delStem("401.1.1")
-addRootStem("401.4.end", "401.4.end")
+addRootStem("401.1.end", "401.1.end")
 
 // 401.1.1
 addStem("test", "vpn", "vpn");
@@ -19,7 +19,12 @@ attributeAssign.getAttributeValueDelegate().assignValue(LoaderLdapUtils.grouperL
 attributeAssign.getAttributeValueDelegate().assignValue(LoaderLdapUtils.grouperLoaderLdapSubjectExpressionName(), "\${loaderLdapElUtils.convertDnToSpecificValue(subjectId)}");
 loaderRunOneJob(group);
 
-//Create the groups that do the grouper math to analyze the tables.
+// stub out loader jobs
+addGroup("ref", "faculty", "faculty");
+addGroup("ref", "staff", "staff");
+addGroup("ref", "student", "student");
+
+// Create the groups that do the grouper math to analyze the tables.
 addGroup("test:vpn", "vpn_faculty", "vpn_faculty");
 addComposite("test:vpn:vpn_faculty", CompositeType.INTERSECTION, "test:vpn:vpn_legacy", "ref:faculty");
 addGroup("test:vpn", "vpn_staff", "vpn_staff");
@@ -79,26 +84,64 @@ addMember("app:vpn:security:vpn_ajohnson409_mgr", "ajohnson409")
 GrouperSession.start(findSubject("ajohnson409"))
 addMember("app:vpn:service:ref:vpn_ajohnson409", "bsmith458")
 
+// 401.1.5
+// Attestation requirement
+group = GroupFinder.findByName(gs, "app:vpn:service:ref:vpn_ajohnson409");
+attribute = AttributeDefNameFinder.findByName("etc:attribute:attestation:attestation", true);
+attributeAssignSave = new AttributeAssignSave(gs).assignPrintChangesToSystemOut(true);
+attributeAssignSave.assignAttributeDefName(attribute);
+attributeAssignSave.assignOwnerGroup(group);
 
+attributeAssignOnAssignSave = new AttributeAssignSave(gs);
+attributeAssignOnAssignSave.assignAttributeAssignType(AttributeAssignType.group_asgn);
+attestationSendEmailAttributeDefName = AttributeDefNameFinder.findByName("etc:attribute:attestation:attestationSendEmail", false);
+attributeAssignOnAssignSave.assignAttributeDefName(attestationSendEmailAttributeDefName);
+attributeAssignOnAssignSave.addValue("true");
+attributeAssignSave.addAttributeAssignOnThisAssignment(attributeAssignOnAssignSave);
 
+attributeAssignOnAssignSave = new AttributeAssignSave(gs);
+attributeAssignOnAssignSave.assignAttributeAssignType(AttributeAssignType.group_asgn);
+attributeDefName = AttributeDefNameFinder.findByName("etc:attribute:attestation:attestationDirectAssignment", false);
+attributeAssignOnAssignSave.assignAttributeDefName(attributeDefName);
+attributeAssignOnAssignSave.addValue("true");
+attributeAssignSave.addAttributeAssignOnThisAssignment(attributeAssignOnAssignSave);
 
-addGroup("test", "cisoQuestionableVpnUsersList", "CISO VPN Questionable VPN List");
-addMember("test:cisoQuestionableVpnUsersList","ahenderson36");
-addMember("test:cisoQuestionableVpnUsersList","cpeterson37");
-addMember("test:cisoQuestionableVpnUsersList","jclark39");
-addMember("test:cisoQuestionableVpnUsersList","kbrown62");
-addMember("test:cisoQuestionableVpnUsersList","tpeterson63");
-addMember("test:cisoQuestionableVpnUsersList","pjohnson64");
-addMember("test:cisoQuestionableVpnUsersList","aroberts95");
-addMember("test:cisoQuestionableVpnUsersList","sdavis107");
-addMember("test:cisoQuestionableVpnUsersList","mhenderson109");
-addMember("test:cisoQuestionableVpnUsersList","jvales117");
-addMember("test:cisoQuestionableVpnUsersList","sgrady139");
-addMember("test:cisoQuestionableVpnUsersList","mprice142");
-addMember("test:cisoQuestionableVpnUsersList","mwilliams144");
-addMember("test:cisoQuestionableVpnUsersList","lpeterson153");
-addMember("test:cisoQuestionableVpnUsersList","mvales154");
+attributeAssign = attributeAssignSave.save();
 
-addGroup("test", "whyvpnaccess", "Why Do They Have VPN Access");
-addComposite("test:whyvpnaccess", CompositeType.INTERSECTION, "app:vpn:vpn_authorized", "test:cisoQuestionableVpnUsersList");
+// Automatically expire vpn_consultant subject memberships in 180 days
+numberOfDays = 180;
+actAs = SubjectFinder.findRootSubject();
+vpn_consultants = GroupFinder.findByName(gs, "app:vpn:service:ref:vpn_consultants");
+attribAssign = vpn_consultants.getAttributeDelegate().addAttribute(RuleUtils.ruleAttributeDefName()).getAttributeAssign();
+attribValueDelegate = attribAssign.getAttributeValueDelegate();
+attribValueDelegate.assignValue(RuleUtils.ruleActAsSubjectSourceIdName(), actAs.getSourceId());
+attribValueDelegate.assignValue(RuleUtils.ruleActAsSubjectIdName(), actAs.getId());
+attribValueDelegate.assignValue(RuleUtils.ruleCheckTypeName(), RuleCheckType.membershipAdd.name());
+attribValueDelegate.assignValue(RuleUtils.ruleThenEnumName(), RuleThenEnum.assignMembershipDisabledDaysForOwnerGroupId.name());
+attribValueDelegate.assignValue(RuleUtils.ruleThenEnumArg0Name(), numberOfDays.toString());
+attribValueDelegate.assignValue(RuleUtils.ruleThenEnumArg1Name(), "T");
+
+addMember("app:vpn:service:ref:vpn_consultants", "jsmith")
+
+// 401.1.4 VPN access audit for list of NetIDs
+addGroup("test:vpn", "vpn_audit_list", "vpn_audit_list");
+addMember("vpn_audit_list","ahenderson36");
+addMember("vpn_audit_list","cpeterson37");
+addMember("vpn_audit_list","jclark39");
+addMember("vpn_audit_list","kbrown62");
+addMember("vpn_audit_list","tpeterson63");
+addMember("vpn_audit_list","pjohnson64");
+addMember("vpn_audit_list","aroberts95");
+addMember("vpn_audit_list","sdavis107");
+addMember("vpn_audit_list","mhenderson109");
+addMember("vpn_audit_list","jvales117");
+addMember("vpn_audit_list","sgrady139");
+addMember("vpn_audit_list","mprice142");
+addMember("vpn_audit_list","mwilliams144");
+addMember("vpn_audit_list","lpeterson153");
+addMember("vpn_audit_list","mvales154");
+addMember("vpn_audit_list","bsmith458");
+
+addGroup("test:vpn", "vpn_audit", "vpn_audit");
+addComposite("test:vpn:vpn_audit", CompositeType.INTERSECTION, "app:vpn:service:policy:vpn_authorized", "test:vpn:vpn_audit_list");
 

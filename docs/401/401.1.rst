@@ -156,7 +156,7 @@ contractors, etc.)"
 #. Compare counts between `vpn_legacy` and `vpn_authorized`.
    `vpn_authorized`. Why are they different?
 
- 
+
 ----------------------------------------------------
 Exercise 401.1.3 Export `vpn_authorized` to OpenLDAP
 ----------------------------------------------------
@@ -220,7 +220,8 @@ group.
    delegated to a professor.
 #. Add each of these ACLs to `vpn_adhoc`
 
- 
+.. figure:: ../figures/401-vpn-acls-visual.png
+
 +++++++++++++++++++++++++++++++++++
 Professor Johnson's Special Project
 +++++++++++++++++++++++++++++++++++
@@ -252,72 +253,160 @@ we must create a security group and grant it appropriate permissions:
 
 .. figure:: ../figures/401-bsmith458-trace.png
 
-""""""""""""""""""""""
-Put Limits on Policies
-""""""""""""""""""""""
+--------------------------------------------------------
+Exercise 401.1.5 Implement additional policy constraints
+--------------------------------------------------------
 
 It is the IAM team's responsibility to make sure that VPN access is granted to
-the correct subjects.  Putting some limits in place can help make sure improper
-access is not granted.  Attestation makes sure that access which was granted in
+the correct subjects. Putting some limits in place can help make sure improper
+access is not granted. Attestation makes sure that access which was granted in
 the past is still appropriate.
 
-#. Create `ref:iam:global_deny`.  This reference group represents a broad cohort
-   of subjects that should not be granted access to most policies.  Subjects
-   that fall into this category may be:
+#. The `ref:iam:global_deny` reference group represents a broad cohort
+   of subjects that should not be granted access. Subjects that fall into
+   this category may include:
 
-   * Termed "with cause"
+   * Termed with cause
    * Deceased
    * Other reasons
 
-#. Add `ref:iam:global_deny` to the `app:vpn:vpn_deny` policy.
-#. Add attestation requirements to the `app:vpn:ref:vpn_ajohnson409` ACL.
+#. Add `ref:iam:global_deny` to the `vpn_authorized_deny` policy group.
 
-    * Create attestation requirements (30 days).
-    * Review notification settings.
-    * View :guilabel:`home` -> :guilabel:`misc` -> :guilabel:`attestation settings`.
-    * Log in as `ajohnson409` and attest! 
-    * View audit log to see who attested group.
+#. Add 30 day attestation requirements to the `vpn_ajohnson409` ACL.
+   (vpn_ajohnson409 -> More actions -> Attestation -> Attestion actions ->
+   Edit attestion settings...)
 
-#. Add automatic age-off / lifecycle - exceptions only good for 180 days.
-   There are 2 techniques:
+.. figure:: ../figures/401-vpn-attest.png
 
-   * Add member, edit membership, add membership end date.
-   * Better approach, use grouper rule to automatically add end date to
-     members.  See :ref:`the appendix <apdx-401.1.4-auto-end-date>` for
-     details.
+#. Review attestations (Miscellaneous -> Attestation)
 
-#. Use Grouper 2.4 affiliation-based deprovisioning.
+.. figure:: ../figures/401-vpn-misc-attest.png
 
-All access to VPN is now traceable to natural language policy and known
-exceptions! Policy is enforced automatically and kept in sync with changing
-subject attributes. Exceptions are known and managed with a defined
-attestation lifecycle. VPN policy participates in the global deny policy.
+Consultant exceptions should expire automatically after 180 days. There are 2
+techniques to accomplish this in Grouper. The first is to simply edit the
+membership end date after you have added a subject to a group. The second, and
+more reliable, is to have a rule that runs every time a subject is added which
+autotmatically sets the membership end date. Let's implement the second
+approach.
 
-----------------
-Exercise 401.1.5
-----------------
+#. Run `./gte-shell 401.1.1` to get a command prompt.
 
-*CISO is working on a investigation and wants to know if this particular NetID
-"blee172" has access to the VPN now or in the past 90 days?*
+#. Run `./bin/gsh` to start the Grouper shell
+
+#. Paste in the following gsh script:
+
+.. code-block:: groovy
+
+   // Automatically expire vpn_consultant subject memberships in 180 days
+   gs = GrouperSession.startRootSession();
+   numberOfDays = 180;
+   actAs = SubjectFinder.findRootSubject();
+   vpn_consultants = GroupFinder.findByName(gs, "app:vpn:service:ref:vpn_consultants");
+   attribAssign = vpn_consultants.getAttributeDelegate().addAttribute(RuleUtils.ruleAttributeDefName()).getAttributeAssign();
+   attribValueDelegate = attribAssign.getAttributeValueDelegate();
+   attribValueDelegate.assignValue(RuleUtils.ruleActAsSubjectSourceIdName(), actAs.getSourceId());
+   attribValueDelegate.assignValue(RuleUtils.ruleActAsSubjectIdName(), actAs.getId());
+   attribValueDelegate.assignValue(RuleUtils.ruleCheckTypeName(), RuleCheckType.membershipAdd.name());
+   attribValueDelegate.assignValue(RuleUtils.ruleThenEnumName(), RuleThenEnum.assignMembershipDisabledDaysForOwnerGroupId.name());
+   attribValueDelegate.assignValue(RuleUtils.ruleThenEnumArg0Name(), numberOfDays.toString());
+   attribValueDelegate.assignValue(RuleUtils.ruleThenEnumArg1Name(), "T");
+
+#. Add `jsmith` to `vpn_consultants` and then review the membership end date.
+   (vpn_consultants -> jsmith -> Edit membership and privileges)
+
+.. figure:: ../figures/401-vpn-add-jsmith.png
+
+.. figure:: ../figures/401-vpn-jsmith-end-date.png
+
+---------------------------------------------------
+Exercise 401.1.5 Does "blee172" have access to VPN?
+---------------------------------------------------
+
+The CISO is working on a investigation and wants to know if this particular
+NetID "blee172" has access to the VPN now or in the past 90 days?
 
 #. Navigate to `apps:vpn:vpn_authorized`.
-#. Search for so-and-so.
-#. Open up phpMyAdmin (https://localhost:8443/phpmyadmin/)
-#. Open Views, Go to SQL tab, paste in
-   :ref:`PIT query <apdx-401.1.5-pit-query>`, Go!
+#. Search for `blee172` and trace membership.
 
-.. _apdx-401.1.5-pit-query:
+.. figure:: ../figures/401-vpn-trace-blee172.png
 
-----------------
-Exercise 401.1.6
-----------------
+Betty currently has access since she is staff.
+The Point-In-Time (PIT) tables know if she's had access in the last 90 days.
 
-*CISO wants to know if anyone on this list of NetIDs has access to the VPN? And
-why?*
+3. Log in to phpMyAdmin (https://localhost:8443/phpmyadmin/) with username
+`root` and a blank password.
 
-#. Import list to a test group.
-#. Intersect with `vpn_authorized`.
-#. Trace membership to determine what level of access and why.
+4. In the database explore, open grouper Views, then go to SQL tab, paste in
+   the following block:
+
+.. code-block:: SQL
+
+   SELECT 
+       gpm.SUBJECT_ID, 
+       gpg.NAME, 
+       FROM_UNIXTIME(gpmav.MEMBERSHIP_START_TIME / 1000000) start_time, 
+       FROM_UNIXTIME(gpmav.MEMBERSHIP_END_TIME / 1000000) end_time 
+   FROM grouper_pit_memberships_all_v gpmav 
+       INNER JOIN grouper_pit_groups gpg 
+           ON gpmav.owner_group_id = gpg.id 
+       INNER JOIN grouper_pit_members gpm 
+           ON gpmav.MEMBER_ID = gpm.id 
+       INNER JOIN grouper_pit_fields gpf 
+           ON gpmav.field_id = gpf.id
+   WHERE gpg.name = 'app:vpn:service:policy:vpn_authorized' 
+   AND gpm.subject_type = 'person'
+   AND gpf.name = 'members'
+   ORDER BY gpmav.MEMBERSHIP_START_TIME DESC 
+   ;
+
+5. Filter rows for `blee172`. This shows Betty's earliest access was
+   2019-06-03.
+
+.. figure:: ../figures/401-vpn-blee172-pit-query.png
+
+---------------------------------------------------
+Exercise 401.1.6 VPN access audit or list of NetIDs
+---------------------------------------------------
+
+CISO wants to know if anyone on this list of NetIDs has access to the VPN? And
+why?
+
+1. Import the following list to `test:vpn:vpn_audit_list`
+
+.. code-block::
+
+  ahenderson36
+  cpeterson37
+  jclark39
+  kbrown62
+  tpeterson63
+  pjohnson64
+  aroberts95
+  sdavis107
+  mhenderson109
+  jvales117
+  sgrady139
+  mprice142
+  mwilliams144
+  lpeterson153
+  mvales154
+  bsmith458
+
+2. Create `test:vpn:vpn_audit`
+
+3. Edit composite on `vpn_audit` and create an interection of `vpn_authorized`
+   and `vpn_audit_list`. This will tell us who in `vpn_audit_list` is also in
+   `vpn_authorized`.
+
+#. Review and trace membership to determine why they have access.
+
+.. figure:: ../figures/401-vpn-audit-list.png
+
+Congrats! All access to VPN is now traceable to natural language policy and
+known exceptions! Policy is enforced automatically and kept in sync with
+changing subject attributes. Exceptions are known and managed with a defined
+attestation lifecycle. Exception managment is distributed and VPN policy
+participates in the global deny policy.
 
 .. _Grouper Deployment Guide: https://spaces.at.internet2.edu/display/Grouper/Grouper+Deployment+Guide+Work+-TIER+Program
 .. _`PSPNG`: https://spaces.at.internet2.edu/x/iwfSBQ
