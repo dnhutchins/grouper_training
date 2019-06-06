@@ -18,7 +18,7 @@ Lab Components
 * Grouper
 * PSPNG
 * OpenLDAP
-* `Grouper Deployment Guide <https://spaces.at.internet2.edu/display/Grouper/Grouper+Deployment+Guide+Work+-TIER+Program>`_
+* `Grouper Deployment Guide`_
 
 --------
 Overview
@@ -26,7 +26,7 @@ Overview
 
 VPN access is currently controlled by an LDAP group. You are not exactly sure
 who is in the group or what the policy is, but have a general notion of a
-natural language policy as all active faculty and staff, plus exceptions.
+natural language policy as all active faculty and staff, plus some exceptions.
 However, people have been added to the VPN ldap group mostly by hand over many
 years with little to no lifecycle management in place. There is no easy way to
 determine who should or should not be in the group. We just had a major breach
@@ -34,116 +34,176 @@ which was facilitated by access to the VPN. The compromised account used in the
 breach was given to a former consultant and was never deprovisioned. CISO is
 coming down hard on us to clean up our act!
 
-----------------
-Exercise 401.1.1
-----------------
+------------------------------------------------------
+Exercise 401.1.1 Analyze legacy VPN authoization group
+------------------------------------------------------
 
-*Gain insight into who exactly has access to the VPN based on the cohorts found
-in the legacy VPN authorization group.*
+Gain insight into who exactly has access to the VPN based on the cohorts found
+in the legacy VPN authorization group. We'll do this by using well established
+reference groups for faculty, staff, and students.
 
-""""""""""""""""""""""
-Import Legacy VPN Data
-""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""
+Import Legacy VPN authorization group
+"""""""""""""""""""""""""""""""""""""
 
-* Create a loader job from the existing ldap vpn authorization group.
-* Make sure grouper group counts matches ldap group counts.
-* First thing to notice is you can eyeball the types of subjects in Grouper UI.
+First review the legacy VPN authorization group in LDAP.
+
+#. Log in to https://localhost:8443/phpldapadmin/ with username
+   `cn=root,dc=internet2,dc=edu` and password `password`
+
+#. Set the Search Filter to
+   "memberOf=cn=vpn_users,ou=groups,dc=internet2,dc=edu"
+   and Search Results to 5000. How many subjects are in `vpn_users`?
+
+.. figure:: ../figures/401-legacy-ldap-vpn.png
+
+3. Create a `vpn` folder under the `test` folder
+4. Create a `vpn_legacy` group to load the ldap group
+5. Added Loader settings to the `vpn_legacy` group
+   (vpn_legacy -> More -> Loader -> Loader actions -> Edit loader
+   configuration)
+
+* Loader: Yes, has loader configuration
+* Source Type: LDAP
+* Loader type: LDAP_SIMPLE
+* Server ID: demo
+* LDAP filter: (cn=vpn_users)
+* Subject attribute name: member
+* Search base DN: dc=internet2,dc=edu
+* Schedule: 0 * * * * ?
+* Subject source ID: ldap - EDU Ldap
+* Subject lookup type: subjectid
+* Search scope: SUBTREE_SCOPE
+* Priority:
+* Subject expression:${loaderLdapElUtils.convertDnToSpecificValue(subjectId)}
+* Require members in other group(s):
+
+6. Run Loader diagnostics (Loader actions -> Loader diagnostics -> Run loader
+   diagnostics)
+
+.. figure:: ../figures/401-ldap-loader-diag.png
+
+7. Run loader (Loader actions -> Run loader process to sync group)
+8. Review loader logs. How many subject added?
+   (Loader actions -> View loader logs)
+
+.. figure:: ../figures/401-ldap-loader-logs.png
+
+9. Review `vpn_legacy` members
+
+.. figure:: ../figures/401-vpn-legacy-members.png
 
 .. note::
-    For small enough groups this might be sufficient, but our VPN group has
-    hundreds of subjects.
+    The first thing to notice is you can eyeball the types of subjects in the
+    Grouper UI. For small groups this might be sufficient, but our VPN group
+    has hundreds of subjects.
 
-"""""""""""""""""""""""""""""""
-Use Set Operations for Analysis
-"""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""
+Use group math to gain insight into vpn_legacy
+""""""""""""""""""""""""""""""""""""""""""""""
 
-Use intersect composite groups to gain insight into types of cohorts
+We will use test composite groups to gain insight into the types of cohorts in
+`vpn_legacy` by intersecting it with well known reference groups for faculy,
+staff, and student.
 
-* `test:vpn:vpn_faculty`: Intersect `ref:faculty` with `test:vpn:vpn_legacy`.
-  This yields faculty count (almost) - aha! This explains help desk calls!
+1. Create `test:vpn:vpn_faculty` group, and make it a composite intersection of
+`ref:faculty` with `test:vpn:vpn_legacy`. This yields faculty count (almost) -
+aha! This explains those help desk calls! All faculty should automatically have
+access to VPN by policy, but they don't.
 
-* `test:vpn:vpn_employees`: Intersect `ref:staff` with `test:vpn:vpn_legacy`.
-  This yields staff count (again almost!)
+2. Create `test:vpn:vpn_staff` group, and make it a composite intersection of
+`ref:staff` with `test:vpn:vpn_legacy`. This yields staff count (again
+almost!). We're also
+missing some staff.
 
-* `test:vpn:vpn_students`: Intersect `ref:students` with `test:vpn:vpn_legacy`.
-  This yields a small count - aha!
+3. Create `test:vpn:vpn_students` group, and make it a composite intersect
+`ref:students` with `test:vpn:vpn_legacy`. This yields a small count. As we
+expected some students have been added to the vpn access control group as
+exceptions, but we don't
+know why, when, or by whom.
 
-* Totals don’t add up...so we have other cohorts too. Who are they?
+Hmm, the totals member counts don’t add up...so we have other cohorts too.
+Who are they? Set up a composite group to filter out "other cohorts".
 
-* Set up composite group to filter out "other cohorts".
+4. Create a `test:vpn:other_cohorts` group.
 
-* `test:vpn:other_cohorts` = `...:vpn_legacy` - (`...:vpn_faculty` + 
-  `...:vpn_employees` + `...:vpn_students`)
+5. Create `vpn_facstaffstudent` and add `vpn_faculty`,
+   `vpn_staff`, `vpn_students` as members.
 
-  * create `...:vpn_facstaffstudent` (include `...:vpn_faculty`,
-       `...:vpn_employees`, `...:vpn_students`)
-  * `...:other_cohorts` = `...:vpn_legacy` - `...:vpn_facstaffstudent`
+6. Make `other_cohorts` a composite of `vpn_legacy` - `vpn_facstaffstudent`
 
-* "Other cohorts" is a relatively small number ... can now eyeball those.
+`Other cohorts` is a relatively small number. We can now eyeball those.
 
-    * fac/staff that are now longer active
-    * Contractors, sponsored accounts, etc
-    * Others
+.. figure:: ../figures/401-other-cohorts.png
 
-----------------
-Exercise 401.1.2
-----------------
+--------------------------------------------------------------------
+Exercise 401.1.2 Translate natural language policy to digital policy
+--------------------------------------------------------------------
 
-*State the natural language policy and create VPN application group and digital
-policy.*
+The natural language policy is "Faculty, staff and exceptions (some students,
+contractors, etc.)"
 
-#. Natural language policy: "Faculty, staff and exceptions (some students,
-   contractors, etc.)"
-#. Construct `app:vpn:vpn_authorized|allow|deny` policy groups from appropriate
-   reference groups.
+#. Use the application template and the policy group template to create a new
+   `vpn` application folder and policy group called `vpn_authorized`
 
-   * `ref:faculty`
-   * `ref:employees`
-   * `app:vpn:ref:vpn_adhoc`
+#. Create a new application specific reference group
+   `app:vpn:service:ref:vpn_adhoc`.
 
-#. Compare counts between ldap vpn group and `app:vpn:vpn_authorized`.
-   `vpn_authorized` should be different from the legacy group in the following
-   ways:
+#. Add `faculty`, `staff`, and `vpn_adhoc` to `vpn_authorized_allow`
 
-   * only active accounts
-   * only current exceptions (none!)
+.. figure:: ../figures/401-vpn-policy.png
 
-----------------
-Exercise 401.1.3
-----------------
+#. Compare counts between `vpn_legacy` and `vpn_authorized`.
+   `vpn_authorized`. Why are they different?
 
-*Export `vpn_authorized` to LDAP for use with new VPN config.*
 
-#. Mark/config `vpn_authorized` to export to LDAP.  The PSPNG needs to be
-   configured to provision group members. 
+----------------------------------------------------
+Exercise 401.1.3 Export `vpn_authorized` to OpenLDAP
+----------------------------------------------------
+
+#. Configure `PSPNG`_ to provision group members to OpenLDAP groupOfNames
 
    .. literalinclude:: examples/401.1.3-pspng-config.properties
         :language: properties
         :lines: 72-
-        :caption: grouper-loader.properties
+        :caption: /opt/grouper/grouper.apiBinary/conf/grouper-loader.properties
         :name: 401.1.3-pspng-groupofnames
         :linenos:
 
-#. Open a ticket to switch VPN config to use vpn_authorized.
-#. Bask in the glow of TIER IAM goodness...
+2. Mark `vpn_authorized` with the PSPNG `provision_to` attribute with a value
+of `pspng_groupOfNames`.
 
-   * Automatic provisioning/deprovisioning for faculty and staff.
-   * Natural language policy - clear and visible.
-   * Exceptions management:
+.. figure:: ../figures/401-vpn-provision-to.png
 
-        * Still dealing with tickets to add and remove subjects (well at least to add!).
-        * No way to distinguish different exceptions.
-        * Who is responsible for lifecycle, attestation, etc.?
+3. Run the CHANGLE_LOG_consumer_pspng_groupOfNames
+   (Miscellaneous -> All deamon jobs -> Job Actions -> Run job now)
 
-----------------
-Exercise 401.1.4
-----------------
+4. Log in to https://localhost:8443/phpldapadmin and navigate to ou=groups.
+   Review your new Grouper managed vpn access control group!
 
-*Implement distributed exception management.*
+.. figure:: ../figures/401-vpn-authorized-ldap.png
+
+5. Open a service ticket to have the network team switch the VPN
+   config to use vpn_authorized.
+
+6. Bask in the glow of IAM greatness... :)
+
+* Automatic provisioning/deprovisioning of VPN access for faculty and staff.
+* Natural language policy - clear and visible.
+* Exceptions management
+
+This is a huge improvement! However, we are still dealing with tickets to
+add and remove subjects (well at least to add!) to `vpn_adhoc` group.
+There is no way to distinguish different exceptions, and it is not
+clear who is responsible for lifecycle and attestation.
+
+------------------------------------------------------------
+Exercise 401.1.4 Implement distributed exception management.
+------------------------------------------------------------
 
 We initially added exceptions to single application reference group. This a
 good step, but we still lack an easy way to know the "who and why" of
-exceptions. IAM still also getting tickets to add people. In some case, the
+exceptions. IAM is still getting tickets to add people. In some case, the
 expiration is known and added, but most are a one way street-- back to old
 practices. How can we do better?
 
@@ -151,99 +211,202 @@ practices. How can we do better?
 Organize Exceptions to Policy
 """""""""""""""""""""""""""""
 
-Each policy exception is represented by an application specific reference group.
+Each policy exception is represented by an application specific reference
+group.
 
 #. Create `app:vpn:ref:vpn_consultants`.  This ACL will be managed by the IAM
    team.
 #. Create `app:vpn:ref:vpn_ajohnson409`.  Management of this ACL will be
    delegated to a professor.
- 
+#. Add each of these ACLs to `vpn_adhoc`
+
+.. figure:: ../figures/401-vpn-acls-visual.png
+
 +++++++++++++++++++++++++++++++++++
 Professor Johnson's Special Project
 +++++++++++++++++++++++++++++++++++
 
-Professor Johnson (**ajohnson409**) runs a special project that includes various online
-resources that can only be accessed from the VPN.  The professor should be able to
-control who is allowed to have VPN access for the purpose of accessing his
-project's resources.
+Professor Johnson (**ajohnson409**) runs a special project that includes
+various online resources that can only be accessed from the VPN.  The professor
+should be able to control who is allowed to have VPN access for the purpose of
+accessing his project's resources.
 
-ACL `app:vpn:ref:vpn_ajohnson409` represents subjects that will access resources
-related to Professor Johnson's special project.  In order to delegate management
-of this ACL to the professor, we must create a security group and grant it
-appropriate permissions:
+We will create an access control list (ACL) `app:vpn:ref:vpn_ajohnson409` to
+represent subjects that will access resources related to Professor Johnson's
+special project.  In order to delegate management of this ACL to the professor,
+we must create a security group and grant it appropriate permissions:
 
-#. Create `app:vpn:etc:vpn_ajohnson409_mgr`.
-#. Add subject `ajohnson409` to this security group. 
-#. Grant *UPDATE* and *READ* access on the `...:ajohnson409` access control
-   list to this security group.
-#. In a private browser window, log into the GTE was account `ajohnson409`, 
-   password "password".  You should be able to add and remove members from the
-   `vpn_ajohnson409` ACL.
+#. Create `app:vpn:security:vpn_ajohnson409_mgr`.
+#. Grant `vpn_ajohnson_mgr` *UPDATE* and *READ* to `vpn_ajohnson409`
+#. Add subject `ajohnson409` to this security group.
+#. Review the privileges on `vpn_johnson409`
 
-""""""""""""""""""""""
-Put Limits on Policies
-""""""""""""""""""""""
+.. figure:: ../figures/401-vpn-ajohnson409-privs.png
 
-It is the IAM team's responsibility to make sure that VPN access is granted to the
-correct subjects.  Putting some limits in place can help make sure improper
-access is not granted.  Attestation makes sure that access which was granted
-in the past is still appropriate.
+5. In a private browser window, log in to http://localhost:8443/grouper with
+   username `ajohnson409` and password `password`. You should be able to add
+   and remove members from the `vpn_ajohnson409` ACL.
+6. Add student `bsmith458` to `vpn_ajohnson409`
+7. Find `bsmith458` in `vpn_authorized` and trace membership
 
-#. Create `ref:iam:global_deny`.  This reference group represents a broad cohort
-   of subjects that should not be granted access to most policies.  Subjects
-   that fall into this category may be:
+.. figure:: ../figures/401-bsmith458-trace-membership.png
 
-   * Termed "with cause"
+.. figure:: ../figures/401-bsmith458-trace.png
+
+--------------------------------------------------------
+Exercise 401.1.5 Implement additional policy constraints
+--------------------------------------------------------
+
+It is the IAM team's responsibility to make sure that VPN access is granted to
+the correct subjects. Putting some limits in place can help make sure improper
+access is not granted. Attestation makes sure that access which was granted in
+the past is still appropriate.
+
+#. The `ref:iam:global_deny` reference group represents a broad cohort
+   of subjects that should not be granted access. Subjects that fall into
+   this category may include:
+
+   * Termed with cause
    * Deceased
    * Other reasons
 
-#. Add `ref:iam:global_deny` to the `app:vpn:vpn_deny` policy.
-#. Add attestation requirements to the `app:vpn:ref:vpn_ajohnson409` ACL.
+#. Add `ref:iam:global_deny` to the `vpn_authorized_deny` policy group.
 
-    * Create attestation requirements (30 days).
-    * Review notification settings.
-    * View :guilabel:`home` -> :guilabel:`misc` -> :guilabel:`attestation settings`.
-    * Log in as `ajohnson409` and attest! 
-    * View audit log to see who attested group.
+#. Add 30 day attestation requirements to the `vpn_ajohnson409` ACL.
+   (vpn_ajohnson409 -> More actions -> Attestation -> Attestion actions ->
+   Edit attestion settings...)
 
-#. Add automatic age-off / lifecycle - exceptions only good for 180 days.
-   There are 2 techniques:
+.. figure:: ../figures/401-vpn-attest.png
 
-   * Add member, edit membership, add membership end date.
-   * Better approach, use grouper rule to automatically add end date to
-     members.  See :ref:`the appendix <apdx-401.1.4-auto-end-date>` for
-     details.
+#. Review attestations (Miscellaneous -> Attestation)
 
-#. Use Grouper 2.4 affiliation-based deprovisioning.
+.. figure:: ../figures/401-vpn-misc-attest.png
 
-All access to VPN is now traceable to natural language policy and known
-exceptions! Policy is enforced automatically and kept in sync with changing
-subject attributes. Exceptions are known and managed with a defined
-attestation lifecycle. VPN policy participates in the global deny policy.
+Consultant exceptions should expire automatically after 180 days. There are 2
+techniques to accomplish this in Grouper. The first is to simply edit the
+membership end date after you have added a subject to a group. The second, and
+more reliable, is to have a rule that runs every time a subject is added which
+autotmatically sets the membership end date. Let's implement the second
+approach.
 
-----------------
-Exercise 401.1.5
-----------------
+#. Run `./gte-shell 401.1.1` to get a command prompt.
 
-*CISO is working on a investigation and wants to know if this particular NetID
-"blee172" has access to the VPN now or in the past 90 days?*
+#. Run `./bin/gsh` to start the Grouper shell
+
+#. Paste in the following gsh script:
+
+.. code-block:: groovy
+
+   // Automatically expire vpn_consultant subject memberships in 180 days
+   gs = GrouperSession.startRootSession();
+   numberOfDays = 180;
+   actAs = SubjectFinder.findRootSubject();
+   vpn_consultants = GroupFinder.findByName(gs, "app:vpn:service:ref:vpn_consultants");
+   attribAssign = vpn_consultants.getAttributeDelegate().addAttribute(RuleUtils.ruleAttributeDefName()).getAttributeAssign();
+   attribValueDelegate = attribAssign.getAttributeValueDelegate();
+   attribValueDelegate.assignValue(RuleUtils.ruleActAsSubjectSourceIdName(), actAs.getSourceId());
+   attribValueDelegate.assignValue(RuleUtils.ruleActAsSubjectIdName(), actAs.getId());
+   attribValueDelegate.assignValue(RuleUtils.ruleCheckTypeName(), RuleCheckType.membershipAdd.name());
+   attribValueDelegate.assignValue(RuleUtils.ruleThenEnumName(), RuleThenEnum.assignMembershipDisabledDaysForOwnerGroupId.name());
+   attribValueDelegate.assignValue(RuleUtils.ruleThenEnumArg0Name(), numberOfDays.toString());
+   attribValueDelegate.assignValue(RuleUtils.ruleThenEnumArg1Name(), "T");
+
+#. Add `jsmith` to `vpn_consultants` and then review the membership end date.
+   (vpn_consultants -> jsmith -> Edit membership and privileges)
+
+.. figure:: ../figures/401-vpn-add-jsmith.png
+
+.. figure:: ../figures/401-vpn-jsmith-end-date.png
+
+---------------------------------------------------
+Exercise 401.1.5 Does "blee172" have access to VPN?
+---------------------------------------------------
+
+The CISO is working on a investigation and wants to know if this particular
+NetID "blee172" has access to the VPN now or in the past 90 days?
 
 #. Navigate to `apps:vpn:vpn_authorized`.
-#. Search for so-and-so.
-#. Open up phpMyAdmin (https://localhost:8443/phpmyadmin/)
-#. Open Views, Go to SQL tab, paste in
-   :ref:`PIT query <apdx-401.1.5-pit-query>`, Go!
+#. Search for `blee172` and trace membership.
 
-.. _apdx-401.1.5-pit-query:
+.. figure:: ../figures/401-vpn-trace-blee172.png
 
-----------------
-Exercise 401.1.6
-----------------
+Betty currently has access since she is staff.
+The Point-In-Time (PIT) tables know if she's had access in the last 90 days.
 
-*CISO wants to know if anyone on this list of NetIDs has access to the VPN? And
-why?*
+3. Log in to phpMyAdmin (https://localhost:8443/phpmyadmin/) with username
+`root` and a blank password.
 
-#. Import list to a test group.
-#. Intersect with `vpn_authorized`.
-#. Trace membership to determine what level of access and why.
+4. In the database explore, open grouper Views, then go to SQL tab, paste in
+   the following block:
 
+.. code-block:: SQL
+
+   SELECT 
+       gpm.SUBJECT_ID, 
+       gpg.NAME, 
+       FROM_UNIXTIME(gpmav.MEMBERSHIP_START_TIME / 1000000) start_time, 
+       FROM_UNIXTIME(gpmav.MEMBERSHIP_END_TIME / 1000000) end_time 
+   FROM grouper_pit_memberships_all_v gpmav 
+       INNER JOIN grouper_pit_groups gpg 
+           ON gpmav.owner_group_id = gpg.id 
+       INNER JOIN grouper_pit_members gpm 
+           ON gpmav.MEMBER_ID = gpm.id 
+       INNER JOIN grouper_pit_fields gpf 
+           ON gpmav.field_id = gpf.id
+   WHERE gpg.name = 'app:vpn:service:policy:vpn_authorized' 
+   AND gpm.subject_type = 'person'
+   AND gpf.name = 'members'
+   ORDER BY gpmav.MEMBERSHIP_START_TIME DESC 
+   ;
+
+5. Filter rows for `blee172`. This shows Betty's earliest access was
+   2019-06-03.
+
+.. figure:: ../figures/401-vpn-blee172-pit-query.png
+
+---------------------------------------------------
+Exercise 401.1.6 VPN access audit or list of NetIDs
+---------------------------------------------------
+
+CISO wants to know if anyone on this list of NetIDs has access to the VPN? And
+why?
+
+1. Import the following list to `test:vpn:vpn_audit_list`
+
+.. code-block::
+
+  ahenderson36
+  cpeterson37
+  jclark39
+  kbrown62
+  tpeterson63
+  pjohnson64
+  aroberts95
+  sdavis107
+  mhenderson109
+  jvales117
+  sgrady139
+  mprice142
+  mwilliams144
+  lpeterson153
+  mvales154
+  bsmith458
+
+2. Create `test:vpn:vpn_audit`
+
+3. Edit composite on `vpn_audit` and create an interection of `vpn_authorized`
+   and `vpn_audit_list`. This will tell us who in `vpn_audit_list` is also in
+   `vpn_authorized`.
+
+#. Review and trace membership to determine why they have access.
+
+.. figure:: ../figures/401-vpn-audit-list.png
+
+Congrats! All access to VPN is now traceable to natural language policy and
+known exceptions! Policy is enforced automatically and kept in sync with
+changing subject attributes. Exceptions are known and managed with a defined
+attestation lifecycle. Exception managment is distributed and VPN policy
+participates in the global deny policy.
+
+.. _Grouper Deployment Guide: https://spaces.at.internet2.edu/display/Grouper/Grouper+Deployment+Guide+Work+-TIER+Program
+.. _`PSPNG`: https://spaces.at.internet2.edu/x/iwfSBQ
