@@ -409,4 +409,4 @@ attestation lifecycle. Exception managment is distributed and VPN policy
 participates in the global deny policy.
 
 .. _Grouper Deployment Guide: https://spaces.at.internet2.edu/display/Grouper/Grouper+Deployment+Guide+Work+-TIER+Program
-.. _`PSPNG`: https://spaces.at.internet2.edu/x/iwfSBQ
+.. _PSPNG: https://spaces.at.internet2.edu/x/iwfSBQ
