@@ -248,53 +248,72 @@ institutional role for that, and implement least privilege access.
 
 .. figure:: ../figures/401-board-effect-trace-ann-updaters.png
 
-----------------
-Exercise 401.3.8
-----------------
+---------------------------------------------------------------
+Exercise 401.3.8 Institutional board committee reference groups
+---------------------------------------------------------------
 
-*Global Committee reference groups*
+The Board Effect policy is working great when a new SaaS system deployment
+request comes in that also has access policy based on board committees. We
+need to elevate the Board Effect application-specific reference groups to
+institutional reference groups.
 
-All working great-- new system request comes in with policy based on board
-committees.  Need to elevate app-specific ref groups to global ref groups.
+#. Create a `ref:board` folder for board committee reference groups.
 
-#. Create `ref:board` folder for board committee ref groups.
-#. Move `app:boardeffect:ref:cmt_fin` to `ref:board:cmt_fin`.
+#. Move `app:board_effect:service:ref:finance_committee` to
+   `ref:board:finance_committee`. (finance_committee -> More actions ->
+   Move group -> Move to this folder: `ref:board`)
 
     .. note::
 
-        The Board Effect policies are not impacted by moving the location of
-        the reference groups!
+        The Board Effect access policy groups are not impacted by moving the
+        location of the reference groups!
 
-#. Create `ref:board:etc` security folder.
-#. Create `ref:board:etc:board_managers` security group.
-#. Assign *UPDATE* and *READ* rights on reference groups to `board_managers`.
-#. Revoke *UPDATE* and *READ* rights of reference groups from `app:board_effect:etc:boardeffect_managers`.
+#. Create a `ref:board:security` security folder.
 
-    .. warning::
+#. Create a `ref:board:security:boardUpdaters` security group.
 
-        Moving our reference groups did *not* remove the access we had granted
-        on them from application-specific security groups.  After moving a
-        reference group, it is good practive to review its permissions.
+#. Assign `boardUpdaters` *UPDATE* and *READ* rights on
+   `ref:board:finance_committee`
 
-#. Add `president_assistant` to `ref:board:etc:board_managers`.
+#. Add `president_assistant` to `ref:board:security:boardUpdaters`.
 
+#. Review `ref:board:finance_committee` privileges
+
+.. figure:: ../figures/401-board-effect-ref-board-privs.png
+
+.. warning::
+
+      Moving our reference groups did *not* remove the access we had granted
+      to them from application-specific security groups.  After moving a
+      reference group, it is good practive to review its privilege assignments.
+
+8. Revoke *UPDATE* and *READ* rights for
+   `board_effectUpdaters`, `board_effectAdmins`, and `board_effectReaders`.
+
+9. Review `finance_committee` privileges.
+
+.. figure:: ../figures/401-board-effect-final-privs.png
+
+Congrats! You have established a new set of institutional reference groups,
+verified their adminstrative access. And all without impacting current
+services!
 
 --------
 Epilogue
 --------
 
-New request comes in for four advisory councils. Each will have their own
-workroom in Board Effect.  Initially you are handed a spreadsheet with the
-council members and you import them into app-specific reference groups 
-(e.g. `app:boardeffect:ref:advisory_council_northeast`).  Later you find
-out that council membership is available in Banner, so you create loader
-jobs for those.  As it turns out, the spreadsheets were old and had the wrong
-members.  Thank goodness for loader jobs!  Alas, not all advisory council
-members have NetIDs.  To get them access we add them as sponsored accounts
-in COmanage.
+A request comes in for four new advisory council workrooms. Initially, you are
+handed a spreadsheet with the council members NetIDs. You import them into
+app-specific reference groups (e.g. `advisory_council_northeast`), and set up
+workroom policy groups as before. Later on, you find out that the council
+membership is available in Banner, so you create loader jobs for those. As it
+turns out, the spreadsheets were old and had the wrong members. Thank goodness
+for loader jobs! Alas, not all advisory council members have NetIDs. But fear
+not, we simply get them NetIDs using our `COmanage`_ sponsored accounts system.
 
 The End
 
 
 .. _Grouper Deployment Guide: https://spaces.at.internet2.edu/display/Grouper/Grouper+Deployment+Guide+Work+-TIER+Program
-.. _`Grouper ESB Connector`: https://spaces.at.internet2.edu/display/Grouper/Grouper+ESB+Connector
+.. _Grouper ESB Connector: https://spaces.at.internet2.edu/display/Grouper/Grouper+ESB+Connector
+.. _COmanage: https://www.internet2.edu/products-services/trust-identity/comanage/

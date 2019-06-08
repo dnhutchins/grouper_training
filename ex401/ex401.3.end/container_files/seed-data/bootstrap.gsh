@@ -66,29 +66,29 @@ attribValueDelegate.assignValue(RuleUtils.ruleThenEnumName(), RuleThenEnum.assig
 attribValueDelegate.assignValue(RuleUtils.ruleThenEnumArg0Name(), numDays.toString());
 attribValueDelegate.assignValue(RuleUtils.ruleThenEnumArg1Name(), "T");
 
+// 401.3.7
+addStem("ref", "role", "role");
+addGroup("ref:role", "president_assistant", "president_assistant");
+addMember("ref:role:president_assistant", "amartinez410");
+addMember("app:board_effect:security:board_effectUpdaters", "ref:role:president_assistant");
+delMember("app:board_effect:security:board_effectAdmins", "amartinez410");
 
-
+// 401.3.8
 addStem("ref", "board", "board");
-
-group = GroupFinder.findByName(gs, "app:boardeffect:ref:cmt_fin", true);
+group = GroupFinder.findByName(gs, "app:board_effect:service:ref:finance_committee", true);
 stem = StemFinder.findByName(gs, "ref:board", true);
 group.move(stem);
 
-addStem("ref:board", "etc", "etc");
-group2 = addGroup("ref:board:etc", "board_managers", "board_managers");
+addStem("ref:board", "security", "security");
+group2 = addGroup("ref:board:security", "boardUpdaters", "boardUpdaters");
+grantPriv("ref:board:finance_committee", group2.toSubject().id, AccessPrivilege.UPDATE);
+grantPriv("ref:board:finance_committee", group2.toSubject().id, AccessPrivilege.READ);
+addMember("ref:board:security:boardUpdaters", "ref:role:president_assistant");
 
-addMember("ref:board:etc:board_managers", "ref:roles:president_assistant");
+boardeffectAdmins = GroupFinder.findByName(gs, "app:board_effect:security:boardeffectAdmins", true);
+boardeffectUpdaters = GroupFinder.findByName(gs, "app:board_effect:security:boardeffectUpdaters", true);
 
-grantPriv("ref:board:cmt_fin", group2.toSubject().id, AccessPrivilege.UPDATE);
-grantPriv("ref:board:cmt_fin", group2.toSubject().id, AccessPrivilege.READ);
-
-boardeffect_admins = GroupFinder.findByName(gs, "app:boardeffect:etc:boardeffect_admins", true);
-boardeffect_mgr = GroupFinder.findByName(gs, "app:boardeffect:etc:boardeffect_mgr", true);
-boardeffect_viewers = GroupFinder.findByName(gs, "app:boardeffect:etc:boardeffect_viewers", true);
-
-revokePriv("ref:board:cmt_fin", boardeffect_admins.toSubject().id, AccessPrivilege.ADMIN);
-revokePriv("ref:board:cmt_fin", boardeffect_mgr.toSubject().id, AccessPrivilege.UPDATE);
-revokePriv("ref:board:cmt_fin", boardeffect_mgr.toSubject().id, AccessPrivilege.READ);
-
-revokePriv("ref:board:cmt_fin", boardeffect_viewers.toSubject().id, AccessPrivilege.READ);
+revokePriv("ref:board:finance_committee", boardeffectAdmins.toSubject().id, AccessPrivilege.ADMIN);
+revokePriv("ref:board:finance_committee", boardeffectUpdaters.toSubject().id, AccessPrivilege.UPDATE);
+revokePriv("ref:board:finance_committee", boardeffectUpdaters.toSubject().id, AccessPrivilege.READ);
 
