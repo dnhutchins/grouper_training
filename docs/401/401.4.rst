@@ -14,54 +14,121 @@ Lab Components
 --------------
 
 * Grouper
+* OpenLDAP
+* `Grouper Deployment Guide`_
+
 
 --------
 Overview
 --------
 
-A baseline of core services services are enabled by default for a broad range of
-community cohorts.  The current approach uses a hodge-podge of scripts and
-manual intervention to establish a group of "institutional people" that are
-granted access to a wide range of services.  The system can best be described as
-fragile, brittle, and difficult, if not impossible, to evolve and maintain.  In
-other words-- state of the industry.
+A baseline of core services services are enabled by default for a broad range
+of community cohorts. The current approach uses a hodge-podge of scripts and
+manual intervention to establish a group of "community members" that are
+granted access to a wide range of services. The system can best be described
+as fragile, brittle, and difficult, if not impossible, to evolve and maintain.
+In other words-- state-of-the-industry!
 
-Last year your CIO came back from Internet2 Summit and declared that your
-institution is going to deploy TIER.  You've just managed to get the Grouper
-software up and running, when the head of your LMS group, Vicky, bursts into your
-office space and tells you that there are 50 visiting scholars showing up on
-campus tomorrow, and they all need access to the LMS for a campus-wide lecture
-series.
+Last year your CIO came back from Internet2 Summit, and declared that your
+institution was going to deploy the InCommon Trusted Access Platform. You have
+just managed to get Grouper up and running, when the head of your Learning
+Management System group, Vicky, bursts into your office and tells you that
+there are 50 visiting scholars showing up on campus tomorrow, and they all need
+access to the LMS for a campus-wide lecture series.
 
 Your co-worker had mentioned this to you before she left for her month long
-vacation.  She had told you she had taken care of creating the guest accounts,
-and not to worry.  You just need to grant access to the LMS when the time comes.
-No problem.
+vacation. She had told you she had taken care of creating the sponsored
+accounts in `COmanage`_, and not to worry. You just need to grant access to the
+LMS when the time comes. No problem.
 
-But suddenly, you realize that access is controlled via the "institutional
-people" group in your Enterprise Directory Information Tree!  If you add the
-scholars to that group, they'll have access to everything on campus!
+But suddenly, you realize that access to the LMS is controlled via the dreaded
+"community members" group in your Enterprise LDAP! If you add the scholars
+to that group, they'll have access to everything on campus!
 
-Before panic sets in, you remember your Grouper training.  You'll need a little
-help from Vicky, but with Grouper, you've got this covered.  "OK, Vicky," you say
-in a calm, steady voice.  "Here's what I'm going to need your team to do ..."
+Before panic sets in, you remember your Grouper training. You will need a
+little help from Vicky, but with Grouper, you've got this covered. "OK,
+Vicky," you say in a calm, steady voice. "Here's what I'm going to need your
+team to do ..."
 
-----------------
-Exercise 401.4.1
-----------------
-
-*Untangling Policies from Cohorts*
+--------------------------------------------------------
+Exercise 401.4.1 Untangling policies from legacy cohorts
+--------------------------------------------------------
 
 The goal of this exercise is to grant access to the LMS for the 50 visiting
-scholar guest accounts *without* granting additional access to those accounts.
-Since access control does not happen in a vacuum, you'll need some minimal
-assistance from the LMS team.  Vicky's team can configure the LMS to point to a
-new group in the LDAP DIT, but that's all the help you'll get.
+scholar sponsored accounts *without* granting any additional unnecessary
+access. Since access control does not happen in a vacuum, you'll need some
+minimal assistance from the LMS team. Vicky's team can configure the LMS to
+point to a new authorization group in LDAP, but that's all the help you'll get.
 
-The basic issue is that the legacy access control mechanisms are based on a 
-cohort of loosely defined "institutional people".  All your institution's services
-are using this cohort directly to determine who is supposed to have access.
+The basic issue is that the legacy access control mechanisms are based on a
+cohort of loosely defined "institutional people". All your institution's
+services are using this cohort directly to determine who is supposed to have
+access, so any changes or additions have far reaching impact.
 
-You'll need to use your new Grouper skills to resolve this issue.
+The dreaded "community members" group that the LMS currenty uses for access
+control is in LDAP at "cn=community_members,ou=groups,dc=internet2,dc=edu". You
+can log in to https://localhost:8443/phpldapadmin/ to review the group.
 
+Here are the 50 visiting scholar NetIDs:
 
+.. code-block::
+
+    adoe852
+    agonazles804
+    alopez751
+    alopez802
+    anielson378
+    anielson51
+    athompson526
+    athompson713
+    athompson866
+    awalters247
+    awhite131
+    awhite631
+    bdavis150
+    bdavis999
+    bgasper2
+    bgonazles239
+    bgrady115
+    blee298
+    cjohnson933
+    clangenberg923
+    clee357
+    cthompson231
+    cthompson287
+    cwalters316
+    cwalters536
+    cwilliams606
+    danderson959
+    dbrown402
+    ddavis762
+    ddoe822
+    dwhite663
+    dwilliams299
+    eanderson919
+    escott173
+    gbutler381
+    ggrady118
+    ggrady649
+    glangenberg234
+    gwalters810
+    gwhite647
+    hpeterson10
+    jgrady499
+    jlee308
+    jnielson505
+    jsmith466
+    jvales111
+    jvales645
+    jwalters24
+    kdavis686
+    kjohnson872
+
+You will need to use your new Grouper skills to resolve this issue. Your next
+step is up to you!
+
+If you get stuck or bored, check out the `401.4 example solution`_!
+
+.. _Grouper Deployment Guide: https://spaces.at.internet2.edu/display/Grouper/Grouper+Deployment+Guide+Work+-TIER+Program
+.. _COmanage: https://www.internet2.edu/products-services/trust-identity/comanage/
+.. _401.4 example solution: 401.4-example-solution.html

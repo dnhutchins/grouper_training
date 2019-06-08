@@ -17,6 +17,5 @@ experience.
    401.3
    401.4
    401.4-example-solution
-   appendix
 
 .. _InCommon Trusted Access Platform: https://www.incommon.org/tap/
