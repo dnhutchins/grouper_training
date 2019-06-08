@@ -85,8 +85,8 @@ grantPriv("ref:board:finance_committee", group2.toSubject().id, AccessPrivilege.
 grantPriv("ref:board:finance_committee", group2.toSubject().id, AccessPrivilege.READ);
 addMember("ref:board:security:boardUpdaters", "ref:role:president_assistant");
 
-boardeffectAdmins = GroupFinder.findByName(gs, "app:board_effect:security:boardeffectAdmins", true);
-boardeffectUpdaters = GroupFinder.findByName(gs, "app:board_effect:security:boardeffectUpdaters", true);
+boardeffectAdmins = GroupFinder.findByName(gs, "app:board_effect:security:board_effectAdmins", true);
+boardeffectUpdaters = GroupFinder.findByName(gs, "app:board_effect:security:board_effectUpdaters", true);
 
 revokePriv("ref:board:finance_committee", boardeffectAdmins.toSubject().id, AccessPrivilege.ADMIN);
 revokePriv("ref:board:finance_committee", boardeffectUpdaters.toSubject().id, AccessPrivilege.UPDATE);
