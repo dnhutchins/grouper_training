@@ -41,6 +41,32 @@ grantPriv("app:board_effect:service:ref:finance_committee", "app:board_effect:se
 addMember("app:board_effect:service:policy:workroom_finance_allow", "app:board_effect:service:ref:finance_committee");
 addMember("app:board_effect:security:board_effectAdmins", "amartinez410");
 
+GrouperSession.start(findSubject("amartinez410"))
+addMember("app:board_effect:service:ref:finance_committee", "ksmith3")
+gs = GrouperSession.startRootSession();
+
+// 401.3.6
+addGroup("app:board_effect:service:ref", "finance_committee_helpers", "finance_committee_helpers");
+addMember("app:board_effect:service:policy:workroom_finance_allow", "app:board_effect:service:ref:finance_committee_helpers");
+addGroup("app:board_effect:service:ref", "workroom_helpers", "workroom_helpers");
+addMember("app:board_effect:service:policy:workroom_finance_allow", "app:board_effect:service:ref:workroom_helpers");
+
+group_name = "app:board_effect:service:ref:workroom_helpers";
+workroom_helpers = GroupFinder.findByName(gs, group_name);
+numDays = 3;
+actAs = SubjectFinder.findRootSubject();
+attribAssign = workroom_helpers.getAttributeDelegate().addAttribute(RuleUtils.ruleAttributeDefName()).getAttributeAssign();
+attribValueDelegate = attribAssign.getAttributeValueDelegate();
+attribValueDelegate.assignValue(RuleUtils.ruleActAsSubjectSourceIdName(), actAs.getSourceId());
+attribValueDelegate.assignValue(RuleUtils.ruleRunDaemonName(), "F");
+attribValueDelegate.assignValue(RuleUtils.ruleActAsSubjectIdName(), actAs.getId());
+attribValueDelegate.assignValue(RuleUtils.ruleCheckTypeName(), RuleCheckType.membershipAdd.name());
+attribValueDelegate.assignValue(RuleUtils.ruleIfConditionEnumName(), RuleIfConditionEnum.thisGroupHasImmediateEnabledNoEndDateMembership.name());
+attribValueDelegate.assignValue(RuleUtils.ruleThenEnumName(), RuleThenEnum.assignMembershipDisabledDaysForOwnerGroupId.name());
+attribValueDelegate.assignValue(RuleUtils.ruleThenEnumArg0Name(), numDays.toString());
+attribValueDelegate.assignValue(RuleUtils.ruleThenEnumArg1Name(), "T");
+
+
 
 addStem("ref", "board", "board");
 

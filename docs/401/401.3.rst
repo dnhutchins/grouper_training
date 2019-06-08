@@ -155,58 +155,98 @@ a Grouper reference group.
 
 #. Add `ksmith3` to the `finance_committee` group.
 
-----------------
-Exercise 401.3.6
-----------------
+Great! Ann can now manage all the committee members directly in Grouper! Board
+Effect accounts and workgroup access will be automatically provisioned and stay
+in sync as Ann makes changes to the committee members.
 
-*Committee member helpers*
+-----------------------------------------
+Exercise 401.3.6 Committee member helpers
+-----------------------------------------
 
-Joe Trustee is on committee, but Joe’s assistant also needs access to
-committee work group.
+Our access strategy is working great for committee members. However, many
+committee members have assistants who also needs access to the committee
+workrooms. Rather than have Joe share his credentials, let's extend our access
+strategy to account for this addition to policy.
 
-#. Create app specific ref group `app:boardeffect:ref:cmt_fin_helpers`.
-#. Add `...:cmt_fin_helpers. to `...:wr_cmt_fin_allow`.
+#. Create app specific ref group
+   `app:board_effect:service:ref:finance_committee_helpers`.
+
+#. Add `finance_committee_helpers` to `:workroom_finance_allow`.
 
 .. note::
 
-    By *not* adding the helper subject to `app:boardeffect:ref:cmt_fin`,
-    we preserve the truth of the subject attributes.  Members of `cmt_fin`
-    *are* members of the Finance Committee.  The helpers are *not* members
-    of the committee, but they *are* granted access to the workroom by
-    the policy.
+    By *not* adding the helper subjects directly to `finance_committee`, we
+    preserve the fidelity of the subject attributes.  Members of
+    `finance_committee` *are* members of the Finance Committee.  The helpers
+    are *not* members of the committee, but they *are* granted access to the
+    workroom by the policy.
 
 This works great for specific assistants, but there are also general helpers
 who need access to all workrooms *temporarily* during board meetings.
 
-#. Create app specific ref group `app:boardeffect:ref:workroom_helpers`.
-#. Run :ref:`GSH script <apdx-401.3.5-temp-access>` to add age off rule
-   to `workroom_helpers`.
-#. Add `workroom_helpers` to all workroom allow groups.
+#. Create app specific ref group
+   `app:board_effect:service:ref:workroom_helpers`.
 
-Workrooms created in Boardeffect.  Grouper policy groups map to workroom, and
-are kept up to date via Grouper provisioners.  We could create workrooms
-automatically based on policy group creation-- exercise left to student at home.
+#. Run the following gsh script to add a 3 day age off rule to
+   `workroom_helpers`. In a termimal window run "./gte-gsh 401.1.1", then paste
+   the following:
 
-----------------
-Exercise 401.3.7
-----------------
+.. code-block:: groovy
 
-*Anna's Grouper Privileges*
+   group_name = "app:board_effect:service:ref:workroom_helpers";
+   workroom_helpers = GroupFinder.findByName(gs, group_name);
+   numDays = 3;
+   actAs = SubjectFinder.findRootSubject();
+   attribAssign = workroom_helpers.getAttributeDelegate().addAttribute(RuleUtils.ruleAttributeDefName()).getAttributeAssign();
+   attribValueDelegate = attribAssign.getAttributeValueDelegate();
+   attribValueDelegate.assignValue(RuleUtils.ruleActAsSubjectSourceIdName(), actAs.getSourceId());
+   attribValueDelegate.assignValue(RuleUtils.ruleRunDaemonName(), "F");
+   attribValueDelegate.assignValue(RuleUtils.ruleActAsSubjectIdName(), actAs.getId());
+   attribValueDelegate.assignValue(RuleUtils.ruleCheckTypeName(), RuleCheckType.membershipAdd.name());
+   attribValueDelegate.assignValue(RuleUtils.ruleIfConditionEnumName(), RuleIfConditionEnum.thisGroupHasImmediateEnabledNoEndDateMembership.name());
+   attribValueDelegate.assignValue(RuleUtils.ruleThenEnumName(), RuleThenEnum.assignMembershipDisabledDaysForOwnerGroupId.name());
+   attribValueDelegate.assignValue(RuleUtils.ruleThenEnumArg0Name(), numDays.toString());
+   attribValueDelegate.assignValue(RuleUtils.ruleThenEnumArg1Name(), "T");
 
-Anna was added as a direct member of `app:boardeffect:etc:boardeffect_admins`,
-but we can do better!  Responsibility for committee member management goes to
-the president's executive assistant, whoever that might be.
+#. Add `workroom_helpers` to all `workroom_finance_allow`.
 
-#. Create a new reference group (role), `ref:roles:president_assistant`
-   for president executive assistant.
-#. Add Anna's account to `president_assistant`.
+.. figures:: ../figures/401-board-effect-workroom_helpers.png
 
-This is better, but does Anna really need full admin privileges to
-`app:boardeffect`?  Probably only needs update / read.
+This Grouper access governance stuff is sweet! :)
 
-#. Add `ref:roles:president_assistant` to `app:boardeffect:etc:boardeffect_managers`.
-#. Remove Anna from `app:boardeffect:etc:boardeffect_admins`.
+-----------------------------------------
+Exercise 401.3.7 Ann's Grouper Privileges
+-----------------------------------------
 
+We added Ann to board_effectAdmin so she could manage `finance_committee`
+membership. But that also gives her full administrative access to the board_effect
+app folder, including the security and policy groups. We can do better!
+
+Responsibility for committee member management always goes to
+the president's executive assistant, whoever that might be. Let's create an
+institutional role for that, and implement least privilege access.
+
+#. Create a new institutional reference group, `ref:roles:president_assistant`.
+
+#. Add `amartinez410` to `president_assistant`.
+
+#. Add `ref:roles:president_assistant` to
+   `app:board_effect:security:board_effectUpdaters`.
+
+#. Review Privileges on `finance_committee`.
+
+.. figure:: ../figures/401-board-effect-finance-privs-admin.png
+
+5. Remove `amartinez410` from `board_effectAdmins`.
+
+6. Review Privileges on `finance_committee`.
+
+.. figure:: ../figures/401-board-effect-ann-updated-privs.png
+
+7. Trace privileges for Ann on `finance_committee`.
+   (on Privileges tab: amartinez410 -> Actions -> Trace privileges)
+
+.. figure:: ../figures/401-board-effect-trace-ann-updaters.png
 
 ----------------
 Exercise 401.3.8
