@@ -6,7 +6,6 @@
 Learning Objectives
 -------------------
 
-
 --------------
 Lab Components
 --------------
@@ -25,41 +24,59 @@ Overview
 We have been asked to deploy a SaaS application called Board Effect. The
 service is already an InCommon member and honors an `eduPersonEntitlement`
 for "front door" access. Permission management within the application is
-centered around "work rooms".  Each work room provide access to specific
-documents, chat, mailing lists, etc.  The system will be used by trustees,
+centered around "work rooms". Each work room provide access to specific
+documents, chat, mailing lists, etc. The system will be used by trustees,
 executives, and various committee members.
 
 Thankfully the service is an InCommon member and using `eduPersonEntitlement`
-values.  However, it turns out users still need to have accounts provisioned
-in order to get access. We will need two different kinds of policy groups.
-The first, the account policy group, will be mapped to an `eduPersonEntitlement`
-value and also be used for provisioning accounts.  The second type,
-authorization groups, will provide subject to role mapping, and are mapped
-to work rooms created in Board Effect. This is an example of access control
-model 3 described in the `Grouper Deployment Guide`_.
+values. However, it turns out users still need to have accounts provisioned
+ahead of time in order to get access. We will need two different kinds of
+policy groups. The first, the account policy group, will be mapped to an
+`eduPersonEntitlement` value and also be used for provisioning accounts. The
+second type, authorization groups, will provide subject to role mapping, and
+are mapped to work rooms created in Board Effect. This is an example of access
+control model 3 described in the `Grouper Deployment Guide`_.
 
-----------------
-Exercise 401.3.1
-----------------
+------------------------------------------------------------
+Exercise 401.3.1 Create application policy folder and groups
+------------------------------------------------------------
 
-*Create a application policy folder and groups*
+#. Use the application template and the policy group template to create a new
+   `board_effect` application folder and policy group called
+   `board_effect_access`.
 
-Rather than create the basic structure manually, use a
-:ref:`GSH script <apdx-401.3.1-app-skeleton>`.
+.. figure:: ../figures/401-board-effect-app.png
 
+---------------------------------------------------
+Exercise 401.3.2 Create policy groups for workrooms
+---------------------------------------------------
 
-----------------
-Exercise 401.3.2
-----------------
-
-*Workrooms (i.e. authorization groups) can be updated via the Board Effect
-REST API.  Create Grouper authorization groups to manage those.*
+Membership in a Board Effect Workroom provides access to a number of features
+and content within Board Effect. A Workroom is essentially an authorization
+group. Workroom membership can be updated via a REST API provided by Board
+Effect. Grouper policy groups will be mapped to Board Effect workrooms and used
+to provision membership updates.
 
 A new workroom call Committee on Finance has been created in Board Effect.
-Need to create authorization group in grouper and configure provisioning.
+Create an authorization policy group in grouper and configure provisioning.
 
-#. Create `app:boardeffect:wr_cmt_fin_authorized|allow|deny`.
-#. Configure grouperESB to send membership changes to rabbitMQ exchange.
+#. Using the policy template create
+   `app:board_effect:service:policy:workroom_finance|allow|deny`.
+
+#. Add `workroom_finance` to `board_effect_access`
+
+.. figure:: ../figures/401-board-effect-workroom.png
+
+----------------------------------------------------
+Exercise 401.3.3 Configure the Grouper ESB Connector
+----------------------------------------------------
+
+The `Grouper ESB Connector`_ is designed to enable Grouper to interface with an
+ESB in order to send and receive individual events as changes occur. We'll use
+the ESB Connector to send messages to rabbitMQ for provisioning the workroom
+memberships.
+
+#. The following has already been configured for you.
 
    .. literalinclude:: examples/401.3.2-grouper-loader.properties
         :language: properties
@@ -73,24 +90,33 @@ Need to create authorization group in grouper and configure provisioning.
         :caption: grouper.client.properties
         :linenos:
 
-#. Write provisioner component to read rabbitMQ and update BoardEffect via REST API.
+2. Write provisioner component to read rabbitMQ and update BoardEffect via REST
+   API.
 
    .. note::
 
-        This step is what logically should happen next to process the messages.
-        You aren't expected to actually accomplish this step during the lab.
+        We will not actually accomplish this step during the lab. Instead, let's
+        make sure our messages are making their way to rabbitMQ.
 
-----------------
-Exercise 401.3.3
-----------------
+3. Log in to http://localhost:15672/ as username `guest`, password `guest`.
+4. Select the `Queues` tab, and then click on the queue named `grouper`
+5. Scoll down and click on `Get Message(s)` and review the message.
 
-*Board Effect account provisioning*
+.. figure:: ../figures/401-board-effect-rabbitmq.png
 
-#. Create `app:boardeffect:boardeffect_authorized`.
-#. Add `...:wr_cmt_fin_authorized` to `boardeffect_authorized_allow`.
+------------------------------------------------------------------------
+Exercise 401.3.4 Configure account provisioning and eduPersonEntitlement
+------------------------------------------------------------------------
+
+All access to Board Effect is predicated on the presenence of an
+eduPersonEntitlement value, and an account within Board Effect. We will use the
+`board_effect_access` policy group to both control the eduPersonEntitlement
+value and also provision the account to Board Effect via rabbitMQ.
+
 #. Configure PSPNG to write `eduPersonEntitlement` value
-   **https://college.boardeffect.com/** to LDAP and release via Shibboleth only
-   for Boardeffect.
+   **https://college.boardeffect.com/** to LDAP. This value will only be
+   released via the Shibboleth IdP for the Boardeffect SP. The following is
+   already configured for you.
 
    .. literalinclude:: examples/401.3.2-grouper-loader.properties
         :language: properties
@@ -99,29 +125,38 @@ Exercise 401.3.3
         :caption: grouper-loader.properties
         :linenos:
 
-Subject to role mapping in place and provisioners working, but how do we get
-reference groups for committees? Ann in President’s Office knows.
+Subject to workroom mapping is now in place and the account and workroom
+provisioners are working! But how do we get reference groups for committees?
+Ann in President’s Office knows.
+
+-------------------------------------------------------
+Exercise 401.3.5 Distributed Reference Group Management
+-------------------------------------------------------
+
+Ann currently maintains list of committee members by hand. Instead, she can use
+a Grouper reference group.
+
+#. Create `app:board_effect:service:ref:finance_committee`.
+
+#. Give Ann admin access to `app:boardeffect:ref` by adding account
+   **amartinez410** to `app:board_effect:security:board_effectAdmins`.
+
+.. figure:: ../figures/401-board-effect-ann-privs.png
+
+#. Add `finance_committee` to `workroom_finance_allow`.
+
+.. figure:: ../figures/401-board-effect-finance-committee.png
+
+#. In a private browser, log in as Ann Martinez (username `amartinez410`,
+   password `password`). Under *My Groups* you should see the reference groups
+   and policies Ann can manage.
+
+.. figure:: ../figures/401-board-effect-my-groups.png
+
+#. Add `ksmith3` to the `finance_committee` group.
 
 ----------------
-Exercise 401.3.4
-----------------
-
-*Distributed Reference Group Management*
-
-Amy maintains list of committee members. Use these to build application specific
-reference groups.
-
-#. Create `app:boardeffect:ref:cmt_fin`.
-#. Add `...:ref:cmt_fin` to `...:wr_cmt_fin_allow`.
-#. Add `ref:global_deny` to `...:wr_cmt_fin_deny`.
-#. Give Ann admin access to `app:boardeffect:ref` by adding account 
-   **amartinez410** to `app:boardeffect:etc:boardeffect_admins`.
-
-Log in as Ann Martinez (**amartinez410**).  Under *My Groups* you should see
-the reference groups and policies Ann can manage.
-
-----------------
-Exercise 401.3.5
+Exercise 401.3.6
 ----------------
 
 *Committee member helpers*
@@ -153,7 +188,7 @@ are kept up to date via Grouper provisioners.  We could create workrooms
 automatically based on policy group creation-- exercise left to student at home.
 
 ----------------
-Exercise 401.3.6
+Exercise 401.3.7
 ----------------
 
 *Anna's Grouper Privileges*
@@ -174,7 +209,7 @@ This is better, but does Anna really need full admin privileges to
 
 
 ----------------
-Exercise 401.3.7
+Exercise 401.3.8
 ----------------
 
 *Global Committee reference groups*
@@ -222,3 +257,4 @@ The End
 
 
 .. _Grouper Deployment Guide: https://spaces.at.internet2.edu/display/Grouper/Grouper+Deployment+Guide+Work+-TIER+Program
+.. _`Grouper ESB Connector`: https://spaces.at.internet2.edu/display/Grouper/Grouper+ESB+Connector
