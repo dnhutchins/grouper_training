@@ -3,24 +3,24 @@
 401.4 Untangling Legacy Access Policies - Example Solution
 ==========================================================
 
-The follwing solution uses techniques demonstrated in the other 401 series
-labs in order to create an independent policy for the LMS service.
+The following solution uses techniques demonstrated in the 201 and 401 labs.
+The general solution is to create an independent access policy for the LMS
+service based on the legacy community members LDAP group and a new visiting
+scholars reference group.
 
-#. Use Grouper Loader to import existing LDAP cohort group into a "community
-   members" reference group-- `ref:legacy:community_members`
-#. Add loader job to populate `communtiy_members` from
-   `cn=community_members,ou=groups,dc=example,dc=edu`.
-#. Run loader job to import members into reference group.
-#. Create a Grouper service folder for the LMS with a policy for LMS
-   authorization: `app:lms:lms_authorize|allow|deny`
-#. Add the "institutional people" reference group, `ref:community_members`,
-    to the allow policy for the LMS, `app:lms:lms_allow`.
-#. Create `app:lms:ref:visiting_scholars`.  Import the NetIDs for the visiting
-   scholors into this reference group.
-#. Add `visiting_scholars` to `lms_allow`.
-#. Provision this policy to a new group in the LDAP DIT that the LMS group can
-   use to allow access to the service.
+#. Create a new application folder `lms`
+#. Create a new access policy group `lms_access`
+#. Configure PSPNG attributes to `provision_to` `groupOfNames` on `lms_access`
+#. Create a new institutional reference `ref:legacy:community_members`.
+#. Configure `community_members` with an LDAP loader job.
+#. Add `community_members` to `lms_access_allow`
+#. Create an application-specific reference group for the visiting scholars
+   `app:lms:service:ref:visiting_scholars`
+#. Import the NetID list into `visiting_scholars`
+#. Add `visiting_scholars` to `lms_access_allow`
+#. File a ticket with Vicky to switch the LMS LDAP access control group
+#. Head to your happy place! :)
 
-Congrats!  You are now a certified Grouper Guru associate level 1!  
-And remember nothing gets'em going like chum!
+.. figure:: ../figures/401-lms-solution.png
 
+Congrats! You are now a certified Grouper Guru associate level 1!
