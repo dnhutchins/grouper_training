@@ -83,7 +83,8 @@ COPY container_files/var-www-html/ /var/www/html/
 RUN cp /opt/tier-support/grouper.xml /opt/tier-support/grouper-ws.xml /opt/tomcat/conf/Catalina/localhost/ \
     && chown -R tomcat /opt/shibboleth-idp/ \
     && chmod -R 700 /opt/shibboleth-idp/ \
-    && chmod +rx /var/www/html/app/index.py
+    && chmod +rx /var/www/html/app/index.py \
+    && /opt/shibboleth-idp/bin/build.sh
 
 EXPOSE 389 3306 4443
 
