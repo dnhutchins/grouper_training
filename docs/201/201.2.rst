@@ -63,19 +63,17 @@ create a new structure for our VPN service policy.
 
 3. Navigate to the `app:vpn:service:policy` folder
 
-4. Create a new vpn_authorized policy group using the Policy Group Template
+4. Create a new vpn_access policy group using the Policy Group Template
    (More actions -> New template)
 
 .. figure:: ../figures/201-new-vpn-policy.png
 
-[ this should be replaced with policy template when ready ]
+TODO: Steps 5 through 8 should be replaced with policy template when ready
 
-5. Create `app:vpn:vpn_authorized`.
+5. Create `app:vpn:vpn_access`.
 6. Create `app:vpn:vpn_allow`.
 7. Create `app:vpn:vpn_deny`.
-8. Make `vpn_authorized` a composite of `vpn_allow` minus `vpn_deny`.
-
-.. figure:: ../figures/201-vpn-composite.png
+8. Make `vpn_access` a composite of `vpn_allow` minus `vpn_deny`.
 
 -------------------------------------------------------------------
 Exercise 201.2.2 Create digital policy from natural language policy
@@ -88,10 +86,10 @@ are already available.
 #. Add `ref:employee:fac_staff` to `vpn_allow`.
 #. Add `ref:security:locked_by_ciso` to `vpn_deny`.
 #. Add `ref:iam:closure` to `vpn_deny`.
-#. Review the `vpn_authorized` policy definition
-   (vpn_authorized -> More actions -> Visualization)
+#. Review the `vpn_access` policy definition
+   (vpn_access -> More actions -> Visualization)
 
-.. figure:: ../figures/201-vpn-authorized.png
+.. figure:: ../figures/201-vpn-access.png
 
 ----------------------------------------------------------------------------
 Exercise 201.2.3 Update policy to include institutional review board members
@@ -103,7 +101,7 @@ account is in a closure state".
 
 #. Add `org:irb:ref:irb_members` to `vpn_allow`.
 #. Add *jsmith* to `org:irb:ref:irb_members`.
-#. Trace membership for *jsmith* from `vpn_authorized`. (jsmith -> Choose
+#. Trace membership for *jsmith* from `vpn_access`. (jsmith -> Choose
    action -> Actions -> Trace membership)
 
 .. figure:: ../figures/201-jsmith-trace.png
@@ -113,10 +111,10 @@ account is in a closure state".
 
 .. figure:: ../figures/201-vpn-allow-audit.png
 
-5. Review policy definition for `vpn_authorized`.
-   (vpn_authorized -> More actions -> Visualization)
+5. Review policy definition for `vpn_access`.
+   (vpn_access -> More actions -> Visualization)
 
-.. figure:: ../figures/201-vpn-authorized2.png
+.. figure:: ../figures/201-vpn-access2.png
 
 ------------------------------------------------------------
 Exercise 201.2.4 Review Application template security groups

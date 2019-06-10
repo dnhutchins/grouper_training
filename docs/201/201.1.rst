@@ -57,13 +57,13 @@ to students.
 Exercise 201.1.1 All students reference group
 ---------------------------------------------
 
-*Create an all student reference group to be used in access policy and the all
-students mailing list*
+Create an all student reference group to be used in access policy and the "all
+students" mailing list.
 
-Reference groups for student by class year already exist. These are being used
-for class year mailing lists. Membership in the class year groups are updated
-automatically by the studentTermLoader job. The loader job queries the student
-information system.
+Reference groups for students by class year already exist in `ref:student`.
+These are being used for class year mailing lists. Membership in the class year
+groups are updated automatically by the studentTermLoader job. The loader job
+queries the student information system.
 
 1. Create a new group named `ref:student:students`.
    (+ Create new group)
@@ -75,7 +75,7 @@ information system.
 
 .. figure:: ../figures/201-add-ref-students.png
 
-3. Add the following class year reference groups to `..:students`.
+3. Add the following class year reference groups to `students`.
    (Members -> + Add members -> ...)
 
 * `ref:student:class2020`
@@ -84,7 +84,7 @@ information system.
 * `ref:student:class2023`
 
 4. Filter for: Has direct membership. This shows all the reference groups that
-   contribute to the '..:students' group.
+   contribute to the `students` group.
 
 .. figure:: ../figures/201-students-direct-membership.png
 
@@ -140,14 +140,16 @@ Exercise 201.1.4 Transfer Students
 Students who transfer to your campus often need access to systems well ahead
 of SIS data being fully updated.
 
-#. Create a new basis group, `basis:student:transfer_student`.
+#. Create a new basis group `basis:student:transfer_student` and add it to
+   `students`
+
 #. Add the following accounts to `transfer_student`:
 
-    * agrady901
-    * alee467
-    * ascott776
+* pmartinez921
+* cthompson287
+* agrady901
 
-#. Check how many students there are now. The number of students did not go
+3. Check how many students there are now. The number of students did not go
    up by 3 as you might have expected. Why? One of the transfer students was
    already a member of `students`. Trace the membership on each of the
    transfer students to determine which accounts already had the `students`
@@ -157,8 +159,8 @@ of SIS data being fully updated.
 Exercise 201.1.5 Change of Status
 ---------------------------------
 
-Students who leave for a variety of reasons are given a 32 day grace period
-during which they retain student access.  Basis groups for these already exist.
+Students who leave for a variety of reasons are given a 32 day grace period,
+during which they retain student access. Basis groups for these already exist.
 They include:
 
 * `basis:student:expelled_32_days`
@@ -166,6 +168,8 @@ They include:
 * `basis:student:student_transferred_32_days`
 
 #. Add these basis groups to `students`.  How many students are there now?
+
+.. figure:: ../figures/201-students-change-of-status.png
 
 ------------------------------------------
 Exercise 201.1.6 Leave of Absence Students
