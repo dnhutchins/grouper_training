@@ -9,15 +9,19 @@ addStem("app:vpn:service", "policy", "policy")
 addStem("app:vpn:service", "ref", "ref")
 addStem("app:vpn:service", "attributes", "attributes")
 
-addGroup("app:vpn:service:policy", "vpn_authorized", "vpn_authorized")
+addGroup("app:vpn:service:policy", "vpn_access", "vpn_access")
 addGroup("app:vpn:service:policy", "vpn_allow", "vpn_allow")
 addGroup("app:vpn:service:policy", "vpn_deny", "vpn_deny")
-addComposite("app:vpn:service:policy:vpn_authorized", CompositeType.COMPLEMENT, "app:vpn:service:policy:vpn_allow", "app:vpn:service:policy:vpn_deny")
+addComposite("app:vpn:service:policy:vpn_access", CompositeType.COMPLEMENT, "app:vpn:service:policy:vpn_allow", "app:vpn:service:policy:vpn_deny")
 
 addGroup("app:vpn:security", "vpnAdmins", "vpnAdmins")
 addGroup("app:vpn:security", "vpnReaders", "vpnReaders")
 addGroup("app:vpn:security", "vpnUpdaters", "vpnUpdaters")
 grantPriv("app:vpn", "app:vpn:security:vpnAdmins", NamingPrivilege.STEM)
+
+grantPriv("app:vpn:service:policy:vpn_allow", "app:vpn:security:vpnAdmins", AccessPrivilege.ADMIN)
+grantPriv("app:vpn:service:policy:vpn_allow", "app:vpn:security:vpnUpdaters", AccessPrivilege.UPDATE)
+grantPriv("app:vpn:service:policy:vpn_allow", "app:vpn:security:vpnReaders", AccessPrivilege.READ)
 
 //ex 201.2.2
 addMember("app:vpn:service:policy:vpn_allow", "ref:employee:fac_staff")

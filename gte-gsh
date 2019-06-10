@@ -1,0 +1,9 @@
+#! /bin/bash
+  
+if [ -z "$1" ]
+  then
+    docker ps --format "{{.Names}} {{.Image}} {{.Status}}"
+        exit 0
+fi
+
+docker exec -it "$1" /opt/grouper/grouper.apiBinary/bin/gsh 2> /dev/null

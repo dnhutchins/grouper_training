@@ -46,8 +46,11 @@ Exercise 201.5.1 Create a `congos` application folder and group set
 
 1. Use the Application template to create the `cognos` application folder and
    group set in the `app` folder.
-2. Use the Policy template to create two new policy groups in 
-   `app:cognos:service`
+2. Use the Policy template to create two new policy groups in
+   `app:cognos:service:policy`
+
+* `app:cognos:service:policy:cg_fin_report_reader`
+* `app:cognos:service:policy:cp_fin_report_writer`
 
 ------------------------------------------------------
 Exercise 201.5.2 Implement Report Reader Access Policy
@@ -66,10 +69,10 @@ Exercise 201.5.3 Implement Report Writer Access Policy
 
 Only employees authorized by the Finance Manager have access to write reports
 
-This policy will require an application specific reference group the we will
-use as an access control list managed by the Finanance Manager.
+This policy will require an application specific reference group. It will be
+will used as an access control list managed by the Finanance Manager.
 
-1. Create a `app:congos:service:ref:finance_report_writer` group.
+1. Create reference group `app:congos:service:ref:finance_report_writer`.
 2. Add `finance_report_writer` to `cg_fin_report_write_allow`.
 
 .. figure:: ../figures/201-fin-report-writer.png
@@ -114,10 +117,10 @@ Exercise 201.5.4 Add attestation for finance_report_writer
 ABAC policy groups are kept in sync automatically as subject attributes change
 in the underlying business systems. Access control lists, on the otherhand,
 tend to drift as soon as they are created. Grouper provides an attestation
-feature that reminds group managers and owners to review group memberships and
+feature that reminds group managers and owners to review group memberships, and
 keeps an audit of attestation actions.
 
-#. Add attestation requirement for `advancement_report_writer`.
+#. Add attestation requirement for `finance_report_writer`.
    (finance_report_writer -> More actions -> Attestation ->
    Attestation actions -> Edit attestation settings)
 
@@ -137,6 +140,6 @@ keeps an audit of attestation actions.
 Congrats! Your Congos access policy is clear, consistent, automated,
 delegated, auditable, and attestable!
 
-Welcome to Grouper Guru Level 7! :)
+Welcome to Grouper Guru Level 2! :)
 
 .. _Grouper Deployment Guide: https://spaces.at.internet2.edu/display/Grouper/Grouper+Deployment+Guide+Work+-TIER+Program

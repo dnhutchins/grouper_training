@@ -19,16 +19,16 @@ Lab Components
 * OpenLDAP
 * Shibboleth
 * `Grouper Deployment Guide`_
-* `eduPerson Object Class Specification`_ 
+* `eduPerson Object Class Specification`_
 
 --------
 Overview
 --------
 
 `Grouper Deployment Guide`_ access control model 2 (ACM2) is all about
-attribute based access control (ABAC) as defined in `NIST SP 800-162`_.  ACM2 is
-applicable across a broad range of services where access control policy can be
-based on subject attributes, policy decisions can be precomputed, and simple
+attribute based access control (ABAC) as defined in `NIST SP 800-162`_.  ACM2
+is applicable across a broad range of services where access control policy can
+be based on subject attributes, policy decisions can be precomputed, and simple
 subject attributes are sufficient to drive the policy enforcement point.
 
 In cases where the SAML Service Provider will accept an
@@ -49,20 +49,11 @@ Exercise 201.4.1 Create policy for wiki application
 
 .. figure:: ../figures/201-wiki-app.png
 
-[ use new policy template to create wiki_user]
-`app:wiki:service:policy:wiki_authorized|allow|deny`.
-Edit composite `wiki_authorized` to make it `wiki_allow` minus `wiki_deny`.
-
----------------------------------------------------
-Exercise 201.4.2 Review application security groups
----------------------------------------------------
-
-`app:wiki:security`
-
-.. figure:: ../figures/201-wiki-security.png
+3. Navigate to `app:wiki:service:policy:` and use the new policy template to
+   create `wiki_user`
 
 -----------------------------------------------
-Exercise 201.4.3 Add reference groups to policy
+Exercise 201.4.2 Add reference groups to policy
 -----------------------------------------------
 
 `wiki_user` is an application-secific role. Subjects in this role have general
@@ -76,7 +67,7 @@ to the student wiki, unless they are in the global deny group".
 .. figure:: ../figures/201-wiki-policy.png
 
 -------------------------------------------------------------------------------
-Exercise 201.4.4 Configure PSPNG to provision wiki_user to eduPersonEntitlement
+Exercise 201.4.3 Configure PSPNG to provision wiki_user to eduPersonEntitlement
 -------------------------------------------------------------------------------
 
 #. Assign PSPNG attribute, **provision_to**  to `wiki_user` with a value
@@ -92,13 +83,13 @@ Exercise 201.4.4 Configure PSPNG to provision wiki_user to eduPersonEntitlement
         :caption: grouper-loader.properties
         :linenos:
 
-2. Run CHANGE_LOG_consumer_pspng_entitlements
+3. Run CHANGE_LOG_consumer_pspng_entitlements
    (Miscellaneous -> All daemon jobs -> Job actions -> Run job now)
 
 .. figure:: ../figures/201-pspng-entitlements-run-job.png
 
 ---------------------------------------------------------------
-Exercise 201.4.5 Configure Shib to release ePE value for our SP
+Exercise 201.4.4 Configure Shib to release ePE value for our SP
 ---------------------------------------------------------------
 
 The demo Shibboleth IdP has been configured to release the
@@ -119,7 +110,7 @@ is below:
 .. figure:: ../figures/201-ePE-value.png
 
 ----------------------------------------------------------------
-Exercise 201.4.6 Thought exercise! Create accounts at target SP?
+Exercise 201.4.5 Thought exercise! Create accounts at target SP?
 ----------------------------------------------------------------
 Can we use policy groups to create/manage accounts at target SP?
 

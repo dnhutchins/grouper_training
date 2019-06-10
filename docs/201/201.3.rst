@@ -108,7 +108,7 @@ The eduPerson object class specification states:
     faculty, staff and students.
 
 #. Create `app:eduPersonAffiliation:ePA_member`.
-#. Add `...:ePA_faculty | staff | student` to `...:ePA_member`.
+#. Add `ePA_faculty`, `ePA_staff`, and `ePA_student` to `ePA_member`.
 #. Review `ePA_member` defintion (ePA_member -> More actions -> Visualization)
 
 .. figure:: ../figures/201-ePA-member-vis.png
