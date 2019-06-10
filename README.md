@@ -52,10 +52,10 @@ docker run -d -p 80:80 -p 389:389 -p 8443:443 -p 3306:3306 \
 More information about Grouper Training can be found on the Internet2 wiki: 
 <https://spaces.at.internet2.edu/display/Grouper/Grouper+Training+Environment>.
 
-## Rabbit MQ for 401 exercises
+## RabbitMQ for 401 exercises
 
-The 401 exercises require Rabbit MQ. Before starting the 401 docker images,
-start Rabbit MQ and a queue named `grouper`.
+The 401 exercises require RabbitMQ. Before starting the 401 docker images,
+start RabbitMQ and a queue named `grouper`.
 
 ``` bash
 docker run -d -p 15672:15672 --env RABBITMQ_NODENAME=docker-rabbit \
