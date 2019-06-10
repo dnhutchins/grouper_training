@@ -239,3 +239,9 @@ attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouper
 "Identity and Access Management");
 attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
 "Global deny group");
+
+// setup for 201.5
+// should be a loader job?
+addStem("ref", "dept", "dept")
+addGroup("ref:dept", "finance", "finance")
+addMember("ref:dept:finance", "asmith989")
