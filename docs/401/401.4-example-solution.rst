@@ -23,4 +23,4 @@ scholars reference group.
 
 .. figure:: ../figures/401-lms-solution.png
 
-Congrats! You are now a certified Grouper Guru associate level 1!
+Congrats! You are now a certified Grouper Guru level 4!
