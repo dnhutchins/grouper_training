@@ -229,3 +229,13 @@ attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouper
 attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
 "Members of the IRB");
 
+// setup for 201.4
+global_deny = addGroup("ref:iam", "global_deny", "global_deny");
+AttributeDefName typeMarker = AttributeDefNameFinder.findByName("etc:objectTypes:grouperObjectTypeMarker", true);
+AttributeAssign attributeAssign = global_deny.getAttributeDelegate().hasAttribute(typeMarker) ? global_deny.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : global_deny.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
+attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
+attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "ref");
+attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner",
+"Identity and Access Management");
+attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
+"Global deny group");
