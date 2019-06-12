@@ -1,7 +1,7 @@
 FROM tier/shib-idp:3.4.3_20190201 as idp
 
 # Grouper version for the entire GTE
-FROM tier/grouper:latest
+FROM tier/grouper:2.4.0-a47-u25-w5-p6-20190611
 
 # Disable docker HEALTHCHECK inherited from tier/shib-sp
 HEALTHCHECK NONE
