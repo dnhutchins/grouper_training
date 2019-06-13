@@ -73,7 +73,7 @@ Exercise 201.3.1 Create app folder for eduPersonAffiliation values
 
 .. figure:: ../figures/201-eduPersonAffiliation-app-template.png
 
-#. Create the following policy groups in
+#. Create the following groups in
    `app:eduPersonAffiliation:service:policy:`
 
 * `ePA_student`
@@ -118,7 +118,8 @@ Exercise 201.3.4 Configure PSPNG to reflect ePA values to LDAP
 --------------------------------------------------------------
 
 #. Configure PSPNG to sync group membership to LDAP values for
-   **eduPersonAffiliation**.
+   **eduPersonAffiliation**. The following is already configured for you in
+   grouper-loader.properties.
 
    .. literalinclude:: examples/201-3-4.pspng-epa.grouper-loader.properties
         :language: properties
@@ -126,11 +127,13 @@ Exercise 201.3.4 Configure PSPNG to reflect ePA values to LDAP
         :linenos:
 
 #. Assign PSPNG *provision_to* attribute to `ePA_member` with a value of
-   **pspng_affiliations**.
+   **pspng_affiliations**. (ePA_member -> More actions -> Attribute assigments
+   -> + Assign attribute -> `etc:pspng:provision_to` -> Save) (provision_to ->
+   Actions -> Add value -> `pspng_affiliations` -> Submit)
 
 .. figure:: ../figures/201-ePA-pspng.png
 
-3. Review and "Run job now" the PSPNG affiliations change log consumer daemon
+3. Review and execute "Run job now" for the PSPNG affiliations change log consumer daemon
    job (Miscellaneous -> All daemon jobs)
 
 .. figure:: ../figures/201-ePA-pspng-run.png
@@ -149,7 +152,8 @@ the demo SP. The relevant configuration is below:
     :emphasize-lines: 9
     :linenos:
 
-1. Log in to https://localhost:8443/app with username `aclark706` and password `password`.
+1. Open a private browser, and log in to https://localhost:8443/app with
+   username `aclark706` and password `password`.
 
 .. figure:: ../figures/201-ePA-attribute-release.png
 

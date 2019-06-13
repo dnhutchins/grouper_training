@@ -30,7 +30,7 @@ defined at the target service. The policy indicating which subjects are mapped
 to application roles (permissions sets) can be attribute based, a simple access
 control list, or some combination of both.
 
-In AC3, the policy adminstration point is split between Grouper and the target
+In ACM3, the policy adminstration point is split between Grouper and the target
 service. Policy decision point and policy enforcement point are with the target
 service.
 

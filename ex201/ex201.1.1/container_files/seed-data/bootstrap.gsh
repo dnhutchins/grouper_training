@@ -7,6 +7,9 @@ addRootStem("app", "app");
 addRootStem("org", "org");
 addRootStem("test", "test");
 
+addStem("ref", "iam", "iam");
+addGroup("ref:iam", "active", "active");
+
 // loader job for class year groups :ref:student:class2019, etc.
 addGroup("etc","studentTermLoader", "studentTermLoader");
 groupAddType("etc:studentTermLoader", "grouperLoader");
@@ -208,7 +211,6 @@ attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouper
 attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
 "Subjects denied access by CISO");
 
-addStem("ref", "iam", "iam")
 closure = addGroup("ref:iam", "closure", "closure")
 AttributeAssign attributeAssign = closure.getAttributeDelegate().hasAttribute(typeMarker) ? closure.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : closure.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
 attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");

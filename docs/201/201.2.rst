@@ -68,13 +68,6 @@ create a new structure for our VPN service policy.
 
 .. figure:: ../figures/201-new-vpn-policy.png
 
-TODO: Steps 5 through 8 should be replaced with policy template when ready
-
-5. Create `app:vpn:vpn_access`.
-6. Create `app:vpn:vpn_allow`.
-7. Create `app:vpn:vpn_deny`.
-8. Make `vpn_access` a composite of `vpn_allow` minus `vpn_deny`.
-
 -------------------------------------------------------------------
 Exercise 201.2.2 Create digital policy from natural language policy
 -------------------------------------------------------------------
@@ -83,8 +76,8 @@ The natural language policy is "all faculty and staff have access to vpn,
 unless denied by CISO or the account is in a closure state".  Reference groups
 are already available.
 
-#. Add `ref:employee:fac_staff` to `vpn_allow`.
-#. Add `ref:security:locked_by_ciso` to `vpn_deny`.
+#. Add `ref:employee:fac_staff` to `vpn_access_allow`.
+#. Add `ref:security:locked_by_ciso` to `vpn_access_deny`.
 #. Add `ref:iam:closure` to `vpn_deny`.
 #. Review the `vpn_access` policy definition
    (vpn_access -> More actions -> Visualization)
@@ -106,7 +99,7 @@ account is in a closure state".
 
 .. figure:: ../figures/201-jsmith-trace.png
 
-4. View the audit log on `vpn_allow`. (vpn_allow -> More actions -> View audit
+4. View the audit log on `vpn_access_allow`. (vpn_access_allow -> More actions -> View audit
    log)
 
 .. figure:: ../figures/201-vpn-allow-audit.png
@@ -125,7 +118,7 @@ controlled by security groups in `app:vpn:security`. Security groups are
 essentially policy groups for Grouper access. Review the default privileges on
 `vpn_allow`.
 
-#. Naviage to `ref:app:vpn:service:policy:vpn_allow`.
+#. Naviage to `ref:app:vpn:service:policy:vpn_access_allow`.
 #. Click on the Privileges tab.
 
 .. figure:: ../figures/201-vpn-allow-privileges.png

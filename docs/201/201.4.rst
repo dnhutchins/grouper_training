@@ -60,8 +60,8 @@ Exercise 201.4.2 Add reference groups to policy
 access to the wiki. The natural language policy is, "All students have access
 to the student wiki, unless they are in the global deny group".
 
-#. Add `ref:student:students` to `app:wiki:service:policy:wiki_allow`.
-#. Add `ref:iam:global_deny` to `app:wiki:service:policy:wiki_deny`.
+#. Add `ref:student:students` to `app:wiki:service:policy:wiki_user_allow`.
+#. `ref:iam:global_deny` was added to `wiki_user_deny` automatically by the template.
 #. Review policy defintion (wiki_user -> More -> Visualization)
 
 .. figure:: ../figures/201-wiki-policy.png
@@ -76,7 +76,7 @@ Exercise 201.4.3 Configure PSPNG to provision wiki_user to eduPersonEntitlement
 .. figure:: ../figures/201-wiki-user-pspng.png
 
 2. Configure PSPNG to convert membership to ePE value of http://sp.example.org/wiki
-   and review in LDAP.  The relevent configuration is below:
+   and review in LDAP.  The following has already been configured in grouper-loader.properties:
 
    .. literalinclude:: examples/201-4-4.pspng-epe.grouper-loader.properties
         :language: properties
@@ -103,7 +103,7 @@ is below:
     :emphasize-lines: 17
     :linenos:
 
-1. Open a new browser to https://localhost:8443/app
+1. Open a new private browser to https://localhost:8443/app
 2. Log in with username `aclark706` and password `password`
 3. Check eduPersonEntitlement value
 
