@@ -146,10 +146,9 @@ contractors, etc.)"
 #. Use the application template and the policy group template to create a new
    `vpn` application folder and policy group called `vpn_authorized`
 
-#. Create a new application specific reference group
-   `app:vpn:service:ref:vpn_adhoc`.
+#. Select the policy template option "create allow ad hoc group"
 
-#. Add `faculty`, `staff`, and `vpn_adhoc` to `vpn_authorized_allow`
+#. Add `faculty`, `staff`, and to `vpn_authorized_allow`
 
 .. figure:: ../figures/401-vpn-policy.png
 
@@ -161,7 +160,8 @@ contractors, etc.)"
 Exercise 401.1.3 Export `vpn_authorized` to OpenLDAP
 ----------------------------------------------------
 
-#. Configure `PSPNG`_ to provision group members to OpenLDAP groupOfNames
+#. Configure `PSPNG`_ to provision group members to OpenLDAP groupOfNames. The
+   following has already been configured for you in grouper-loader.properties.
 
    .. literalinclude:: examples/401.1.3-pspng-config.properties
         :language: properties
@@ -171,7 +171,7 @@ Exercise 401.1.3 Export `vpn_authorized` to OpenLDAP
         :linenos:
 
 2. Mark `vpn_authorized` with the PSPNG `provision_to` attribute with a value
-of `pspng_groupOfNames`.
+   of `pspng_groupOfNames`.
 
 .. figure:: ../figures/401-vpn-provision-to.png
 
@@ -270,7 +270,8 @@ the past is still appropriate.
    * Deceased
    * Other reasons
 
-#. Add `ref:iam:global_deny` to the `vpn_authorized_deny` policy group.
+#. `ref:iam:global_deny` was automatically added to the `vpn_authorized_deny`
+    policy group by the policy template.
 
 #. Add 30 day attestation requirements to the `vpn_ajohnson409` ACL.
    (vpn_ajohnson409 -> More actions -> Attestation -> Attestion actions ->

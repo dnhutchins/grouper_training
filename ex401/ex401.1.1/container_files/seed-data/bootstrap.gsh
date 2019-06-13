@@ -10,6 +10,10 @@ addRootStem("401.1.1", "401.1.1")
 
 addStem("ref", "iam", "iam");
 addGroup("ref:iam", "global_deny", "global_deny");
+addGroup("ref:iam", "active", "active");
+
+addStem("ref", "employee", "employee");
+addGroup("ref:employee", "fac_staff", "fac_staff");
 
 group = addGroup("etc","rolesLoader", "Roles Loader");
 groupAddType("etc:rolesLoader", "grouperLoader");
