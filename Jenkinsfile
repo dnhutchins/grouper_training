@@ -17,7 +17,7 @@ exceriseSets = [
 //    '101' : [3, 2],
     '201' : [1, 1, 1, 1, 1],
 //    '301' : [2, 2, 5, 6], manually built with a single image
-    '401' : [6, 9, 7, 1]
+    '401' : [1, 1, 1, 1]
 ]
 
 pipeline {
