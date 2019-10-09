@@ -1,7 +1,7 @@
 FROM tier/shib-idp:3.4.3_20190201 as idp
 
 # Grouper version for the entire GTE
-FROM tier/grouper:2.4.0-a64-u38-w6-p6-20190612-rc1
+FROM tier/grouper:latest
 
 # Disable docker HEALTHCHECK inherited from tier/shib-sp
 HEALTHCHECK NONE
@@ -21,7 +21,7 @@ RUN yum install -y epel-release \
 
 COPY container_files/seed-data/ /seed-data/
 
-RUN mysql_install_db \
+RUN mysql_install_db --force \
     && chown -R mysql:mysql /var/lib/mysql/ \
     && sed -i 's/^\(bind-address\s.*\)/# \1/' /etc/my.cnf \
     && sed -i 's/^\(log_error\s.*\)/# \1/' /etc/my.cnf \
