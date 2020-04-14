@@ -4,13 +4,13 @@ The Grouper Training Environment (gte) is a set of docker images that contain
 all the software components, configuration, and setup necessary to complete the
 InCommon Grouper Training course. Each docker image tag coincides with a
 particular course, exercise, step, and the overall gte version. For example,
-the gte image tag for Grouper Basics 101 is 101.1.1-201906. The docker command
+the gte image tag for Grouper Basics 101 is 101.1.1-202006. The docker command
 to run the image for the 101 course is:
 
 ``` bash
 
 docker run -d -p 80:80 -p 389:389 -p 8443:443 -p 3306:3306 \
-  --name 101.1.1 tier/gte:101.1.1-201906
+  --name 101.1.1 tier/gte:101.1.1-202006
 
 ```
 
@@ -46,7 +46,7 @@ Where {VERSION_TAG} takes the form of {course}.{exercise}.{step}-{version}. For 
 
 ``` bash
 docker run -d -p 80:80 -p 389:389 -p 8443:443 -p 3306:3306 \
-  --name 101.1.1 tier/gte:101.1.1-201906
+  --name 101.1.1 tier/gte:101.1.1-202006
 ```
 
 More information about Grouper Training can be found on the Internet2 wiki: 

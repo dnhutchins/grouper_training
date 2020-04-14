@@ -83,7 +83,7 @@ pipeline {
                         def tagSet = generateTagSet()
                         def builds = build(tagSet)
 
-                        if(env.BRANCH_NAME == "201911") {
+                        if(env.BRANCH_NAME == "202006") {
                             //builds.each{ k, v -> echo ("push ${k}") } //for local testing
                             builds.each{ k, v -> v.push(k) }
 							
