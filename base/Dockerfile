@@ -1,7 +1,7 @@
 FROM tier/shib-idp:3.4.3_20190201 as idp
 
 # Grouper version for the entire GTE
-FROM tier/grouper:2.4.0-a80-u51-w10-p11-20191031-rc1
+FROM i2incommon/grouper:2.5.22
 
 # Disable docker HEALTHCHECK inherited from tier/shib-sp
 HEALTHCHECK NONE
@@ -51,15 +51,15 @@ RUN cp /usr/share/openldap-servers/DB_CONFIG.example /var/lib/ldap/DB_CONFIG \
     && pkill -HUP slapd \
     && while curl -s ldap://localhost:389 > /dev/null; do echo waiting for ldap to stop; sleep 1; done
 
-COPY container_files/conf/* /opt/grouper/grouper.apiBinary/conf/
+COPY container_files/conf/* /opt/grouper/grouperWebapp/WEB-INF/classes/
 
 RUN (/usr/sbin/slapd -h "ldap:/// ldaps:/// ldapi:///" -u ldap &) \
     && while ! curl -s ldap://localhost:389 > /dev/null; do echo waiting for ldap to start; sleep 1; done; \
     (mysqld_safe & ) \
     && while ! curl -s localhost:3306 > /dev/null; do echo waiting for mysqld to start; sleep 3; done; \
-    cd /opt/grouper/grouper.apiBinary \
-    && bin/gsh -registry -check -runscript -noprompt \
-    && bin/gsh /seed-data/bootstrap.gsh \
+    cd /opt/grouper/grouperWebapp/WEB-INF/bin \
+    && ./gsh.sh -registry -check -runscript -noprompt \
+    && ./gsh.sh /seed-data/bootstrap.gsh \
     && pkill -HUP slapd \
     && while curl -s ldap://localhost:389 > /dev/null; do echo waiting for ldap to stop; sleep 1; done; \
     pkill -u mysql mysqld \
@@ -68,20 +68,18 @@ RUN (/usr/sbin/slapd -h "ldap:/// ldaps:/// ldapi:///" -u ldap &) \
 COPY --from=idp /opt/shibboleth-idp/ /opt/shibboleth-idp/
 
 COPY container_files/etc/ /etc/
-COPY container_files/conf/ /opt/grouper/conf/
 COPY container_files/httpd/* /etc/httpd/conf.d/
 COPY container_files/shibboleth-idp/ /opt/shibboleth-idp/
 COPY container_files/shibboleth-sp/* /etc/shibboleth/
-COPY container_files/tomcat/ /opt/tomcat/
+COPY container_files/tomcat/ /opt/tomee/
 COPY container_files/tier-support/* /opt/tier-support/
 COPY container_files/tls/host-key.pem  /etc/pki/tls/private/
 COPY container_files/tls/* /etc/pki/tls/certs/
-#COPY container_files/ui/* /opt/grouper/grouper.ui/WEB-INF/
 COPY container_files/usr-local-bin/* /usr/local/bin/
 COPY container_files/var-www-html/ /var/www/html/
 
-RUN cp /opt/tier-support/grouper.xml /opt/tier-support/grouper-ws.xml /opt/tomcat/conf/Catalina/localhost/ \
-    && chown -R tomcat /opt/shibboleth-idp/ \
+#RUN cp /opt/tier-support/grouper.xml /opt/tier-support/grouper-ws.xml /opt/tomcat/conf/Catalina/localhost/ \
+RUN chown -R tomcat /opt/shibboleth-idp/ \
     && chmod -R 700 /opt/shibboleth-idp/ \
     && chmod +rx /var/www/html/app/index.py \
     && /opt/shibboleth-idp/bin/build.sh
