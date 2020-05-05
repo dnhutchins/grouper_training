@@ -1,7 +1,7 @@
 FROM tier/shib-idp:3.4.3_20190201 as idp
 
 # Grouper version for the entire GTE
-FROM i2incommon/grouper:2.5.26
+FROM i2incommon/grouper:2.5.27
 
 # Disable docker HEALTHCHECK inherited from tier/shib-sp
 HEALTHCHECK NONE
@@ -78,7 +78,7 @@ COPY container_files/tls/* /etc/pki/tls/certs/
 COPY container_files/usr-local-bin/* /usr/local/bin/
 COPY container_files/var-www-html/ /var/www/html/
 
-#RUN cp /opt/tier-support/grouper.xml /opt/tier-support/grouper-ws.xml /opt/tomcat/conf/Catalina/localhost/ \
+#RUN cp /opt/tier-support/grouper.xml /opt/tier-support/grouper-ws.xml /opt/tomee/conf/Catalina/localhost/ \
 RUN chown -R tomcat /opt/shibboleth-idp/ \
     && chmod -R 700 /opt/shibboleth-idp/ \
     && chmod +rx /var/www/html/app/index.py \
