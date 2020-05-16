@@ -1,7 +1,7 @@
 FROM tier/shib-idp:3.4.3_20190201 as idp
 
 # Grouper version for the entire GTE
-FROM i2incommon/grouper:2.5.27
+FROM i2incommon/grouper:2.5.28
 
 # Disable docker HEALTHCHECK inherited from tier/shib-sp
 HEALTHCHECK NONE
@@ -83,6 +83,11 @@ RUN chown -R tomcat /opt/shibboleth-idp/ \
     && chmod -R 700 /opt/shibboleth-idp/ \
     && chmod +rx /var/www/html/app/index.py \
     && /opt/shibboleth-idp/bin/build.sh
+
+RUN chown -R tomcat:tomcat /opt/grouper/grouperWebapp
+RUN chown -R tomcat:tomcat /opt/tomee
+
+ENV GROUPER_START_DELAY_SECONDS=10
 
 EXPOSE 389 3306 4443
 

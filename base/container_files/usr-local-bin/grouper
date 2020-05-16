@@ -1,12 +1,13 @@
 #!/bin/bash
 
 . /usr/local/bin/library.sh
+prep_conf
 
-prepDaemon
-prepUI
-prepWS
-
-finishPrep
+prep_ui
+prep_daemon
+prep_ws
+prep_finish
+setupFiles
 
 exec /usr/bin/supervisord -c /opt/tier-support/supervisord-training.conf
 
