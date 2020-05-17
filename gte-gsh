@@ -6,4 +6,4 @@ if [ -z "$1" ]
         exit 0
 fi
 
-docker exec -it "$1" /opt/grouper/grouper.apiBinary/bin/gsh 2> /dev/null
+docker exec -it -u tomcat "$1" /opt/grouper/grouperWebapp/WEB-INF/bin/gsh.sh 2> /dev/null

@@ -166,7 +166,7 @@ Exercise 401.1.3 Export `vpn_authorized` to OpenLDAP
    .. literalinclude:: examples/401.1.3-pspng-config.properties
         :language: properties
         :lines: 72-
-        :caption: /opt/grouper/grouper.apiBinary/conf/grouper-loader.properties
+        :caption: /opt/grouper/grouperWebapp/WEB-INF/classes/grouper-loader.properties
         :name: 401.1.3-pspng-groupofnames
         :linenos:
 
@@ -292,7 +292,7 @@ approach.
 
 #. Run `./gte-shell 401.1.1` to get a command prompt.
 
-#. Run `./bin/gsh` to start the Grouper shell
+#. Run `./bin/gsh.sh` as user tomcat to start the Grouper shell
 
 #. Paste in the following gsh script:
 
