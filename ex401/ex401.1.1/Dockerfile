@@ -14,6 +14,8 @@ COPY container_files/grouper-loader.properties /opt/grouper/grouperWebapp/WEB-IN
 COPY container_files/grouper.client.properties /opt/grouper/grouperWebapp/WEB-INF/classes
 COPY container_files/subject.properties /opt/grouper/grouperWebapp/WEB-INF/classes
 COPY container_files/morphString.properties /opt/grouper/grouperWebapp/WEB-INF/classes
+COPY container_files/grouper.properties /opt/grouper/grouperWebapp/WEB-INF/classes
+COPY container_files/grouperText/grouper.text.en.us.properties /opt/grouper/grouperWebapp/WEB-INF/classes/grouperText/grouper.text.en.us.properties
 
 RUN . /usr/local/bin/library.sh \
     && prep_conf && prep_finish && setupFiles; \

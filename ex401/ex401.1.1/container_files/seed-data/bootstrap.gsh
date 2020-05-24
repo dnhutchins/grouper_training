@@ -15,6 +15,19 @@ addGroup("ref:iam", "active", "active");
 addStem("ref", "employee", "employee");
 addGroup("ref:employee", "fac_staff", "fac_staff");
 
+addGroup("ref", "fac_staff_student", "fac_staff_student");
+
+addGroup("ref", "faculty", "faculty");
+addGroup("ref", "staff", "staff");
+addGroup("ref", "student", "student");
+
+addMember("ref:employee:fac_staff", "ref:faculty");
+addMember("ref:employee:fac_staff", "ref:staff");
+
+addMember("ref:fac_staff_student", "ref:faculty");
+addMember("ref:fac_staff_student", "ref:staff");
+addMember("ref:fac_staff_student", "ref:student");
+
 group = addGroup("etc","rolesLoader", "Roles Loader");
 groupAddType("etc:rolesLoader", "grouperLoader");
 setGroupAttr("etc:rolesLoader", "grouperLoaderDbName", "grouper");

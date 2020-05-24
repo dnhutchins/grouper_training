@@ -20,9 +20,9 @@ attributeAssign.getAttributeValueDelegate().assignValue(LoaderLdapUtils.grouperL
 loaderRunOneJob(group);
 
 // stub out loader jobs
-addGroup("ref", "faculty", "faculty");
-addGroup("ref", "staff", "staff");
-addGroup("ref", "student", "student");
+//addGroup("ref", "faculty", "faculty");
+//addGroup("ref", "staff", "staff");
+//addGroup("ref", "student", "student");
 
 // Create the groups that do the grouper math to analyze the tables.
 addGroup("test:vpn", "vpn_faculty", "vpn_faculty");

@@ -6,6 +6,10 @@ if [ -z "$1" ]
         exit 0
 fi
 
+docker stop rabbitmq 2> /dev/null
+docker rm rabbitmq 2> /dev/null
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+$DIR/start-rabbitmq.sh
 docker stop "$1" 2> /dev/null
 docker rm "$1" 2> /dev/null
 docker run -d -p 80:80 -p 389:389 -p 8443:443 -p 3306:3306 \
