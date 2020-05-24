@@ -55,7 +55,7 @@ More information about Grouper Training can be found on the Internet2 wiki:
 ## RabbitMQ for 401 exercises
 
 The 401 exercises require RabbitMQ. Before starting the 401 docker images,
-start RabbitMQ and a queue named `grouper`.
+start RabbitMQ and add queue named `grouper`.
 
 ``` bash
 docker run -d -p 15672:15672 --env RABBITMQ_NODENAME=docker-rabbit \
