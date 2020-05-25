@@ -6,4 +6,4 @@ if [ ! -z "$1" ]
 fi
 label=$( docker ps -a | grep 'tier/gte' | awk '{print $1}' )
 
-docker exec -it "$label" /bin/bash 2> /dev/null
+docker logs -f "$label"

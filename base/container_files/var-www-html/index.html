@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>GTE jump page</title>
+<style>
+#myTable {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#myTable td, #myTable th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#myTable tr:nth-child(even){background-color: #f2f2f2;}
+
+#myTable tr:hover {background-color: #ddd;}
+
+#myTable th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
+</style>
+</head>
+<body>
+<h1>GTE jump page</h1>
+<br /><br />
+<table id="myTable">
+<tr>
+<th>Name</th>
+<th>Link</th>
+<th>Credentials</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><a href="/grouper/">Grouper</a></td>
+<td>https://localhost:8443/grouper/</td>
+<td>Admin: banderson / password<br/>
+    Civilian: jsmith / password</td>
+<td>Grouper UI application</td>
+</tr>
+<tr>
+<td><a href="/phpmyadmin/">Database manager</a></td>
+<td>https://localhost:8443/phpmyadmin/</td>
+<td>root / &lt;no password&gt;</td>
+<td>Phpmyadmin Mysql database manager</td>
+</tr>
+<tr>
+<td><a href="/phpldapadmin/">LDAP manager</a></td>
+<td>https://localhost:8443/phpldapadmin/</td>
+<td>username: cn=root,dc=internet2,dc=edu<br />password: password</td>
+<td>Phpldapadmin LDAP administration</td>
+</tr>
+<tr>
+<td><a href="/rabbitmq/">Messaging manager</a></td>
+<td>https://localhost:8443/rabbitmq/</td>
+<td>username: guest<br />password: guest</td>
+<td>Rabbitmq messaging administration</td>
+</tr>
+<tr>
+<td><a href="/app">Shibboleth attributes</a></td>
+<td>https://localhost:8443/app</td>
+<td></td>
+<td>Simple screen to show login state</td>
+</tr>
+<tr>
+<td><a href="https://spaces.at.internet2.edu/display/Grouper/Grouper+Training+Environment">Wiki</a></td>
+<td>https://spaces.at.internet2.edu/display/Grouper/Grouper+Training+Environment</td>
+<td></td>
+<td>Documentation and more links</td>
+</tr>
+<tr>
+<td>Slides</td>
+<td>Linked from slack "pin"</td>
+<td></td>
+<td></td>
+</tr>
+
+<!--
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+-->
+</table>
+</body>
+</html>

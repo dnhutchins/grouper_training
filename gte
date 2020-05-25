@@ -2,16 +2,28 @@
   
 if [ -z "$1" ]
   then
-    docker images tier/gte
-        exit 0
+    #docker images tier/gte
+    echo "Pass in which gte environment to spin up:"
+    my_array=( $( docker images | grep 'tier/gte' | grep -v base | awk '{print $2}' | sort ) )
+    for i in "${my_array[@]}"
+    do
+      # strip last 7 chars (-202006)
+      i=${i::${#i}-7}
+      echo $i
+    done
+    exit 1
 fi
 
-docker stop rabbitmq 2> /dev/null
-docker rm rabbitmq 2> /dev/null
+# remove rabbitmq and all gte containers
+docker rm -f rabbitmq 2> /dev/null
+docker ps -a | grep 'tier/gte' | awk '{print $1}' | xargs docker rm -f
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 $DIR/start-rabbitmq.sh
-docker stop "$1" 2> /dev/null
-docker rm "$1" 2> /dev/null
-docker run -d -p 80:80 -p 389:389 -p 8443:443 -p 3306:3306 \
-  --link rabbitmq:rabbitmq --name $1 tier/gte:"$1"-202006
+
+# lets see which 
+
+#docker stop "$1" 2> /dev/null
+#docker rm "$1" 2> /dev/null
+docker run -d -p 8443:443 --link rabbitmq:rabbitmq --name $1 tier/gte:"$1"-202006
 

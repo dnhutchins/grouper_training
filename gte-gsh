@@ -1,9 +1,8 @@
 #! /bin/bash
   
-if [ -z "$1" ]
+if [ ! -z "$1" ]
   then
-    docker ps --format "{{.Names}} {{.Image}} {{.Status}}"
-        exit 0
+    echo "Do not pass in an argument: $1"
 fi
-
-docker exec -it -u tomcat "$1" /opt/grouper/grouperWebapp/WEB-INF/bin/gsh.sh 2> /dev/null
+label=$( docker ps -a | grep 'tier/gte' | awk '{print $1}' )
+docker exec -it -u tomcat "$label" /opt/grouper/grouperWebapp/WEB-INF/bin/gsh.sh 2> /dev/null
