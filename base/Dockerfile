@@ -52,6 +52,7 @@ RUN cp /usr/share/openldap-servers/DB_CONFIG.example /var/lib/ldap/DB_CONFIG \
     && while curl -s ldap://localhost:389 > /dev/null; do echo waiting for ldap to stop; sleep 1; done
 
 COPY container_files/conf/* /opt/grouper/grouperWebapp/WEB-INF/classes/
+COPY container_files/conf/grouperText/* /opt/grouper/grouperWebapp/WEB-INF/classes/grouperText/
 
 RUN (/usr/sbin/slapd -h "ldap:/// ldaps:/// ldapi:///" -u ldap &) \
     && while ! curl -s ldap://localhost:389 > /dev/null; do echo waiting for ldap to start; sleep 1; done; \
