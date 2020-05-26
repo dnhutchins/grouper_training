@@ -1,7 +1,6 @@
 gs = GrouperSession.startRootSession();
 addRootStem("basis", "basis");
 addRootStem("ref", "ref");
-addRootStem("bundle", "bundle");
 addRootStem("app", "app");
 addRootStem("org", "org");
 addRootStem("test", "test");

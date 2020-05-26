@@ -13,14 +13,16 @@ COPY container_files/demo.gsh /seed-data/
 COPY container_files/grouper-loader.properties /opt/grouper/grouperWebapp/WEB-INF/classes
 COPY container_files/subject.properties /opt/grouper/grouperWebapp/WEB-INF/classes
 
-RUN (/usr/sbin/slapd -h "ldap:/// ldaps:/// ldapi:///" -u ldap &) \
+RUN . /usr/local/bin/library.sh \
+    && prep_conf && prep_finish && setupFiles; \
+    (/usr/sbin/slapd -h "ldap:/// ldaps:/// ldapi:///" -u ldap &) \
     && while ! curl -s ldap://localhost:389 > /dev/null; do echo waiting for ldap to start; sleep 1; done; \
     (mysqld_safe & ) \
     && while ! curl -s localhost:3306 > /dev/null; do echo waiting for mysqld to start; sleep 3; done; \
-    . /usr/local/bin/library.sh \
-    && prep_conf && prep_finish && setupFiles \
-    && cd /opt/grouper/grouperWebapp/WEB-INF \
-    && sudo --preserve-env=PATH -u tomcat bin/gsh.sh /seed-data/demo.gsh \
+    cd /opt/grouper/grouperWebapp/WEB-INF/bin \
+    && cp -r /opt/grouper/grouperWebapp/WEB-INF/libUiAndDaemon/* /opt/grouper/grouperWebapp/WEB-INF/lib/ \
+    && if [ ! -f /usr/local/bin/java ]; then ln -s /usr/lib/jvm/java-1.8.0-amazon-corretto/bin/java /usr/local/bin/java; fi \    
+    && sudo --preserve-env=PATH -u tomcat ./gsh.sh /seed-data/demo.gsh \
     && pkill -HUP slapd \
     && while curl -s ldap://localhost:389 > /dev/null; do echo waiting for ldap to stop; sleep 1; done; \
     pkill -u mysql mysqld \

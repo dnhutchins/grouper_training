@@ -1,7 +1,6 @@
 gs = GrouperSession.startRootSession();
 addRootStem("basis", "basis");
 addRootStem("ref", "ref");
-addRootStem("bundle", "bundle");
 addRootStem("app", "app");
 addRootStem("org", "org");
 testStem = addRootStem("test", "test");
@@ -60,12 +59,12 @@ attributeAssign.getAttributeValueDelegate().assignValue(LoaderLdapUtils.grouperL
 attributeAssign.getAttributeValueDelegate().assignValue(LoaderLdapUtils.grouperLoaderLdapGroupNameExpressionName(), 'ref:dept:${groupAttribute}');
 attributeAssign.getAttributeValueDelegate().assignValue(LoaderLdapUtils.grouperLoaderLdapGroupDisplayNameExpressionName(), '${groupAttribute}');
 
-
-addGroup("bundle", "default_services", "default_services");
-addGroup("bundle", "student_services", "student_services");
-addGroup("bundle", "employee_services", "employee_services");
-
 addStem("ref", "student", "student");
+
+addGroup("ref", "default_services", "default_services");
+addGroup("ref:student", "student_services", "student_services");
+addGroup("ref", "employee_services", "employee_services");
+
 addStem("ref:student", "class", "class");
 addGroup("ref:student:class", "freshmen", "freshmen");
 addGroup("ref:student:class", "sophomore", "sophomore");
@@ -105,12 +104,12 @@ addGroup("ref:role", "recruiter", "recruiter");
 addGroup("ref:role", "coach", "coach");
 addGroup("ref:role", "vicePresident", "vicePresident");
 
-addMember("bundle:student_services", "ref:student:class:freshmen");
-addMember("bundle:student_services", "ref:student:class:sophomore");
-addMember("bundle:student_services", "ref:student:class:junior");
-addMember("bundle:student_services", "ref:student:class:senior");
-addMember("bundle:student_services", "ref:student:class:graduate");
-addMember("bundle:student_services", "ref:student:class:doctorate");
+addMember("ref:student:student_services", "ref:student:class:freshmen");
+addMember("ref:student:student_services", "ref:student:class:sophomore");
+addMember("ref:student:student_services", "ref:student:class:junior");
+addMember("ref:student:student_services", "ref:student:class:senior");
+addMember("ref:student:student_services", "ref:student:class:graduate");
+addMember("ref:student:student_services", "ref:student:class:doctorate");
 
 addStem("org", "admissions", "admissions");
 addStem("org:admissions", "etc", "etc");
