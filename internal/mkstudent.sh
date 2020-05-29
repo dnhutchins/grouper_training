@@ -4,10 +4,10 @@ export GROUPER_GTE_BRANCH=GROUPER_BUILD_CLOUD_FORMATION
 #export GROUPER_GTE_DOCKER_BRANCH=GROUPER_BUILD_CLOUD_FORMATION
 export GROUPER_GTE_DOCKER_BRANCH=202006
 
-echo "$GROUPER_GTE_BRANCH" > grouperGteBranch.txt
-chmod a+r grouperGteBranch.txt
-echo "$GROUPER_GTE_DOCKER_BRANCH" > grouperGteDockerBranch.txt
-chmod a+r grouperGteDockerBranch.txt
+echo "$GROUPER_GTE_BRANCH" > /root/grouperGteBranch.txt
+chmod a+r /root/grouperGteBranch.txt
+echo "$GROUPER_GTE_DOCKER_BRANCH" > /root/grouperGteDockerBranch.txt
+chmod a+r /root/grouperGteDockerBranch.txt
 
 yum -y update
 yum -y install java-1.8.0-openjdk java-1.8.0-openjdk-devel wget mlocate emacs nano nslookup mlocate patch
@@ -94,5 +94,5 @@ chmod +x /home/student/start-rabbitmq.sh
 updatedb
 
 # Echo the password
-echo "$MY_IP, student, $PASS"
+echo "abcdefg12345678, $MY_IP, student, $PASS"
 
