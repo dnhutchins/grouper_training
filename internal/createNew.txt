@@ -1,0 +1,19 @@
+ami: amzn2-ami-hvm-2.0.20190508-x86_64-gp2
+t3a-large
+network ends in 688
+subnet ends in 4a6
+auto assign public ip
+storage 30gig
+security group: gte-training
+tag env training
+
+user data script from https://github.internet2.edu/docker/grouper_training/raw/$GROUPER_GTE_BRANCH/internal/userdata.sh
+
+ssh -i gte-training-master.pem ec2-user@3.136.154.33
+
+instance i-043829afce57f6da6
+3.21.41.203
+
+
+pip install awscli --user
+aws ec2 describe-instances | jq '[.Reservations | .[] | .Instances | .[] | select(.State.Name!="terminated") | select((.Tags[]|select(.Key=="env")|.Value) =="training")] | .[] | .InstanceId' | xargs -n 1 -I{}  aws  ec2 get-console-output  --instance-id {} | fmt | grep student | awk -F\\ '{print $1}' | awk -F , '{print $1 "\t" $2 "\t" $3 "\t\t\tssh -L 8443:localhost:8443 -l student"$1}'
