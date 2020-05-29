@@ -1,5 +1,9 @@
 #!/bin/bash
 
+export GROUPER_GTE_BRANCH=GROUPER_BUILD_CLOUD_FORMATION
+#export GROUPER_GTE_DOCKER_BRANCH=GROUPER_BUILD_CLOUD_FORMATION
+export GROUPER_GTE_DOCKER_BRANCH=202006
+
 echo "$GROUPER_GTE_BRANCH" > grouperGteBranch.txt
 chmod a+r grouperGteBranch.txt
 echo "$GROUPER_GTE_DOCKER_BRANCH" > grouperGteDockerBranch.txt

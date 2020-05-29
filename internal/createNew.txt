@@ -7,7 +7,7 @@ storage 30gig
 security group: gte-training
 tag env training
 
-user data script from https://github.internet2.edu/docker/grouper_training/raw/$GROUPER_GTE_BRANCH/internal/userdata.sh
+user data script from https://github.internet2.edu/docker/grouper_training/raw/202006-post/internal/userdata.sh
 
 ssh -i gte-training-master.pem ec2-user@3.136.154.33
 
