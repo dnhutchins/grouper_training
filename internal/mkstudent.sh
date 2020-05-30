@@ -10,7 +10,7 @@ echo "$GROUPER_GTE_DOCKER_BRANCH" > /root/grouperGteDockerBranch.txt
 chmod a+r /root/grouperGteDockerBranch.txt
 
 yum -y update
-yum -y install java-1.8.0-openjdk java-1.8.0-openjdk-devel wget mlocate emacs nano nslookup mlocate patch
+yum -y install java-1.8.0-openjdk java-1.8.0-openjdk-devel wget mlocate emacs nano nslookup mlocate patch gawk
 
 yum -y install docker
 
@@ -93,6 +93,6 @@ chmod +x /home/student/start-rabbitmq.sh
 
 updatedb
 
-# Echo the password
-echo "abcdefg12345678, $MY_IP, student, $PASS"
+# Echo the IP and password with no whitespace so it doesnt wrap
+echo "abcdefg12345678,$MY_IP,$PASS,"
 
