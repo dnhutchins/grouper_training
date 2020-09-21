@@ -14,8 +14,9 @@ COPY container_files/grouper-loader.properties /opt/grouper/grouperWebapp/WEB-IN
 COPY container_files/subject.properties /opt/grouper/grouperWebapp/WEB-INF/classes
 COPY container_files/morphString.properties /opt/grouper/grouperWebapp/WEB-INF/classes/
 
+#  && setupFiles
 RUN . /usr/local/bin/library.sh \
-    && prep_conf && prep_finish && setupFiles; \
+    && prep_conf && prep_finish; \
     (/usr/sbin/slapd -h "ldap:/// ldaps:/// ldapi:///" -u ldap &) \
     && while ! curl -s ldap://localhost:389 > /dev/null; do echo waiting for ldap to start; sleep 1; done; \
     (mysqld_safe & ) \
