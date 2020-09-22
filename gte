@@ -7,7 +7,7 @@ if [ -z "$1" ]
     my_array=( $( docker images | grep 'tier/gte' | grep -v base | awk '{print $2}' | sort ) )
     for i in "${my_array[@]}"
     do
-      # strip last 7 chars (-202006)
+      # strip last 7 chars (-202010)
       i=${i::${#i}-7}
       echo $i
     done
@@ -16,7 +16,13 @@ fi
 
 # remove rabbitmq and all gte containers
 docker rm -f rabbitmq 2> /dev/null
-docker ps -a | grep 'tier/gte' | awk '{print $1}' | xargs docker rm -f
+
+# see if there is a container
+CONTAINER="$( docker ps -a | grep 'tier/gte' | awk '{print $1}' )"
+# if so, then rm it
+if [ ! -z "$CONTAINER" ]; then
+  docker ps -a | grep 'tier/gte' | awk '{print $1}' | xargs docker rm -f
+fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 $DIR/start-rabbitmq.sh
@@ -25,5 +31,5 @@ $DIR/start-rabbitmq.sh
 
 #docker stop "$1" 2> /dev/null
 #docker rm "$1" 2> /dev/null
-docker run -d -p 8443:443 --link rabbitmq:rabbitmq --name $1 tier/gte:"$1"-202006
+docker run -d -p 8443:443 --link rabbitmq:rabbitmq --name $1 tier/gte:"$1"-202010
 
