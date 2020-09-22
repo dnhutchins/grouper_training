@@ -83,7 +83,7 @@ pipeline {
                         def tagSet = generateTagSet()
                         def builds = build(tagSet)
 
-                        if(env.BRANCH_NAME == "202006") {
+                        if(env.BRANCH_NAME == "202010") {
                             //builds.each{ k, v -> echo ("push ${k}") } //for local testing
                             builds.each{ k, v -> v.push(k) }
 							
@@ -100,7 +100,7 @@ pipeline {
 	                        build.push("full_demo-${tag}")
 
                         } else {
-                            echo 'not building images, since the SCM branch is not 201911'
+                            echo 'not building images, since the SCM branch is not 202010'
                         }
                     }
                 }
