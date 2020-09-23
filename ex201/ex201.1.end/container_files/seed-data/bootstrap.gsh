@@ -4,7 +4,17 @@ addRootStem("201.1.end", "201.1.end")
 
 // ex201.1.1
 // addStem("ref", "student", "student")
-addGroup("ref:student", "students", "students");
+studentGroup = addGroup("ref:student", "students", "students");
+studentGroup.setDescription($/This group contains contains all students for the purpose of access control. Members automatically get access to a broad selection of student services. You can view where this group is in use by selecting "This group's memberships in other groups" under the "More" tab/$);
+studentGroup.store()
+
+AttributeDefName typeMarker = AttributeDefNameFinder.findByName("etc:objectTypes:grouperObjectTypeMarker", true);
+AttributeAssign attributeAssign = studentGroup.getAttributeDelegate().hasAttribute(typeMarker) ? studentGroup.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : studentGroup.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign()
+attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true")
+attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "ref")
+attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner", "Registrar")
+attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription", "All student subjects for the purpose of access control");
+
 
 // added by loader job. these are not needed.
 // addGroup("ref:student", "class2019", "class2019");
@@ -13,20 +23,17 @@ addGroup("ref:student", "students", "students");
 // addGroup("ref:student", "class2022", "class2022");
 // addGroup("ref:student", "class2023", "class2023");
 
-addMember("ref:student:students","ref:student:class2019");
-addMember("ref:student:students","ref:student:class2020");
-addMember("ref:student:students","ref:student:class2021");
-addMember("ref:student:students","ref:student:class2022");
-addMember("ref:student:students","ref:student:class2023");
+(2021..2024).each { term ->
+    addMember("ref:student:students","ref:student:class${term}");
+}
 
-//Set expiration out Dec 31, 2018 days
+//Set expiration out Dec 31, 2020 days
 java.util.Calendar cal = Calendar.getInstance();
-cal.set(2018, 12, 31)
+cal.set(2020, Calendar.DECEMBER, 31)
 
-addGroup("ref:student", "class2018", "class2018");
-addMember("ref:student:students","ref:student:class2018");
+addMember("ref:student:students","ref:student:class2020");
 group = GroupFinder.findByName(gs, "ref:student:students", true);
-subject = GroupFinder.findByName(gs, "ref:student:class2018", true).toSubject();
+subject = GroupFinder.findByName(gs, "ref:student:class2020", true).toSubject();
 group.addOrEditMember(subject, true, true, null, cal.getTime(), false);
 
 // ex 201.1.2
@@ -37,9 +44,10 @@ addMember("ref:student:students","basis:student:exchange_students");
 
 // ex 201.1.4
 addGroup("basis:student", "transfer_student", "transfer_student");
+addMember("basis:student:transfer_student","pmartinez921");
+addMember("basis:student:transfer_student","cthompson287");
 addMember("basis:student:transfer_student","agrady901");
-addMember("basis:student:transfer_student","alee467");
-addMember("basis:student:transfer_student","ascott776");
+
 
 java.util.Calendar cal2 = Calendar.getInstance();
 cal2.add(Calendar.DATE, 60);

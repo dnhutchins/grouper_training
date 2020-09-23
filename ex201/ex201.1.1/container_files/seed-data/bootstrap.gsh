@@ -21,52 +21,22 @@ setGroupAttr("etc:studentTermLoader", "grouperLoaderQuery", "select distinct id 
 
 // Stub out class groups. These will be filled out by the studentTermLoader
 addStem("ref", "student", "student");
-class2019 = addGroup("ref:student", "class2019", "class2019");
-class2020 = addGroup("ref:student", "class2020", "class2020");
-class2021 = addGroup("ref:student", "class2021", "class2021");
-class2022 = addGroup("ref:student", "class2022", "class2022");
-class2023 = addGroup("ref:student", "class2023", "class2023");
+def classList = [:]
+(2019..2024).each { term ->
+    classList[term] = addGroup("ref:student", "class${term}", "class${term}")
+}
+
 
 // Set ref object type on class reference groups
 AttributeDefName typeMarker = AttributeDefNameFinder.findByName("etc:objectTypes:grouperObjectTypeMarker", true);
-AttributeAssign attributeAssign = class2019.getAttributeDelegate().hasAttribute(typeMarker) ? class2019.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : class2019.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "ref");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner", "Registrar");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
-"Class of 2019");
+classList.each { term, group ->
+    AttributeAssign attributeAssign = group.getAttributeDelegate().hasAttribute(typeMarker) ? group.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : group.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign()
+    attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true")
+    attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "ref")
+    attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner", "Registrar")
+    attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription", "Class of ${term}");
+}
 
-AttributeDefName typeMarker = AttributeDefNameFinder.findByName("etc:objectTypes:grouperObjectTypeMarker", true);
-AttributeAssign attributeAssign = class2020.getAttributeDelegate().hasAttribute(typeMarker) ? class2020.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : class2020.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "ref");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner", "Registrar");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
-"Class of 2020");
-
-AttributeDefName typeMarker = AttributeDefNameFinder.findByName("etc:objectTypes:grouperObjectTypeMarker", true);
-AttributeAssign attributeAssign = class2021.getAttributeDelegate().hasAttribute(typeMarker) ? class2021.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : class2021.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "ref");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner", "Registrar");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
-"Class of 2021");
-
-AttributeDefName typeMarker = AttributeDefNameFinder.findByName("etc:objectTypes:grouperObjectTypeMarker", true);
-AttributeAssign attributeAssign = class2022.getAttributeDelegate().hasAttribute(typeMarker) ? class2022.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : class2022.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "ref");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner", "Registrar");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
-"Class of 2022");
-
-AttributeDefName typeMarker = AttributeDefNameFinder.findByName("etc:objectTypes:grouperObjectTypeMarker", true);
-AttributeAssign attributeAssign = class2023.getAttributeDelegate().hasAttribute(typeMarker) ? class2023.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : class2023.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "ref");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner", "Registrar");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
-"Class of 2023");
 
 // ex 201.1.2
 addStem("basis", "student", "student");

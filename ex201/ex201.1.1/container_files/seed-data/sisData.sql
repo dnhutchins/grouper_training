@@ -3739,3 +3739,10 @@ INSERT INTO HR_PEOPLE_ROLES(id, role) VALUES ('80000999','staff');
 INSERT INTO HR_PEOPLE_ROLES(id, role) VALUES ('80000999','community');
 INSERT INTO HR_PEOPLE(id, surname, givenName) VALUES ('80001000','Davis','Bill');
 INSERT INTO HR_PEOPLE_ROLES(id, role) VALUES ('80001000','community');
+
+/* make the original term ranges more relevant to the current year -- October 2020 should have 2019-2024 */
+
+ALTER TABLE SIS_STUDENT_TERMS DROP PRIMARY KEY;
+UPDATE SIS_STUDENT_TERMS SET term = CONVERT(term, UNSIGNED INTEGER) + 1;
+ALTER TABLE SIS_STUDENT_TERMS ADD PRIMARY KEY (id, term);
+
