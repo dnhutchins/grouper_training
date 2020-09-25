@@ -8,21 +8,16 @@ addStem("app:eduPersonAffiliation", "service", "service");
 addStem("app:eduPersonAffiliation:service", "policy", "policy");
 addGroup("app:eduPersonAffiliation:service:policy", "ePA_student", "ePA_student");
 addGroup("app:eduPersonAffiliation:service:policy", "ePA_staff", "ePA_staff");
-addGroup("app:eduPersonAffiliation:service:policy", "ePA_alum", "ePA_alum");
-addGroup("app:eduPersonAffiliation:service:policy", "ePA_member", "ePA_member");
-addGroup("app:eduPersonAffiliation:service:policy", "ePA_affiliate", "ePA_affiliate");
-addGroup("app:eduPersonAffiliation:service:policy", "ePA_employee", "ePA_employee");
-addGroup("app:eduPersonAffiliation:service:policy", "ePA_library-walk-in", "ePA_library-walk-in");
+addGroup("app:eduPersonAffiliation:service:policy", "ePA_faculty", "ePA_faculty");
 
 //ex201.3.2
 addMember("app:eduPersonAffiliation:service:policy:ePA_student", "ref:student:students");
 
 //ex201.3.3
+addGroup("app:eduPersonAffiliation:service:policy", "ePA_member", "ePA_member");
 addMember("app:eduPersonAffiliation:service:policy:ePA_member", "app:eduPersonAffiliation:service:policy:ePA_student");
 addMember("app:eduPersonAffiliation:service:policy:ePA_member", "app:eduPersonAffiliation:service:policy:ePA_staff");
-addMember("app:eduPersonAffiliation:service:policy:ePA_member", "app:eduPersonAffiliation:service:policy:ePA_alum");
-addMember("app:eduPersonAffiliation:service:policy:ePA_member", "app:eduPersonAffiliation:service:policy:ePA_affiliate");
-addMember("app:eduPersonAffiliation:service:policy:ePA_member", "app:eduPersonAffiliation:service:policy:ePA_employee");
+addMember("app:eduPersonAffiliation:service:policy:ePA_member", "app:eduPersonAffiliation:service:policy:ePA_faculty");
 
 //ex201.3.4
 
