@@ -83,7 +83,9 @@ COPY container_files/var-www-html/ /var/www/html/
 RUN chown -R tomcat /opt/shibboleth-idp/ \
     && chmod -R 700 /opt/shibboleth-idp/ \
     && chmod +rx /var/www/html/app/index.py \
-    && /opt/shibboleth-idp/bin/build.sh
+    && /opt/shibboleth-idp/bin/build.sh \
+    && chmod go-w /etc/phpMyAdmin/config.inc.php
+
 
 RUN chown -R tomcat:tomcat /opt/grouper/grouperWebapp
 RUN chown -R tomcat:tomcat /opt/tomee
