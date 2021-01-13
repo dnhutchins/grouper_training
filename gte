@@ -7,7 +7,7 @@ if [ -z "$1" ]
     my_array=( $( docker images | grep 'tier/gte' | grep -v base | awk '{print $2}' | sort ) )
     for i in "${my_array[@]}"
     do
-      # strip last 7 chars (-202010)
+      # strip last 7 chars (-202102)
       i=${i::${#i}-7}
       echo $i
     done
@@ -31,5 +31,4 @@ $DIR/start-rabbitmq.sh
 
 #docker stop "$1" 2> /dev/null
 #docker rm "$1" 2> /dev/null
-docker run -d -p 8443:443 --link rabbitmq:rabbitmq --name $1 tier/gte:"$1"-202010
-
+docker run -d -p 8443:443 --link rabbitmq:rabbitmq --name $1 tier/gte:"$1"-202102
