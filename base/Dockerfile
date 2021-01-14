@@ -1,7 +1,7 @@
 FROM tier/shib-idp:3.4.3_20190201 as idp
 
 # Grouper version for the entire GTE
-FROM i2incommon/grouper:2.5.35
+FROM i2incommon/grouper:2.5.40
 
 # Disable docker HEALTHCHECK inherited from tier/shib-sp
 HEALTHCHECK NONE
@@ -15,8 +15,10 @@ LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>" \
 ENV ENV=training \
     USERTOKEN=gte-base
 
+# 2021-01-13 the phpldapadmin in epel is 1.2.5 which is incompatible with php 5.4.x
 RUN yum install -y epel-release \
-    && yum install -y emacs mariadb mariadb-server nano openldap openldap-clients openldap-servers phpMyAdmin phpldapadmin \
+    && yum install -y mariadb mariadb-server nano openldap openldap-clients openldap-servers phpMyAdmin \
+          https://archive.fedoraproject.org/pub/archive/epel/7.2020-10-05/x86_64/Packages/p/phpldapadmin-1.2.3-10.el7.noarch.rpm \
     && yum clean all
 
 COPY container_files/seed-data/ /seed-data/
