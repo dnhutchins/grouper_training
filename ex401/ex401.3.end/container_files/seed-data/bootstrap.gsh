@@ -20,7 +20,7 @@ mgr_group = addGroup(security.name, mgr_group_name, mgr_group_name);
 view_group_name = "${app_extension}Readers";
 view_group = addGroup(security.name, view_group_name, view_group_name);
 
-addGroup("app:board_effect:service:policy", "board_effect_access", "board_effect_access");
+access_policy_group = addGroup("app:board_effect:service:policy", "board_effect_access", "board_effect_access");
 addGroup("app:board_effect:service:policy", "board_effect_access_allow", "board_effect_access_allow");
 addGroup("app:board_effect:service:policy", "board_effect_access_deny", "board_effect_access_deny");
 addComposite("app:board_effect:service:policy:board_effect_access", CompositeType.COMPLEMENT, "app:board_effect:service:policy:board_effect_access_allow", "app:board_effect:service:policy:board_effect_access_deny");
@@ -31,6 +31,18 @@ addGroup("app:board_effect:service:policy", "workroom_finance_allow", "workroom_
 addGroup("app:board_effect:service:policy", "workroom_finance_deny", "workroom_finance_deny");
 addComposite("app:board_effect:service:policy:workroom_finance", CompositeType.COMPLEMENT, "app:board_effect:service:policy:workroom_finance_allow", "app:board_effect:service:policy:workroom_finance_deny");
 addMember("app:board_effect:service:policy:board_effect_access_allow", "app:board_effect:service:policy:workroom_finance");
+addMember("app:board_effect:service:policy:workroom_finance_allow", "bthompson392");
+
+
+// Assign PSPNG `provision_to` attribute to `https://college.boardeffect.com/` with a value of `pspng_entitlements`.
+edu.internet2.middleware.grouper.pspng.FullSyncProvisionerFactory.getFullSyncer("pspng_entitlements");
+pspngAttribute = AttributeDefNameFinder.findByName("etc:pspng:provision_to", true);
+AttributeAssignSave attributeAssignSave = new AttributeAssignSave(gs).assignPrintChangesToSystemOut(true);
+attributeAssignSave.assignAttributeDefName(pspngAttribute);
+attributeAssignSave.assignOwnerGroup(access_policy_group);
+attributeAssignSave.addValue("pspng_entitlements");
+attributeAssignSave.save();
+
 
 // 401.3.3 nothing to do
 // 401.3.4 nothing to do
@@ -66,14 +78,17 @@ attribValueDelegate.assignValue(RuleUtils.ruleThenEnumName(), RuleThenEnum.assig
 attribValueDelegate.assignValue(RuleUtils.ruleThenEnumArg0Name(), numDays.toString());
 attribValueDelegate.assignValue(RuleUtils.ruleThenEnumArg1Name(), "T");
 
-// 401.3.7
+// 401.3.7 (slides removed)
+/*
 addStem("ref", "role", "role");
 addGroup("ref:role", "president_assistant", "president_assistant");
 addMember("ref:role:president_assistant", "amartinez410");
 addMember("app:board_effect:security:board_effectUpdaters", "ref:role:president_assistant");
 delMember("app:board_effect:security:board_effectAdmins", "amartinez410");
+*/
 
-// 401.3.8
+// 401.3.8 (slides removed)
+/*
 addStem("ref", "board", "board");
 group = GroupFinder.findByName(gs, "app:board_effect:service:ref:finance_committee", true);
 stem = StemFinder.findByName(gs, "ref:board", true);
@@ -91,4 +106,5 @@ boardeffectUpdaters = GroupFinder.findByName(gs, "app:board_effect:security:boar
 revokePriv("ref:board:finance_committee", boardeffectAdmins.toSubject().id, AccessPrivilege.ADMIN);
 revokePriv("ref:board:finance_committee", boardeffectUpdaters.toSubject().id, AccessPrivilege.UPDATE);
 revokePriv("ref:board:finance_committee", boardeffectUpdaters.toSubject().id, AccessPrivilege.READ);
+*/
 
