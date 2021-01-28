@@ -19,11 +19,6 @@ attributeAssign.getAttributeValueDelegate().assignValue(LoaderLdapUtils.grouperL
 attributeAssign.getAttributeValueDelegate().assignValue(LoaderLdapUtils.grouperLoaderLdapSubjectExpressionName(), "\${loaderLdapElUtils.convertDnToSpecificValue(subjectId)}");
 loaderRunOneJob(group);
 
-// stub out loader jobs
-//addGroup("ref", "faculty", "faculty");
-//addGroup("ref", "staff", "staff");
-//addGroup("ref", "student", "student");
-
 // Create the groups that do the grouper math to analyze the tables.
 addGroup("test:vpn", "vpn_faculty", "vpn_faculty");
 addComposite("test:vpn:vpn_faculty", CompositeType.INTERSECTION, "test:vpn:vpn_legacy", "ref:faculty");
@@ -31,12 +26,7 @@ addGroup("test:vpn", "vpn_staff", "vpn_staff");
 addComposite("test:vpn:vpn_staff", CompositeType.INTERSECTION, "test:vpn:vpn_legacy", "ref:staff");
 addGroup("test:vpn", "vpn_students", "vpn_students");
 addComposite("test:vpn:vpn_students", CompositeType.INTERSECTION, "test:vpn:vpn_legacy", "ref:student");
-addGroup("test:vpn", "vpn_facstaffstudent", "vpn_facstaffstudent");
-addMember("test:vpn:vpn_facstaffstudent", "test:vpn:vpn_faculty");
-addMember("test:vpn:vpn_facstaffstudent", "test:vpn:vpn_staff");
-addMember("test:vpn:vpn_facstaffstudent", "test:vpn:vpn_students");
-addGroup("test:vpn", "other_cohorts", "other_cohorts");
-addComposite("test:vpn:other_cohorts", CompositeType.COMPLEMENT, "test:vpn:vpn_legacy", "test:vpn:vpn_facstaffstudent");
+
 
 // 401.1.2
 addStem("app", "vpn", "vpn");
@@ -53,20 +43,20 @@ addGroup("app:vpn:service:policy", "vpn_authorized_deny", "vpn_authorized_deny")
 addMember("app:vpn:service:policy:vpn_authorized_allow", "ref:faculty");
 addMember("app:vpn:service:policy:vpn_authorized_allow", "ref:staff");
 addMember("app:vpn:service:policy:vpn_authorized_allow", "app:vpn:service:ref:vpn_adhoc");
+addMember("app:vpn:service:policy:vpn_authorized_deny", "ref:iam:global_deny");
 
 addComposite("app:vpn:service:policy:vpn_authorized", CompositeType.COMPLEMENT, "app:vpn:service:policy:vpn_authorized_allow", "app:vpn:service:policy:vpn_authorized_deny");
 
-// 401.1.3 - not sure what this isn't working... comment out for now.
+// 401.2
 // Auto create the PSPNG attributes
-// edu.internet2.middleware.grouper.pspng.FullSyncProvisionerFactory.getFullSyncer("pspng_groupOfNames");
-// pspngAttribute = AttributeDefNameFinder.findByName("etc:pspng:provision_to", true);
-// AttributeAssignSave attributeAssignSave = new AttributeAssignSave(gs).assignPrintChangesToSystemOut(true);
-// attributeAssignSave.assignAttributeDefName(pspngAttribute);
-// attributeAssignSave.assignOwnerGroup(vpn_authorized);
-// attributeAssignSave.addValue("pspng_groupOfNames");
-// attributeAssignSave.save();
+edu.internet2.middleware.grouper.pspng.FullSyncProvisionerFactory.getFullSyncer("pspng_groupOfNames");
+pspngAttribute = AttributeDefNameFinder.findByName("etc:pspng:provision_to", true);
+AttributeAssignSave attributeAssignSave = new AttributeAssignSave(gs).assignPrintChangesToSystemOut(true);
+attributeAssignSave.assignAttributeDefName(pspngAttribute);
+attributeAssignSave.assignOwnerGroup(vpn_authorized);
+attributeAssignSave.addValue("pspng_groupOfNames");
+attributeAssignSave.save();
 
-// 401.1.4
 group=addGroup("app:vpn:service:ref", "vpn_consultants", "vpn_consultants");
 group.setDescription("Consultants, must be approved by VP and have expiration date set");
 group.store();
@@ -86,7 +76,6 @@ GrouperSession.start(findSubject("ajohnson409"))
 addMember("app:vpn:service:ref:vpn_ajohnson409", "bsmith458")
 
 
-// 401.1.5
 // Attestation requirement
 gs = GrouperSession.startRootSession();
 group = GroupFinder.findByName(gs, "app:vpn:service:ref:vpn_ajohnson409");
@@ -118,32 +107,23 @@ vpn_consultants = GroupFinder.findByName(gs, "app:vpn:service:ref:vpn_consultant
 attribAssign = vpn_consultants.getAttributeDelegate().addAttribute(RuleUtils.ruleAttributeDefName()).getAttributeAssign();
 attribValueDelegate = attribAssign.getAttributeValueDelegate();
 attribValueDelegate.assignValue(RuleUtils.ruleActAsSubjectSourceIdName(), actAs.getSourceId());
+//attribValueDelegate.assignValue(RuleUtils.ruleRunDaemonName(), "F");
 attribValueDelegate.assignValue(RuleUtils.ruleActAsSubjectIdName(), actAs.getId());
 attribValueDelegate.assignValue(RuleUtils.ruleCheckTypeName(), RuleCheckType.membershipAdd.name());
+//attribValueDelegate.assignValue(RuleUtils.ruleIfConditionEnumName(), RuleIfConditionEnum.thisGroupHasImmediateEnabledNoEndDateMembership.name());
 attribValueDelegate.assignValue(RuleUtils.ruleThenEnumName(), RuleThenEnum.assignMembershipDisabledDaysForOwnerGroupId.name());
 attribValueDelegate.assignValue(RuleUtils.ruleThenEnumArg0Name(), numberOfDays.toString());
 attribValueDelegate.assignValue(RuleUtils.ruleThenEnumArg1Name(), "T");
 
 addMember("app:vpn:service:ref:vpn_consultants", "jsmith")
 
-// 401.1.4 VPN access audit for list of NetIDs
+// VPN access audit for list of NetIDs
 addGroup("test:vpn", "vpn_audit_list", "vpn_audit_list");
+addMember("test:vpn:vpn_audit_list","aroberts95");
 addMember("test:vpn:vpn_audit_list","ahenderson36");
+addMember("test:vpn:vpn_audit_list","bsmith458");
 addMember("test:vpn:vpn_audit_list","cpeterson37");
 addMember("test:vpn:vpn_audit_list","jclark39");
-addMember("test:vpn:vpn_audit_list","kbrown62");
-addMember("test:vpn:vpn_audit_list","tpeterson63");
-addMember("test:vpn:vpn_audit_list","pjohnson64");
-addMember("test:vpn:vpn_audit_list","aroberts95");
-addMember("test:vpn:vpn_audit_list","sdavis107");
-addMember("test:vpn:vpn_audit_list","mhenderson109");
-addMember("test:vpn:vpn_audit_list","jvales117");
-addMember("test:vpn:vpn_audit_list","sgrady139");
-addMember("test:vpn:vpn_audit_list","mprice142");
-addMember("test:vpn:vpn_audit_list","mwilliams144");
-addMember("test:vpn:vpn_audit_list","lpeterson153");
-addMember("test:vpn:vpn_audit_list","mvales154");
-addMember("test:vpn:vpn_audit_list","bsmith458");
 
 addGroup("test:vpn", "vpn_audit", "vpn_audit");
 addComposite("test:vpn:vpn_audit", CompositeType.INTERSECTION, "app:vpn:service:policy:vpn_authorized", "test:vpn:vpn_audit_list");
