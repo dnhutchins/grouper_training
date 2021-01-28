@@ -29,7 +29,7 @@ attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouper
 
 //Set expiration out Dec 31, 2020 days
 java.util.Calendar cal = Calendar.getInstance();
-cal.set(2020, Calendar.DECEMBER, 31)
+cal.set(2021, Calendar.MARCH, 31, 17, 0, 0)
 
 addMember("ref:student:students","ref:student:class2020");
 group = GroupFinder.findByName(gs, "ref:student:students", true);
@@ -82,12 +82,12 @@ subject = GroupFinder.findByName(gs, "basis:student:loa_4_years", true).toSubjec
 group.addOrEditMember(subject, true, true, null, cal6.getTime(), false);
 
 // ex 201.1.7
-addGroup("ref:student", "on_track_grad", "on_track_grad");
-addMember("ref:student:on_track_grad","ref:student:class2019");
+//addGroup("ref:student", "on_track_grad", "on_track_grad");
+//addMember("ref:student:on_track_grad","ref:student:class2020");
 
-java.util.Calendar cal7 = Calendar.getInstance();
-cal7.set(2019, 7, 1)
+//java.util.Calendar cal7 = Calendar.getInstance();
+//cal7.set(2019, 7, 1)
 
-group = GroupFinder.findByName(gs, "ref:student:on_track_grad", true);
-subject = GroupFinder.findByName(gs, "ref:student:class2019", true).toSubject();
-group.addOrEditMember(subject, true, true, null, cal7.getTime(), false);
+//group = GroupFinder.findByName(gs, "ref:student:on_track_grad", true);
+//subject = GroupFinder.findByName(gs, "ref:student:class2019", true).toSubject();
+//group.addOrEditMember(subject, true, true, null, cal7.getTime(), false);
