@@ -1,5 +1,5 @@
 ARG VERSION_TAG
-FROM tier/gte:401.1.end-$VERSION_TAG
+FROM tier/gte:401.7.1-$VERSION_TAG
 
 LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>" \
       Vendor="TIER" \
@@ -7,7 +7,7 @@ LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>" \
       ImageName=$imagename \
       ImageOS=centos7
 
-ENV USERTOKEN=gte-401.2.1
+ENV USERTOKEN=gte-401.7.end
 
 COPY container_files/seed-data/ /seed-data/
 

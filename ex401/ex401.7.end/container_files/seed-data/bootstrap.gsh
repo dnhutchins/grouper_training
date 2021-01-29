@@ -1,6 +1,6 @@
 gs = GrouperSession.startRootSession();
-delStem("401.4.1")
-addRootStem("401.4.end", "401.4.end")
+delStem("401.7.1")
+addRootStem("401.7.end", "401.7.end")
 
 // import "community members" into a legacy reference group
 community = new GroupSave(gs).assignName("ref:legacy:community_members").assignCreateParentStemsIfNotExist(true).save();

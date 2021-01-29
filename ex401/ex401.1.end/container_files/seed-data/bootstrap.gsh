@@ -2,7 +2,7 @@ gs = GrouperSession.startRootSession();
 delStem("401.1.1")
 addRootStem("401.1.end", "401.1.end")
 
-// 401.1.1
+// Step 1
 addStem("test", "vpn", "vpn");
 
 //Create a loader job to pull in the VPN users assigned in the directory.
@@ -28,7 +28,7 @@ addGroup("test:vpn", "vpn_students", "vpn_students");
 addComposite("test:vpn:vpn_students", CompositeType.INTERSECTION, "test:vpn:vpn_legacy", "ref:student");
 
 
-// 401.1.2
+// Step 2
 addStem("app", "vpn", "vpn");
 addStem("app:vpn", "service", "service");
 addStem("app:vpn", "security", "security");
@@ -47,7 +47,7 @@ addMember("app:vpn:service:policy:vpn_authorized_deny", "ref:iam:global_deny");
 
 addComposite("app:vpn:service:policy:vpn_authorized", CompositeType.COMPLEMENT, "app:vpn:service:policy:vpn_authorized_allow", "app:vpn:service:policy:vpn_authorized_deny");
 
-// 401.2
+// Step 3
 // Auto create the PSPNG attributes
 edu.internet2.middleware.grouper.pspng.FullSyncProvisionerFactory.getFullSyncer("pspng_groupOfNames");
 pspngAttribute = AttributeDefNameFinder.findByName("etc:pspng:provision_to", true);

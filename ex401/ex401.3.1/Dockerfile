@@ -1,5 +1,5 @@
 ARG VERSION_TAG
-FROM tier/gte:401.2.end-$VERSION_TAG
+FROM tier/gte:401.1.end-$VERSION_TAG
 
 LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>" \
       Vendor="TIER" \
