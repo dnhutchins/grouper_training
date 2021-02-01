@@ -96,7 +96,7 @@ pipeline {
 				build = docker.build("${maintainer}/${imagename}:base-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} base")
 	                        build.push("base-${tag}")
 				
-				build = docker.build("${maintainer}/${imagename}:full_demo-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} full_demo/")
+				build = docker.build("${maintainer}/${imagename}:full_demo-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} full-demo/")
 	                        build.push("full_demo-${tag}")
 				
 				
