@@ -85,8 +85,41 @@ pipeline {
 
                         if(env.BRANCH_NAME == "202102") {
                             //builds.each{ k, v -> echo ("push ${k}") } //for local testing
-                            builds.each{ k, v -> v.push(k) }
-							
+                            // builds.each{ k, v -> v.push(k) } <- not used anymore
+		 		def build = docker.build("${maintainer}/${imagename}:101.1.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex101/ex101.1.1")
+	                        build.push("101.1.1-${tag}")
+				
+				
+				
+				def build = docker.build("${maintainer}/${imagename}:401.3.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex401/ex401.3.end")
+	                        build.push("401.3.end-${tag}")
+				
+				
+				
+				/*
+				docker pull "tier/gte:401.3.end-$GROUPER_GTE_DOCKER_BRANCH"
+				docker pull "tier/gte:401.3.1-$GROUPER_GTE_DOCKER_BRANCH"
+				docker pull "tier/gte:401.1.end-$GROUPER_GTE_DOCKER_BRANCH"
+				docker pull "tier/gte:401.1.1-$GROUPER_GTE_DOCKER_BRANCH"
+				docker pull "tier/gte:301.4.1-$GROUPER_GTE_DOCKER_BRANCH"
+				docker pull "tier/gte:211.1.1-$GROUPER_GTE_DOCKER_BRANCH"
+				docker pull "tier/gte:201.5.end-$GROUPER_GTE_DOCKER_BRANCH"
+				docker pull "tier/gte:201.5.1-$GROUPER_GTE_DOCKER_BRANCH"
+				docker pull "tier/gte:201.4.end-$GROUPER_GTE_DOCKER_BRANCH"
+				ocker pull "tier/gte:201.4.1-$GROUPER_GTE_DOCKER_BRANCH"
+				docker pull "tier/gte:201.3.end-$GROUPER_GTE_DOCKER_BRANCH"
+				docker pull "tier/gte:201.3.1-$GROUPER_GTE_DOCKER_BRANCH"
+				docker pull "tier/gte:201.2.end-$GROUPER_GTE_DOCKER_BRANCH"
+				docker pull "tier/gte:201.2.1-$GROUPER_GTE_DOCKER_BRANCH"
+				docker pull "tier/gte:201.1.end-$GROUPER_GTE_DOCKER_BRANCH"
+				docker pull "tier/gte:201.1.1-$GROUPER_GTE_DOCKER_BRANCH"
+				docker pull "tier/gte:101.1.1-$GROUPER_GTE_DOCKER_BRANCH"
+				docker pull "tier/gte:full_demo-$GROUPER_GTE_DOCKER_BRANCH"
+				docker pull "tier/gte:base-$GROUPER_GTE_DOCKER_BRANCH"
+				
+				
+				
+				
 	                        def build = docker.build("${maintainer}/${imagename}:101.1.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex101/ex101.1.1")
 	                        build.push("101.1.1-${tag}")
 
@@ -98,6 +131,7 @@ pipeline {
 						
 	                        build = docker.build("${maintainer}/${imagename}:full_demo-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} full-demo")
 	                        build.push("full_demo-${tag}")
+				*/
 
                         } else {
                             echo 'not building images, since the SCM branch is not 202102'
