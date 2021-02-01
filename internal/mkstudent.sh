@@ -16,12 +16,8 @@ yum -y install docker
 
 systemctl start docker
 
-docker pull "tier/gte:401.4.end-$GROUPER_GTE_DOCKER_BRANCH"
-docker pull "tier/gte:401.4.1-$GROUPER_GTE_DOCKER_BRANCH"
 docker pull "tier/gte:401.3.end-$GROUPER_GTE_DOCKER_BRANCH"
 docker pull "tier/gte:401.3.1-$GROUPER_GTE_DOCKER_BRANCH"
-docker pull "tier/gte:401.2.end-$GROUPER_GTE_DOCKER_BRANCH"
-docker pull "tier/gte:401.2.1-$GROUPER_GTE_DOCKER_BRANCH"
 docker pull "tier/gte:401.1.end-$GROUPER_GTE_DOCKER_BRANCH"
 docker pull "tier/gte:401.1.1-$GROUPER_GTE_DOCKER_BRANCH"
 docker pull "tier/gte:301.4.1-$GROUPER_GTE_DOCKER_BRANCH"
