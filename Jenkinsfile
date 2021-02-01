@@ -90,8 +90,7 @@ pipeline {
 	                        build.push("101.1.1-${tag}")
 				
 				
-				
-				def build = docker.build("${maintainer}/${imagename}:401.3.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex401/ex401.3.end")
+				build = docker.build("${maintainer}/${imagename}:401.3.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex401/ex401.3.end")
 	                        build.push("401.3.end-${tag}")
 				
 				
