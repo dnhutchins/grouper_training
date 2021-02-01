@@ -93,13 +93,15 @@ pipeline {
 				build = docker.build("${maintainer}/${imagename}:401.3.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex401/ex401.3.end")
 	                        build.push("401.3.end-${tag}")
 				
-				/*
-				
 				build = docker.build("${maintainer}/${imagename}:base-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} base")
 	                        build.push("base-${tag}")
 				
-				build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
-	                        build.push("-${tag}")
+				build = docker.build("${maintainer}/${imagename}:full_demo-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} full_demo/")
+	                        build.push("full_demo-${tag}")
+				
+				
+				
+				/*
 				
 				build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
 	                        build.push("-${tag}")
