@@ -80,8 +80,8 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com/',   "dockerhub-${maintainer}") {
-                        def tagSet = generateTagSet()
-                        def builds = build(tagSet)
+                        // def tagSet = generateTagSet()
+                        // def builds = build(tagSet)
 
                         if(env.BRANCH_NAME == "202102") {
                             //builds.each{ k, v -> echo ("push ${k}") } //for local testing
@@ -93,6 +93,100 @@ pipeline {
 				build = docker.build("${maintainer}/${imagename}:401.3.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex401/ex401.3.end")
 	                        build.push("401.3.end-${tag}")
 				
+				/*
+				
+				build = docker.build("${maintainer}/${imagename}:base-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} base")
+	                        build.push("base-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+				*/
+				
+				
+				/*
+								build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+								build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+								build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+								build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+								build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+								build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+								build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+								build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+								build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+								build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+								build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+								build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+								build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+								build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+								build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+								build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+				
+				
+				build = docker.build("${maintainer}/${imagename}:-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} /")
+	                        build.push("-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:$i-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} $i/$i")
+	                        build.push("$i-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:401.3.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex401/ex401.3.end")
+	                        build.push("401.3.end-${tag}")
+				
+				
+				build = docker.build("${maintainer}/${imagename}:401.3.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex401/ex401.3.end")
+	                        build.push("401.3.end-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:401.3.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex401/ex401.3.end")
+	                        build.push("401.3.end-${tag}")
+				*/
 				
 				
 				/*
