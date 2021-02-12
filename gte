@@ -17,6 +17,7 @@ show_help() {
 
 for arg in $*; do
   case $arg in
+        --sql) EXTRA_ARGS="$EXTRA_ARGS -p 3306:3306"; shift;;
         --ldap) EXTRA_ARGS="$EXTRA_ARGS -p 389:389"; shift;;
         --rabbitmq) EXTRA_ARGS="$EXTRA_ARGS --link rabbitmq:rabbitmq"; RABBITMQ_FL=1; shift;;
         --fg) is_foreground=1; shift;;
