@@ -1,6 +1,7 @@
+
 #! /bin/bash
 
-VERSION_TAG=202102
+VERSION_TAG=202106
 
 EXTRA_ARGS=
 RABBITMQ_FL=
@@ -43,7 +44,7 @@ if [ -z "$1" ]
     my_array=( $( docker images | grep "tier/gte.*$VERSION_TAG" | grep -v base | awk '{print $2}' | sort ) )
     for i in "${my_array[@]}"
     do
-      # strip last 7 chars (-202102)
+      # strip last 7 chars (-202106)
       i=${i::${#i}-7}
       echo $i
     done
@@ -75,6 +76,6 @@ fi
 
 #docker stop "$1" 2> /dev/null
 #docker rm "$1" 2> /dev/null
-#docker run -d -p 8443:443 --link rabbitmq:rabbitmq --name $1 tier/gte:"$1"-202102
+#docker run -d -p 8443:443 --link rabbitmq:rabbitmq --name $1 tier/gte:"$1"-202106
 echo "Starting container tier/gte:"$LESSON_ID"-$VERSION_TAG"
 docker run -p 8443:443 $EXTRA_ARGS --name $LESSON_ID tier/gte:"$LESSON_ID"-$VERSION_TAG $*

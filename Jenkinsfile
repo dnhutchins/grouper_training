@@ -83,7 +83,7 @@ pipeline {
                         // def tagSet = generateTagSet()
                         // def builds = build(tagSet)
 
-                        if(env.BRANCH_NAME == "202102") {
+                        if(env.BRANCH_NAME == "202106") {
                             //builds.each{ k, v -> echo ("push ${k}") } //for local testing
                             // builds.each{ k, v -> v.push(k) } <- not used anymore
 		 		def build = docker.build("${maintainer}/${imagename}:101.1.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex101/ex101.1.1")
@@ -272,7 +272,7 @@ pipeline {
 				*/
 
                         } else {
-                            echo 'not building images, since the SCM branch is not 202102'
+                            echo 'not building images, since the SCM branch is not 202106'
                         }
                     }
                 }
