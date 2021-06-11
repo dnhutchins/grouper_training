@@ -3740,9 +3740,23 @@ INSERT INTO HR_PEOPLE_ROLES(id, role) VALUES ('80000999','community');
 INSERT INTO HR_PEOPLE(id, surname, givenName) VALUES ('80001000','Davis','Bill');
 INSERT INTO HR_PEOPLE_ROLES(id, role) VALUES ('80001000','community');
 
-/* make the original term ranges more relevant to the current year -- October 2020 should have 2019-2024 */
+/*
+COUNT(*) | TERM
+---------+-----
+      59 | 2018
+      53 | 2019
+      55 | 2020
+      55 | 2021
+      55 | 2022
+      61 | 2023
+*/
+
+/* 
+ * Make the original term ranges more relevant to the current year -- June 2021 should have 2020-2025 (2021=recent grads, 2025=incoming 1st year).
+ * Note, also edit the ref group range to 2020..2025 in bootstrap.gsh
+ */
 
 ALTER TABLE SIS_STUDENT_TERMS DROP PRIMARY KEY;
-UPDATE SIS_STUDENT_TERMS SET term = CONVERT(term, UNSIGNED INTEGER) + 1;
+UPDATE SIS_STUDENT_TERMS SET term = CONVERT(term, UNSIGNED INTEGER) + 2;
 ALTER TABLE SIS_STUDENT_TERMS ADD PRIMARY KEY (id, term);
 

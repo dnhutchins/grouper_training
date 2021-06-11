@@ -23,17 +23,17 @@ attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouper
 // addGroup("ref:student", "class2022", "class2022");
 // addGroup("ref:student", "class2023", "class2023");
 
-(2021..2024).each { term ->
+(2022..2025).each { term ->
     addMember("ref:student:students","ref:student:class${term}");
 }
 
 //Set expiration out Dec 31, 2020 days
 java.util.Calendar cal = Calendar.getInstance();
-cal.set(2021, Calendar.MARCH, 31, 17, 0, 0)
+cal.set(2021, Calendar.DECEMBER, 31, 17, 0, 0)
 
-addMember("ref:student:students","ref:student:class2020");
+addMember("ref:student:students","ref:student:class2021");
 group = GroupFinder.findByName(gs, "ref:student:students", true);
-subject = GroupFinder.findByName(gs, "ref:student:class2020", true).toSubject();
+subject = GroupFinder.findByName(gs, "ref:student:class2021", true).toSubject();
 group.addOrEditMember(subject, true, true, null, cal.getTime(), false);
 
 // ex 201.1.2

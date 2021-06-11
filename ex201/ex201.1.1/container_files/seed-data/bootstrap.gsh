@@ -22,7 +22,7 @@ setGroupAttr("etc:studentTermLoader", "grouperLoaderQuery", "select distinct id 
 // Stub out class groups. These will be filled out by the studentTermLoader
 addStem("ref", "student", "student");
 def classList = [:]
-(2019..2024).each { term ->
+(2020..2025).each { term ->
     classList[term] = addGroup("ref:student", "class${term}", "class${term}")
 }
 
