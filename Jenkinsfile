@@ -95,6 +95,11 @@ pipeline {
 				build = docker.build("${maintainer}/${imagename}:full_demo-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} full-demo/")
 	                        build.push("full_demo-${tag}")
 				
+				build = docker.build("${maintainer}/${imagename}:401.1.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex401/ex401.1.1")
+	                        build.push("401.1.1-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:401.1.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex401/ex401.1.end")
+	                        build.push("401.1.end-${tag}")
 				
 				build = docker.build("${maintainer}/${imagename}:401.3.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex401/ex401.3.1")
 	                        build.push("401.3.1-${tag}")
@@ -102,51 +107,47 @@ pipeline {
 				build = docker.build("${maintainer}/${imagename}:401.3.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex401/ex401.3.end")
 	                        build.push("401.3.end-${tag}")
 				
-				build = docker.build("${maintainer}/${imagename}:401.1.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex401/ex401.1.1")
-	                        build.push("401.1.1-${tag}")
-				
-				build = docker.build("${maintainer}/${imagename}:401.1.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex401/ex401.1.end")
-	                        build.push("401.1.end-${tag}")
+
 				
 				build = docker.build("${maintainer}/${imagename}:301.4.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex301/ex301.4.1")
 	                        build.push("301.4.1-${tag}")
 				
-				build = docker.build("${maintainer}/${imagename}:211.1.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex211/ex211.1.1")
-	                        build.push("211.1.1-${tag}")
+
 				
-				build = docker.build("${maintainer}/${imagename}:201.5.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex201/ex201.5.end")
-	                        build.push("201.5.end-${tag}")
-				
-				build = docker.build("${maintainer}/${imagename}:201.5.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex201/ex201.5.1")
-	                        build.push("201.5.1-${tag}")
-				
-				build = docker.build("${maintainer}/${imagename}:201.4.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex201/ex201.4.end")
-	                        build.push("201.4.end-${tag}")
-				
-				build = docker.build("${maintainer}/${imagename}:201.4.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex201/ex201.4.1")
-	                        build.push("201.4.1-${tag}")
-				
-				build = docker.build("${maintainer}/${imagename}:201.3.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex201/ex201.3.end")
-	                        build.push("201.3.end-${tag}")
-				
-				build = docker.build("${maintainer}/${imagename}:201.3.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex201/ex201.3.1")
-	                        build.push("201.3.1-${tag}")
-				
-				
-				build = docker.build("${maintainer}/${imagename}:201.2.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex201/ex201.2.end")
-	                        build.push("201.2.end-${tag}")
-				
-				
-				build = docker.build("${maintainer}/${imagename}:201.2.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex201/ex201.2.1")
-	                        build.push("201.2.1-${tag}")
-				
-				
-				build = docker.build("${maintainer}/${imagename}:201.1.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex201/ex201.1.end")
-	                        build.push("201.1.end-${tag}")
 				
 				
 				build = docker.build("${maintainer}/${imagename}:201.1.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex201/ex201.1.1")
 	                        build.push("201.1.1-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:201.1.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex201/ex201.1.end")
+	                        build.push("201.1.end-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:201.2.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex201/ex201.2.1")
+	                        build.push("201.2.1-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:201.2.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex201/ex201.2.end")
+	                        build.push("201.2.end-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:201.3.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex201/ex201.3.1")
+	                        build.push("201.3.1-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:201.3.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex201/ex201.3.end")
+	                        build.push("201.3.end-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:201.4.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex201/ex201.4.1")
+	                        build.push("201.4.1-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:201.4.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex201/ex201.4.end")
+	                        build.push("201.4.end-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:201.5.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex201/ex201.5.1")
+	                        build.push("201.5.1-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:201.5.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex201/ex201.5.end")
+	                        build.push("201.5.end-${tag}")
+		
+				build = docker.build("${maintainer}/${imagename}:211.1.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex211/ex211.1.1")
+	                        build.push("211.1.1-${tag}")
 				
 				
 				build = docker.build("${maintainer}/${imagename}:101.1.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex101/ex101.1.1")
