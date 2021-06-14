@@ -89,10 +89,6 @@ pipeline {
 		 		def build = docker.build("${maintainer}/${imagename}:101.1.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex101/ex101.1.1")
 	                        build.push("101.1.1-${tag}")
 				
-				
-				build = docker.build("${maintainer}/${imagename}:401.3.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex401/ex401.3.end")
-	                        build.push("401.3.end-${tag}")
-				
 				build = docker.build("${maintainer}/${imagename}:base-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} base")
 	                        build.push("base-${tag}")
 				
@@ -106,11 +102,11 @@ pipeline {
 				build = docker.build("${maintainer}/${imagename}:401.3.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex401/ex401.3.end")
 	                        build.push("401.3.end-${tag}")
 				
-				build = docker.build("${maintainer}/${imagename}:401.1.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex401/ex401.1.end")
-	                        build.push("401.1.end-${tag}")
-				
 				build = docker.build("${maintainer}/${imagename}:401.1.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex401/ex401.1.1")
 	                        build.push("401.1.1-${tag}")
+				
+				build = docker.build("${maintainer}/${imagename}:401.1.end-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex401/ex401.1.end")
+	                        build.push("401.1.end-${tag}")
 				
 				build = docker.build("${maintainer}/${imagename}:301.4.1-${tag}", "--no-cache --pull --build-arg VERSION_TAG=${tag} ex301/ex301.4.1")
 	                        build.push("301.4.1-${tag}")
