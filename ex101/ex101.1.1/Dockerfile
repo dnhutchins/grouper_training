@@ -10,9 +10,7 @@ LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>" \
 ENV USERTOKEN=gte-101.1.1
 
 COPY container_files/seed-data/ /seed-data/
-COPY container_files/grouper-loader.properties /opt/grouper/grouperWebapp/WEB-INF/classes/
-COPY container_files/subject.properties /opt/grouper/grouperWebapp/WEB-INF/classes/
-COPY container_files/morphString.properties /opt/grouper/grouperWebapp/WEB-INF/classes/
+COPY container_files/conf/ /opt/grouper/grouperWebapp/WEB-INF/classes/
 
 # && setupFiles; \
 

@@ -1,5 +1,4 @@
 gs = GrouperSession.startRootSession();
-addRootStem("101.1.1", "101.1.1")
 addRootStem("basis", "basis");
 addRootStem("ref", "ref");
 addRootStem("app", "app");
@@ -9,240 +8,261 @@ addRootStem("test", "test");
 addStem("ref", "iam", "iam");
 addGroup("ref:iam", "active", "active");
 
-// loader job for class year groups :ref:student:class2019, etc.
-addGroup("etc","studentTermLoader", "studentTermLoader");
-groupAddType("etc:studentTermLoader", "grouperLoader");
-setGroupAttr("etc:studentTermLoader", "grouperLoaderDbName", "grouper");
-setGroupAttr("etc:studentTermLoader", "grouperLoaderType", "SQL_GROUP_LIST");
-setGroupAttr("etc:studentTermLoader", "grouperLoaderScheduleType", "CRON");
-setGroupAttr("etc:studentTermLoader", "grouperLoaderQuartzCron", "0 * * * * ?");
-setGroupAttr("etc:studentTermLoader", "grouperLoaderQuartzCron", "0 * * * * ?");
-setGroupAttr("etc:studentTermLoader", "grouperLoaderQuery", "select distinct id as SUBJECT_IDENTIFIER, 'ldap' as SUBJECT_SOURCE_ID, CONCAT('ref:student:class', term) as GROUP_NAME from SIS_STUDENT_TERMS");
-
-// Stub out class groups. These will be filled out by the studentTermLoader
-addStem("ref", "student", "student");
-class2019 = addGroup("ref:student", "class2019", "class2019");
-class2020 = addGroup("ref:student", "class2020", "class2020");
-class2021 = addGroup("ref:student", "class2021", "class2021");
-class2022 = addGroup("ref:student", "class2022", "class2022");
-class2023 = addGroup("ref:student", "class2023", "class2023");
-
-// Set ref object type on class reference groups
-AttributeDefName typeMarker = AttributeDefNameFinder.findByName("etc:objectTypes:grouperObjectTypeMarker", true);
-AttributeAssign attributeAssign = class2019.getAttributeDelegate().hasAttribute(typeMarker) ? class2019.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : class2019.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "ref");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner", "Registrar");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
-"Class of 2019");
-
-AttributeDefName typeMarker = AttributeDefNameFinder.findByName("etc:objectTypes:grouperObjectTypeMarker", true);
-AttributeAssign attributeAssign = class2020.getAttributeDelegate().hasAttribute(typeMarker) ? class2020.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : class2020.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "ref");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner", "Registrar");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
-"Class of 2020");
-
-AttributeDefName typeMarker = AttributeDefNameFinder.findByName("etc:objectTypes:grouperObjectTypeMarker", true);
-AttributeAssign attributeAssign = class2021.getAttributeDelegate().hasAttribute(typeMarker) ? class2021.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : class2021.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "ref");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner", "Registrar");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
-"Class of 2021");
-
-AttributeDefName typeMarker = AttributeDefNameFinder.findByName("etc:objectTypes:grouperObjectTypeMarker", true);
-AttributeAssign attributeAssign = class2022.getAttributeDelegate().hasAttribute(typeMarker) ? class2022.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : class2022.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "ref");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner", "Registrar");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
-"Class of 2022");
-
-AttributeDefName typeMarker = AttributeDefNameFinder.findByName("etc:objectTypes:grouperObjectTypeMarker", true);
-AttributeAssign attributeAssign = class2023.getAttributeDelegate().hasAttribute(typeMarker) ? class2023.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : class2023.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "ref");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner", "Registrar");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
-"Class of 2023");
-
-// ex 201.1.2
-addStem("basis", "student", "student");
-student_no_class_year = addGroup("basis:student", "student_no_class_year",
-"student_no_class_year");
-
-AttributeDefName typeMarker = AttributeDefNameFinder.findByName("etc:objectTypes:grouperObjectTypeMarker", true);
-AttributeAssign attributeAssign = student_no_class_year.getAttributeDelegate().hasAttribute(typeMarker) ? student_no_class_year.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : student_no_class_year.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "basis");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner", "Registrar");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
-"Students with no class year. Part-time students, employees taking classes, etc");
-
-student_no_class_year.addMember(findSubject("wnielson101"));
-addMember("basis:student:student_no_class_year","ahenderson105");
-addMember("basis:student:student_no_class_year","mnielson106");
-addMember("basis:student:student_no_class_year","mclark114");
-addMember("basis:student:student_no_class_year","gpeterson116");
-addMember("basis:student:student_no_class_year","jvales117");
-addMember("basis:student:student_no_class_year","lroberts121");
-addMember("basis:student:student_no_class_year","jbutler123");
-addMember("basis:student:student_no_class_year","nwilliams126");
-addMember("basis:student:student_no_class_year","emartinez127");
-addMember("basis:student:student_no_class_year","edavis128");
-addMember("basis:student:student_no_class_year","jnielson130");
-addMember("basis:student:student_no_class_year","abrown132");
-addMember("basis:student:student_no_class_year","sanderson134");
-addMember("basis:student:student_no_class_year","blee135");
-addMember("basis:student:student_no_class_year","jgrady138");
-addMember("basis:student:student_no_class_year","clopez141");
-addMember("basis:student:student_no_class_year","jnielson152");
-addMember("basis:student:student_no_class_year","jmartinez155");
-addMember("basis:student:student_no_class_year","jlangenberg157");
-addMember("basis:student:student_no_class_year","danderson161");
-addMember("basis:student:student_no_class_year","ivales162");
-addMember("basis:student:student_no_class_year","nmartinez163");
-addMember("basis:student:student_no_class_year","mdavis164");
-addMember("basis:student:student_no_class_year","dlopez166");
-
-// ex 201.1.3
-exchange_students = addGroup("basis:student", "exchange_students", "exchange_students");
-AttributeDefName typeMarker = AttributeDefNameFinder.findByName("etc:objectTypes:grouperObjectTypeMarker", true);
-AttributeAssign attributeAssign = exchange_students.getAttributeDelegate().hasAttribute(typeMarker) ? exchange_students.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : exchange_students.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "basis");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner", "Registrar");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
-"Exchange students who are not in SIS");
-addMember("basis:student:exchange_students","jnielson201");
-addMember("basis:student:exchange_students","aprice205");
-addMember("basis:student:exchange_students","cmorrison212");
-addMember("basis:student:exchange_students","nroberts214");
-addMember("basis:student:exchange_students","ehenderson217");
-addMember("basis:student:exchange_students","lthompson225");
-addMember("basis:student:exchange_students","mvales228");
-addMember("basis:student:exchange_students","ddavis232");
-addMember("basis:student:exchange_students","agasper233");
-addMember("basis:student:exchange_students","jpeterson243");
-
-// ex 201.1.5
-expelled_32_days = addGroup("basis:student", "expelled_32_days", "expelled_32_days");
-AttributeDefName typeMarker = AttributeDefNameFinder.findByName("etc:objectTypes:grouperObjectTypeMarker", true);
-AttributeAssign attributeAssign = expelled_32_days.getAttributeDelegate().hasAttribute(typeMarker) ? expelled_32_days.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : expelled_32_days.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "basis");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner", "Registrar");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
-"Expelled students with a 32 day grace period");
-addMember("basis:student:expelled_32_days","ewilliams400");
-addMember("basis:student:expelled_32_days","dwalters404");
-addMember("basis:student:expelled_32_days","ldoe407");
-addMember("basis:student:expelled_32_days","mhenderson421");
-addMember("basis:student:expelled_32_days","mgonazles423");
-
-resigned_32_days = addGroup("basis:student", "resigned_32_days",
-"resigned_32_days");
-AttributeDefName typeMarker = AttributeDefNameFinder.findByName("etc:objectTypes:grouperObjectTypeMarker", true);
-AttributeAssign attributeAssign = resigned_32_days.getAttributeDelegate().hasAttribute(typeMarker) ? resigned_32_days.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : resigned_32_days.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "basis");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner", "Registrar");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
-"Students who have resigned with a 32 day grace period");
-addMember("basis:student:resigned_32_days","enielson500");
-addMember("basis:student:resigned_32_days","sgrady501");
-addMember("basis:student:resigned_32_days","sgasper513");
-addMember("basis:student:resigned_32_days","swilliams516");
-addMember("basis:student:resigned_32_days","jmorrison517");
-
-transfered_32_days = addGroup("basis:student", "transfered_32_days",
-"transfered_32_days");
-AttributeDefName typeMarker = AttributeDefNameFinder.findByName("etc:objectTypes:grouperObjectTypeMarker", true);
-AttributeAssign attributeAssign = transfered_32_days.getAttributeDelegate().hasAttribute(typeMarker) ? transfered_32_days.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : transfered_32_days.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "basis");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner", "Registrar");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
-"Students who have tranfered out with a 32 day grace period");
-addMember("basis:student:transfered_32_days","ppeterson609");
-addMember("basis:student:transfered_32_days","nthompson612");
-addMember("basis:student:transfered_32_days","sanderson613");
-addMember("basis:student:transfered_32_days","mwhite617");
-addMember("basis:student:transfered_32_days","mwalters618");
-
-// ex 201.1.6
-loa_4_years = addGroup("basis:student", "loa_4_years", "loa_4_years");
-AttributeDefName typeMarker = AttributeDefNameFinder.findByName("etc:objectTypes:grouperObjectTypeMarker", true);
-AttributeAssign attributeAssign = loa_4_years.getAttributeDelegate().hasAttribute(typeMarker) ? loa_4_years.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : loa_4_years.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "basis");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner", "Registrar");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
-"Students on leave of absence less than 4 years");
-addMember("basis:student:loa_4_years","jprice704");
-addMember("basis:student:loa_4_years","aprice705");
-addMember("basis:student:loa_4_years","aclark706");
-
-// setup for 201.2
-// should be a loader job?
-addStem("ref", "employee", "employee")
-fac_staff = addGroup("ref:employee", "fac_staff", "fac_staff")
-
-// Set ref object type on fac_staff reference group
-AttributeDefName typeMarker = AttributeDefNameFinder.findByName("etc:objectTypes:grouperObjectTypeMarker", true);
-AttributeAssign attributeAssign = fac_staff.getAttributeDelegate().hasAttribute(typeMarker) ? fac_staff.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : fac_staff.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "ref");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner",
-"HR and Provost Office");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
-"All faculty and staff");
 
 addStem("ref", "security", "security")
 locked_by_ciso = addGroup("ref:security", "locked_by_ciso", "locked_by_ciso")
-AttributeAssign attributeAssign = locked_by_ciso.getAttributeDelegate().hasAttribute(typeMarker) ? locked_by_ciso.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : locked_by_ciso.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "ref");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner",
-"CISO");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
-"Subjects denied access by CISO");
+// AttributeAssign attributeAssign = locked_by_ciso.getAttributeDelegate().hasAttribute(typeMarker) ? locked_by_ciso.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : locked_by_ciso.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
+// attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
+// attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "ref");
+// attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner", "CISO");
+// attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription", "Subjects denied access by CISO");
 
 closure = addGroup("ref:iam", "closure", "closure")
-AttributeAssign attributeAssign = closure.getAttributeDelegate().hasAttribute(typeMarker) ? closure.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : closure.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "ref");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner",
-"IAM");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
-"Accounts in the process of being closed");
+// AttributeAssign attributeAssign = closure.getAttributeDelegate().hasAttribute(typeMarker) ? closure.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : closure.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
+// attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
+// attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "ref");
+// attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner", "IAM");
+// attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription", "Accounts in the process of being closed");
 
-addStem("org", "irb", "irb")
-addStem("org:irb", "ref", "ref")
-irb_members = addGroup("org:irb:ref", "irb_members", "irb_members")
-AttributeAssign attributeAssign = irb_members.getAttributeDelegate().hasAttribute(typeMarker) ? irb_members.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : irb_members.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "ref");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner",
-"Institutional Review Board");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
-"Members of the IRB");
-
-// setup for 201.4
 global_deny = addGroup("ref:iam", "global_deny", "global_deny");
-AttributeDefName typeMarker = AttributeDefNameFinder.findByName("etc:objectTypes:grouperObjectTypeMarker", true);
-AttributeAssign attributeAssign = global_deny.getAttributeDelegate().hasAttribute(typeMarker) ? global_deny.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : global_deny.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "ref");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner",
-"Identity and Access Management");
-attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription",
-"Global deny group");
+// AttributeDefName typeMarker = AttributeDefNameFinder.findByName("etc:objectTypes:grouperObjectTypeMarker", true);
+// AttributeAssign attributeAssign = global_deny.getAttributeDelegate().hasAttribute(typeMarker) ? global_deny.getAttributeDelegate().retrieveAssignments(typeMarker).iterator().next() : global_deny.getAttributeDelegate().addAttribute(typeMarker).getAttributeAssign();
+// attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDirectAssignment", "true");
+// attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeName", "ref");
+// attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeDataOwner", "Identity and Access Management");
+// attributeAssign.getAttributeValueDelegate().assignValue("etc:objectTypes:grouperObjectTypeMembersDescription", "Global deny group");
 
-// setup for 201.5
-// should be a loader job?
-addStem("ref", "dept", "dept")
-addGroup("ref:dept", "finance", "finance")
-addMember("ref:dept:finance", "asmith989")
+
+//config.propertyName("member.search.defaultIndexOrder").value('1,0,2').store()
+
+
+
+// later we will add all of IAM. For now add one person so we can get in
+// Doesn't work. Need to wait for the config to refresh?
+//addMember("etc:sysadmingroup","800000252");  //jarnold
+
+
+
+
+
+// Dept Loader
+
+def group = new GroupSave(gs).assignName("etc:loader:hr:deptLoader").assignCreateParentStemsIfNotExist(true).assignDisplayName("etc:loader:HR:deptLoader").save()
+
+GroupType loaderType = GroupTypeFinder.find("grouperLoader", false)
+group.addType(loaderType)
+
+group.setAttribute(GrouperLoader.GROUPER_LOADER_DB_NAME, "grouper")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_TYPE, "SQL_GROUP_LIST")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_SCHEDULE_TYPE, "CRON")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_QUARTZ_CRON, "0 0 6 * * ?")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_QUERY, '''SELECT person_id AS subject_id,
+       'eduLDAP' AS subject_source_id,
+       concat('basis:hr:job:',D.dept_id,':',role) AS group_name
+ FROM hr_jobs J
+  JOIN hr_positions P ON J.position_id = P.position_id
+  JOIN hr_depts D ON P.dept_id = D.dept_id''')
+group.setAttribute(GrouperLoader.GROUPER_LOADER_GROUP_QUERY, '''SELECT DISTINCT concat('basis:hr:job:',D.dept_id,':',role) AS group_name,
+       concat('basis:Human Resources:Job:',D.name,' (',D.dept_id,'):',D.name, ' ', role) AS group_display_name
+ FROM hr_jobs J
+  JOIN hr_positions P ON J.position_id = P.position_id
+  JOIN hr_depts D ON P.dept_id = D.dept_id''')
+//group.setAttribute(GrouperLoader.GROUPER_LOADER_PRIORITY, priority)
+
+
+//groupAddType(group.name, "grouperLoader")
+//setGroupAttr(group.name, "grouperLoaderDbName", "grouper")
+//setGroupAttr(group.name, "grouperLoaderType", "SQL_GROUP_LIST")
+//setGroupAttr(group.name, "grouperLoaderScheduleType", "CRON")
+//setGroupAttr(group.name, "grouperLoaderQuartzCron", "0 0 6 * * ?")
+//setGroupAttr(group.name, "grouperLoaderQuery", "select person_id as subject_id, 'eduLDAP' as subject_source_id, concat('basis:hr:job:', D.dept_id, ':', role) as group_name  from hr_jobs J  join hr_positions P on J.position_id = P.position_id  join hr_depts D on P.dept_id = D.dept_id")
+//setGroupAttr(group.name, "grouperLoaderGroupQuery", "select distinct concat('basis:hr:job:', D.dept_id, ':', role) as group_name,  concat('basis:Human Resources:Job:', D.name, ' (', D.dept_id, '):', role) as group_display_name  from hr_jobs J  join hr_positions P on J.position_id = P.position_id  join hr_depts D on P.dept_id = D.dept_id")
+
+GrouperLoaderType.validateAndScheduleSqlLoad(group, null, false)
+
+// This may take a long time
+GrouperLoader.runJobOnceForGroup(gs, group)
+
+addMember("etc:sysadmingroup", "basis:hr:job:10904:staff")
+
+
+
+// Course Loader
+
+def group = new GroupSave(gs).assignName("etc:loader:sis:courseLoader").assignCreateParentStemsIfNotExist(true).assignDisplayName("etc:loader:Student Information Systems:courseLoader").save()
+
+GroupType loaderType = GroupTypeFinder.find("grouperLoader", false)
+group.addType(loaderType)
+
+group.setAttribute(GrouperLoader.GROUPER_LOADER_DB_NAME, "grouper")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_TYPE, "SQL_GROUP_LIST")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_SCHEDULE_TYPE, "CRON")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_QUARTZ_CRON, "0 0 6 * * ?")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_QUERY, '''select E.person_id as subject_id, 'eduLDAP' as subject_source_id, concat('basis:sis:courses:', lower(C.dept_abbr), ':', lower(C.dept_abbr), C.course_num, ':', 'students') as group_name from sis_enrollment E
+ join sis_courses C on E.course_id = C.course_id
+ join hr_depts D on C.dept_id = D.dept_id''')
+group.setAttribute(GrouperLoader.GROUPER_LOADER_GROUP_QUERY, '''select distinct concat('basis:sis:courses:', lower(C.dept_abbr), ':', lower(C.dept_abbr), C.course_num, ':', 'students') as group_name,
+ concat('basis:Student Information Systems:Courses:', D.name, ' (', D.abbrev, '):', C.dept_abbr, C.course_num, ':', C.dept_abbr, C.course_num, ' Students') as group_display_name
+ from sis_enrollment E
+ join sis_courses C on E.course_id = C.course_id
+ join hr_depts D on C.dept_id = D.dept_id''')
+
+
+GrouperLoaderType.validateAndScheduleSqlLoad(group, null, false)
+
+// This may take a long time
+GrouperLoader.runJobOnceForGroup(gs, group)
+
+
+
+// ITS Ref Loader
+
+def group = new GroupSave(gs).assignName("etc:loader:hr:itsOrgLoader").assignCreateParentStemsIfNotExist(true).assignDisplayExtension("ITS Org Loader").save()
+
+GroupType loaderType = GroupTypeFinder.find("grouperLoader", false)
+group.addType(loaderType)
+
+group.setAttribute(GrouperLoader.GROUPER_LOADER_DB_NAME, "grouper")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_TYPE, "SQL_GROUP_LIST")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_SCHEDULE_TYPE, "CRON")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_QUARTZ_CRON, "0 0 6 * * ?")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_QUERY, '''select g.name as subject_identifier, 'g:gsa' as subject_source_id, concat('ref:hr:dept:its:', extension) as group_name from grouper_groups g where name like 'basis:hr:job:109%' ''')
+group.setAttribute(GrouperLoader.GROUPER_LOADER_GROUP_QUERY, '''select concat('ref:hr:dept:its:', a.extension) as group_name,
+       concat('ref:HR:Department:ITS:All ITS ', display_extension) as group_display_name,
+       concat('All ITS ', lower(display_extension), ' (groups 109xx)') as group_description
+  from (
+  select 'affiliate' as extension, 'Affiliates' as display_extension
+  union all
+  select 'staff' as extension, 'Staff' as display_name  
+) as a''')
+
+
+GrouperLoaderType.validateAndScheduleSqlLoad(group, null, false)
+
+// This may take a long time
+GrouperLoader.runJobOnceForGroup(gs, group)
+
+
+/* Add groups to global_deny */
+
+GroupFinder.findByName(gs, "ref:iam:global_deny", true).addMember(GroupFinder.findByName(gs, "ref:security:locked_by_ciso", true).toSubject())
+GroupFinder.findByName(gs, "ref:iam:global_deny", true).addMember(GroupFinder.findByName(gs, "ref:iam:closure", true).toSubject())
+
+
+
+
+/* Provisioner */
+
+import edu.internet2.middleware.grouper.grouperUi.beans.config.GrouperDbConfig
+
+def config = new GrouperDbConfig().configFileName("grouper-loader.properties")
+
+config.propertyName("otherJob.groupOfNames_full_sync.class").value('''edu.internet2.middleware.grouper.app.provisioning.GrouperProvisioningFullSyncJob''').store()
+config.propertyName("otherJob.groupOfNames_full_sync.provisionerConfigId").value('''groupOfNames''').store()
+config.propertyName("otherJob.groupOfNames_full_sync.quartzCron").value('''0 0 4 * * ?''').store()
+
+config.propertyName("provisioner.groupOfNames.canFullSync").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.class").value('''edu.internet2.middleware.grouper.app.ldapProvisioning.LdapSync''').store()
+config.propertyName("provisioner.groupOfNames.debugLog").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.deleteGroups").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.deleteGroupsIfGrouperDeleted").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.deleteGroupsIfNotExistInGrouper").value('''false''').store()
+config.propertyName("provisioner.groupOfNames.deleteMemberships").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.deleteMembershipsIfNotExistInGrouper").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.groupDnType").value('''flat''').store()
+config.propertyName("provisioner.groupOfNames.groupSearchAllFilter").value('''objectClass=groupOfNames''').store()
+config.propertyName("provisioner.groupOfNames.groupSearchBaseDn").value('''ou=groups,dc=internet2,dc=edu''').store()
+config.propertyName("provisioner.groupOfNames.groupSearchFilter").value('''(&(objectClass=groupOfNames)(cn=${targetGroup.retrieveAttributeValue('cn')}))''').store()
+config.propertyName("provisioner.groupOfNames.hasTargetEntityLink").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.hasTargetGroupLink").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.insertGroups").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.insertMemberships").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.ldapExternalSystemConfigId").value('''demo''').store()
+config.propertyName("provisioner.groupOfNames.numberOfEntityAttributes").value('''2''').store()
+config.propertyName("provisioner.groupOfNames.numberOfGroupAttributes").value('''5''').store()
+config.propertyName("provisioner.groupOfNames.operateOnGrouperEntities").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.operateOnGrouperGroups").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.operateOnGrouperMemberships").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.provisioningType").value('''groupAttributes''').store()
+config.propertyName("provisioner.groupOfNames.selectEntities").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.selectGroups").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.selectMemberships").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.showAdvanced").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.subjectSourcesToProvision").value('''eduLDAP''').store()
+config.propertyName("provisioner.groupOfNames.targetEntityAttribute.0.fieldName").value('''name''').store()
+config.propertyName("provisioner.groupOfNames.targetEntityAttribute.0.isFieldElseAttribute").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.targetEntityAttribute.0.select").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.targetEntityAttribute.0.translateToMemberSyncField").value('''memberToId2''').store()
+config.propertyName("provisioner.groupOfNames.targetEntityAttribute.0.valueType").value('''string''').store()
+config.propertyName("provisioner.groupOfNames.targetEntityAttribute.1.isFieldElseAttribute").value('''false''').store()
+config.propertyName("provisioner.groupOfNames.targetEntityAttribute.1.matchingId").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.targetEntityAttribute.1.name").value('''uid''').store()
+config.propertyName("provisioner.groupOfNames.targetEntityAttribute.1.searchAttribute").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.targetEntityAttribute.1.select").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.targetEntityAttribute.1.translateExpressionType").value('''grouperProvisioningEntityField''').store()
+config.propertyName("provisioner.groupOfNames.targetEntityAttribute.1.translateFromGrouperProvisioningEntityField").value('''attribute__subjectIdentifier0''').store()
+config.propertyName("provisioner.groupOfNames.targetEntityAttribute.1.valueType").value('''string''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.0.fieldName").value('''name''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.0.insert").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.0.isFieldElseAttribute").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.0.select").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.0.translateExpressionType").value('''grouperProvisioningGroupField''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.0.translateFromGrouperProvisioningGroupField").value('''name''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.0.translateToGroupSyncField").value('''groupToId2''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.0.update").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.0.valueType").value('''string''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.1.insert").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.1.isFieldElseAttribute").value('''false''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.1.matchingId").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.1.name").value('''cn''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.1.searchAttribute").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.1.select").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.1.translateExpressionType").value('''grouperProvisioningGroupField''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.1.translateFromGrouperProvisioningGroupField").value('''name''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.1.valueType").value('''string''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.2.insert").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.2.isFieldElseAttribute").value('''false''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.2.multiValued").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.2.name").value('''objectClass''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.2.select").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.2.translateExpression").value('''${grouperUtil.toSet('top', 'groupOfNames')}''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.2.translateExpressionType").value('''translationScript''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.2.valueType").value('''string''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.3.insert").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.3.isFieldElseAttribute").value('''false''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.3.name").value('''description''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.3.select").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.3.translateExpressionType").value('''grouperProvisioningGroupField''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.3.translateFromGrouperProvisioningGroupField").value('''attribute__description''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.3.update").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.3.valueType").value('''string''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.4.defaultValue").value('''cn=root,dc=internet2,dc=edu''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.4.isFieldElseAttribute").value('''false''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.4.membershipAttribute").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.4.multiValued").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.4.name").value('''member''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.4.translateFromMemberSyncField").value('''memberToId2''').store()
+config.propertyName("provisioner.groupOfNames.targetGroupAttribute.4.valueType").value('''string''').store()
+config.propertyName("provisioner.groupOfNames.updateGroups").value('''true''').store()
+config.propertyName("provisioner.groupOfNames.userSearchAllFilter").value('''(&(objectClass=person)(uid=*))''').store()
+config.propertyName("provisioner.groupOfNames.userSearchBaseDn").value('''ou=people,dc=internet2,dc=edu''').store()
+config.propertyName("provisioner.groupOfNames.userSearchFilter").value('''(&(objectClass=person)(uid=${targetEntity.retrieveAttributeValue('uid')}))''').store()
+
+/* TODO
+
+
+Improvement: subject diagnostics should have placeholder text, not actual text that needs to be cleared
+bug: grouper.requireGroup.name.0 defined twice. Also refers to a group that isn't set up in the base
+bug: stop logging grouperUiUserData for audit
+    Recent activity	Activity Date
+    Edited group grouperUiUserData .	2021/07/14 5:31 AM
+    Added group grouperUiUserData .	2021/07/14 5:31 AM
+    Added folder grouperUi .	2021/07/14 5:31 AM
+
+*/
+
+def g = GroupFinder.findByName(gs, "ref:security:locked_by_ciso", true)
+def g2 = GroupFinder.findByName(gs, "basis:hr:job:10902:staff", true)
+
+g.grantPriv(g2.toSubject(), Privilege.READ, false)
+g.grantPriv(g2.toSubject(), Privilege.UPDATE, false)

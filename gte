@@ -1,17 +1,18 @@
-
 #! /bin/bash
 
-VERSION_TAG=202106
+REPOSITORY=tier/gte
+VERSION_TAG=202109-new-data
 
 EXTRA_ARGS=
 RABBITMQ_FL=
 
 show_help() {
-  echo "$0 [--rabbitmq] [--fg|-it] [docker args ...] <gte lesson id> [container cmd ...]"
+  echo "$0 [--rabbitmq] [--sql] [--ldap] [--fg|-it] [docker args ...] <gte lesson id> [container cmd ...]"
   echo "    --rabbitmq:    also start up a rabbitmq container, and link it as name 'rabbitmq'"
+  echo "    --sql:         Expose port 3306"
+  echo "    --ldap:        Expose port 389"
   echo "    --fg:          Don't detach (i.e., don't run container with -d flag"
   echo "    -h|--help:     This help message"
-  echo "    --ldap:        Expose port 389"
   echo ""
   echo "If no GTE lesson id number is passed in, the command will list all the available ids"
 }
@@ -39,13 +40,11 @@ fi
 
 if [ -z "$1" ]
   then
-    #docker images tier/gte
     echo "Pass in which gte environment to spin up:"
-    my_array=( $( docker images | grep "tier/gte.*$VERSION_TAG" | grep -v base | awk '{print $2}' | sort ) )
+    # Get all container tags for tier/gte:*-2021xx
+    my_array=( $(docker images "$REPOSITORY" --format '{{.Tag}}' | grep -- "-$VERSION_TAG$" | sed -e "s/-$VERSION_TAG$//" | sort ) )
     for i in "${my_array[@]}"
     do
-      # strip last 7 chars (-202106)
-      i=${i::${#i}-7}
       echo $i
     done
     exit 1
@@ -56,11 +55,11 @@ shift
 
 
 # see if there is a container
-CONTAINER="$( docker ps -a | grep 'tier/gte' | awk '{print $1}' )"
+CONTAINERS="$( docker ps -a | grep 'tier/gte' | awk '{print $1}' )"
 # if so, then rm it
-if [ ! -z "$CONTAINER" ]; then
+if [ ! -z "$CONTAINERS" ]; then
   echo "Removing old containers"
-  docker ps -a | grep 'tier/gte' | awk '{print $1}' | xargs docker rm -f
+  docker rm -f $CONTAINERS
 fi
 
 if [ "$RABBITMQ_FL" == 1 ]; then

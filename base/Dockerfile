@@ -1,7 +1,7 @@
 FROM tier/shib-idp:3.4.3_20190201 as idp
 
 # Grouper version for the entire GTE
-FROM i2incommon/grouper:2.5.52
+FROM i2incommon/grouper:2.5.54
 
 # Disable docker HEALTHCHECK inherited from tier/shib-sp
 HEALTHCHECK NONE
@@ -94,6 +94,7 @@ RUN chown -R tomcat:tomcat /opt/tomee
 
 ENV GROUPER_START_DELAY_SECONDS=10
 
-EXPOSE 389 3306 4443
+# note 5005 is for remote Java debugging
+EXPOSE 389 3306 8080 5005
 
 CMD ["grouper"]

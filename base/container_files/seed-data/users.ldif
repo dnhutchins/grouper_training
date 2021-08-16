@@ -18,34 +18,3 @@ objectClass: organizationalRole
 cn: admin
 userPassword: password
 description: LDAP administrator
-
-dn: uid=jsmith,ou=People,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-givenName: Joe
-uid: jsmith
-sn: Smith
-cn: John Smith
-userPassword: password
-
-dn: uid=banderson,ou=People,dc=internet2,dc=edu
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-objectClass: inetOrgPerson
-objectClass: eduPerson
-givenName: Bob
-uid: banderson
-sn: Anderson
-cn: Bob Anderson
-userPassword: password
-eduPersonEntitlement: urn:mace:example.edu:admin
-
-dn: cn=users,ou=Groups,dc=internet2,dc=edu
-objectClass: groupOfUniqueNames
-objectClass: top
-uniqueMember: uid=banderson,ou=People,dc=internet2,dc=edu
-uniqueMember: uid=jsmith,ou=People,dc=internet2,dc=edu
-cn: users
