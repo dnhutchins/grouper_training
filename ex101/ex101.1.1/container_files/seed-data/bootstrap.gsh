@@ -1,4 +1,4 @@
-gs = GrouperSession.startRootSession();
+GrouperSession gs = GrouperSession.startRootSession();
 addRootStem("basis", "basis");
 addRootStem("ref", "ref");
 addRootStem("app", "app");
@@ -45,45 +45,38 @@ global_deny = addGroup("ref:iam", "global_deny", "global_deny");
 
 
 
-// Dept Loader
+// Employee by Dept Loader
 
-def group = new GroupSave(gs).assignName("etc:loader:hr:deptLoader").assignCreateParentStemsIfNotExist(true).assignDisplayName("etc:loader:HR:deptLoader").save()
+def group = new GroupSave(gs).assignName("etc:loader:hr:employeeDeptLoader").assignCreateParentStemsIfNotExist(true).assignDisplayName("etc:loader:HR:employeeDeptLoader").save()
 
 GroupType loaderType = GroupTypeFinder.find("grouperLoader", false)
-group.addType(loaderType)
+group.addType(loaderType, false)
 
 group.setAttribute(GrouperLoader.GROUPER_LOADER_DB_NAME, "grouper")
 group.setAttribute(GrouperLoader.GROUPER_LOADER_TYPE, "SQL_GROUP_LIST")
 group.setAttribute(GrouperLoader.GROUPER_LOADER_SCHEDULE_TYPE, "CRON")
 group.setAttribute(GrouperLoader.GROUPER_LOADER_QUARTZ_CRON, "0 0 6 * * ?")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_GROUPS_LIKE, "basis:hr:employee:dept:%")
 group.setAttribute(GrouperLoader.GROUPER_LOADER_QUERY, '''SELECT person_id AS subject_id,
        'eduLDAP' AS subject_source_id,
-       concat('basis:hr:job:',D.dept_id,':',role) AS group_name
+       concat('basis:hr:employee:dept:',D.dept_id,':',role) AS group_name
  FROM hr_jobs J
   JOIN hr_positions P ON J.position_id = P.position_id
   JOIN hr_depts D ON P.dept_id = D.dept_id''')
-group.setAttribute(GrouperLoader.GROUPER_LOADER_GROUP_QUERY, '''SELECT DISTINCT concat('basis:hr:job:',D.dept_id,':',role) AS group_name,
-       concat('basis:Human Resources:Job:',D.name,' (',D.dept_id,'):',D.name, ' ', role) AS group_display_name
+group.setAttribute(GrouperLoader.GROUPER_LOADER_GROUP_QUERY, '''SELECT DISTINCT concat('basis:hr:employee:dept:',D.dept_id,':',role) AS group_name,
+       concat('basis:Human Resources:Employee:Department:',D.name,' (',D.dept_id,'):',D.name, ' ', role) AS group_display_name
  FROM hr_jobs J
   JOIN hr_positions P ON J.position_id = P.position_id
   JOIN hr_depts D ON P.dept_id = D.dept_id''')
+
 //group.setAttribute(GrouperLoader.GROUPER_LOADER_PRIORITY, priority)
-
-
-//groupAddType(group.name, "grouperLoader")
-//setGroupAttr(group.name, "grouperLoaderDbName", "grouper")
-//setGroupAttr(group.name, "grouperLoaderType", "SQL_GROUP_LIST")
-//setGroupAttr(group.name, "grouperLoaderScheduleType", "CRON")
-//setGroupAttr(group.name, "grouperLoaderQuartzCron", "0 0 6 * * ?")
-//setGroupAttr(group.name, "grouperLoaderQuery", "select person_id as subject_id, 'eduLDAP' as subject_source_id, concat('basis:hr:job:', D.dept_id, ':', role) as group_name  from hr_jobs J  join hr_positions P on J.position_id = P.position_id  join hr_depts D on P.dept_id = D.dept_id")
-//setGroupAttr(group.name, "grouperLoaderGroupQuery", "select distinct concat('basis:hr:job:', D.dept_id, ':', role) as group_name,  concat('basis:Human Resources:Job:', D.name, ' (', D.dept_id, '):', role) as group_display_name  from hr_jobs J  join hr_positions P on J.position_id = P.position_id  join hr_depts D on P.dept_id = D.dept_id")
 
 GrouperLoaderType.validateAndScheduleSqlLoad(group, null, false)
 
 // This may take a long time
 GrouperLoader.runJobOnceForGroup(gs, group)
 
-addMember("etc:sysadmingroup", "basis:hr:job:10904:staff")
+addMember("etc:sysadmingroup", "basis:hr:employee:dept:10904:staff")
 
 
 
@@ -92,20 +85,22 @@ addMember("etc:sysadmingroup", "basis:hr:job:10904:staff")
 def group = new GroupSave(gs).assignName("etc:loader:sis:courseLoader").assignCreateParentStemsIfNotExist(true).assignDisplayName("etc:loader:Student Information Systems:courseLoader").save()
 
 GroupType loaderType = GroupTypeFinder.find("grouperLoader", false)
-group.addType(loaderType)
+group.addType(loaderType, false)
 
 group.setAttribute(GrouperLoader.GROUPER_LOADER_DB_NAME, "grouper")
 group.setAttribute(GrouperLoader.GROUPER_LOADER_TYPE, "SQL_GROUP_LIST")
 group.setAttribute(GrouperLoader.GROUPER_LOADER_SCHEDULE_TYPE, "CRON")
 group.setAttribute(GrouperLoader.GROUPER_LOADER_QUARTZ_CRON, "0 0 6 * * ?")
-group.setAttribute(GrouperLoader.GROUPER_LOADER_QUERY, '''select E.person_id as subject_id, 'eduLDAP' as subject_source_id, concat('basis:sis:courses:', lower(C.dept_abbr), ':', lower(C.dept_abbr), C.course_num, ':', 'students') as group_name from sis_enrollment E
- join sis_courses C on E.course_id = C.course_id
- join hr_depts D on C.dept_id = D.dept_id''')
-group.setAttribute(GrouperLoader.GROUPER_LOADER_GROUP_QUERY, '''select distinct concat('basis:sis:courses:', lower(C.dept_abbr), ':', lower(C.dept_abbr), C.course_num, ':', 'students') as group_name,
- concat('basis:Student Information Systems:Courses:', D.name, ' (', D.abbrev, '):', C.dept_abbr, C.course_num, ':', C.dept_abbr, C.course_num, ' Students') as group_display_name
- from sis_enrollment E
- join sis_courses C on E.course_id = C.course_id
- join hr_depts D on C.dept_id = D.dept_id''')
+group.setAttribute(GrouperLoader.GROUPER_LOADER_GROUPS_LIKE, "basis:sis:course:%")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_QUERY, '''SELECT E.person_id AS subject_id, 'eduLDAP' AS subject_source_id, concat('basis:sis:course:', lower(C.dept_abbr), ':', lower(C.dept_abbr), C.course_num, ':', role) AS group_name
+ FROM sis_enrollment E
+ JOIN sis_courses C ON E.course_id = C.course_id
+ JOIN hr_depts D ON C.dept_id = D.dept_id''')
+group.setAttribute(GrouperLoader.GROUPER_LOADER_GROUP_QUERY, '''SELECT DISTINCT concat('basis:sis:course:',lower(C.dept_abbr), ':', lower(C.dept_abbr), C.course_num, ':', role) AS group_name,
+ concat('basis:Student Information Systems:Courses:', D.name,' (', D.abbrev, '):', C.dept_abbr, C.course_num, ' ', replace(C.title, ':', ' -'), ':', C.dept_abbr, C.course_num, ' ', UPPER(substring(role,1,1)), lower(substring(role,2))) AS group_display_name
+ FROM sis_enrollment E
+ JOIN sis_courses C ON E.course_id = C.course_id
+ JOIN hr_depts D ON C.dept_id = D.dept_id''')
 
 
 GrouperLoaderType.validateAndScheduleSqlLoad(group, null, false)
@@ -115,32 +110,113 @@ GrouperLoader.runJobOnceForGroup(gs, group)
 
 
 
-// ITS Ref Loader
+// Student Career Loader
 
-def group = new GroupSave(gs).assignName("etc:loader:hr:itsOrgLoader").assignCreateParentStemsIfNotExist(true).assignDisplayExtension("ITS Org Loader").save()
+def group = new GroupSave(gs).assignName("etc:loader:sis:studentCareerLoader").assignCreateParentStemsIfNotExist(true).assignDisplayName("etc:loader:Student Information Systems:studentCareerLoader").save()
 
 GroupType loaderType = GroupTypeFinder.find("grouperLoader", false)
-group.addType(loaderType)
+group.addType(loaderType, false)
 
 group.setAttribute(GrouperLoader.GROUPER_LOADER_DB_NAME, "grouper")
 group.setAttribute(GrouperLoader.GROUPER_LOADER_TYPE, "SQL_GROUP_LIST")
 group.setAttribute(GrouperLoader.GROUPER_LOADER_SCHEDULE_TYPE, "CRON")
 group.setAttribute(GrouperLoader.GROUPER_LOADER_QUARTZ_CRON, "0 0 6 * * ?")
-group.setAttribute(GrouperLoader.GROUPER_LOADER_QUERY, '''select g.name as subject_identifier, 'g:gsa' as subject_source_id, concat('ref:hr:dept:its:', extension) as group_name from grouper_groups g where name like 'basis:hr:job:109%' ''')
-group.setAttribute(GrouperLoader.GROUPER_LOADER_GROUP_QUERY, '''select concat('ref:hr:dept:its:', a.extension) as group_name,
-       concat('ref:HR:Department:ITS:All ITS ', display_extension) as group_display_name,
-       concat('All ITS ', lower(display_extension), ' (groups 109xx)') as group_description
-  from (
-  select 'affiliate' as extension, 'Affiliates' as display_extension
-  union all
-  select 'staff' as extension, 'Staff' as display_name  
-) as a''')
+group.setAttribute(GrouperLoader.GROUPER_LOADER_GROUPS_LIKE, "basis:sis:career:%")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_QUERY, '''select distinct person_id as subject_id, 'eduLDAP' as subject_source_id, concat('basis:sis:career:', lower(acad_career_id), ':', ifnull(grad_year_expected, 'no_year')) as group_name
+ from sis_stu_programs''')
+group.setAttribute(GrouperLoader.GROUPER_LOADER_GROUP_QUERY, '''select distinct concat('basis:sis:career:', lower(P.acad_career_id), ':', ifnull(grad_year_expected, 'no_year')) as group_name,
+ concat('basis:Student Information Systems:Careers:', C.description, ' (', P.acad_career_id, '):', P.acad_career_id, ' ', ifnull(grad_year_expected, 'No Year')) as group_display_name
+ from sis_stu_programs P join sis_acad_careers C on P.acad_career_id = C.acad_career_id''')
 
 
 GrouperLoaderType.validateAndScheduleSqlLoad(group, null, false)
 
 // This may take a long time
 GrouperLoader.runJobOnceForGroup(gs, group)
+
+
+
+// Student Career By Year Loader
+
+def group = new GroupSave(gs).assignName("etc:loader:sis:studentCareerByGradYearLoader").assignCreateParentStemsIfNotExist(true).assignDisplayName("etc:loader:Student Information Systems:studentCareerByGradYearLoader").save()
+
+GroupType loaderType = GroupTypeFinder.find("grouperLoader", false)
+group.addType(loaderType, false)
+
+group.setAttribute(GrouperLoader.GROUPER_LOADER_DB_NAME, "grouper")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_TYPE, "SQL_GROUP_LIST")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_SCHEDULE_TYPE, "CRON")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_QUARTZ_CRON, "0 0 6 * * ?")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_GROUPS_LIKE, "basis:sis:exp_grad_year:%")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_QUERY, '''select distinct person_id as subject_id, 'eduLDAP' as subject_source_id, concat('basis:sis:exp_grad_year:', ifnull(grad_year_expected, 'no_year')) as group_name
+ from sis_stu_programs''')
+group.setAttribute(GrouperLoader.GROUPER_LOADER_GROUP_QUERY, '''select distinct concat('basis:sis:exp_grad_year:', ifnull(grad_year_expected, 'no_year')) as group_name,
+ concat('basis:Student Information Systems:Expected Grad Year:', case when grad_year_expected is null then 'No Grad Year' else concat('Class of ',  grad_year_expected) end ) as group_display_name
+ from sis_stu_programs P join sis_acad_careers C on P.acad_career_id = C.acad_career_id''')
+
+
+GrouperLoaderType.validateAndScheduleSqlLoad(group, null, false)
+
+// This may take a long time
+GrouperLoader.runJobOnceForGroup(gs, group)
+
+
+// SIS Overall Program Status Loader
+
+def group = new GroupSave(gs).assignName("etc:loader:sis:overallProgStatusLoader").assignCreateParentStemsIfNotExist(true).assignDisplayName("etc:loader:Student Information Systems:overallProgStatusLoader").save()
+
+GroupType loaderType = GroupTypeFinder.find("grouperLoader", false)
+group.addType(loaderType, false)
+
+group.setAttribute(GrouperLoader.GROUPER_LOADER_DB_NAME, "grouper")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_TYPE, "SQL_GROUP_LIST")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_SCHEDULE_TYPE, "CRON")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_QUARTZ_CRON, "0 0 6 * * ?")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_GROUPS_LIKE, "basis:sis:prog_status:all:%")
+group.setAttribute(GrouperLoader.GROUPER_LOADER_QUERY, '''select P.person_id AS subject_id, 'eduLDAP' AS subject_source_id,
+ concat('basis:sis:prog_status:all:', lower(P.prog_status_id)) AS group_name
+ from sis_stu_programs P''')
+group.setAttribute(GrouperLoader.GROUPER_LOADER_GROUP_QUERY, '''SELECT concat('basis:sis:prog_status:all:',lower(PS.prog_status_id)) AS group_name,
+ concat('basis:Student Information Systems:Program Status:All by Program Status:', PS.description) AS group_display_name
+ FROM sis_prog_status PS''')
+
+
+GrouperLoaderType.validateAndScheduleSqlLoad(group, null, false)
+
+// This may take a long time
+GrouperLoader.runJobOnceForGroup(gs, group)
+
+
+
+// Ad-hoc group for Transfer Students (just create the ad-hoc folder for now, they will create the group in the UI)
+
+def adhocStem = new StemSave(gs).assignName("basis:adhoc").
+    assignCreateParentStemsIfNotExist(true).
+    assignDescription("Basis groups not loader jobs; could be a batch job using a web service call, an import from the UI, etc.").
+    assignDisplayName("basis:Ad Hoc").
+    save()
+
+//import edu.internet2.middleware.grouper.app.grouperTypes.GdgTypeGroupSave
+//import edu.internet2.middleware.grouper.app.grouperTypes.GrouperObjectTypesAttributeValue
+//import edu.internet2.middleware.grouper.misc.SaveMode
+//
+// def xferGroup = new GroupSave(gs).
+//     assignName("basis:adhoc:transfer_students").
+//     assignCreateParentStemsIfNotExist(true).
+//     assignDescription("Students recently transfered to campus, who need access ahead of SIS data being fully updated").
+//     assignDisplayName("basis:Ad Hoc:Transfer student").
+//     assignTypeOfGroup(TypeOfGroup.group).
+//     save()
+// 
+// GrouperObjectTypesAttributeValue grouperObjectTypesAttributeValue = new GdgTypeGroupSave().
+//         assignGroup(xferGroup).
+//         assignType("manual").
+//         assignDataOwner("Student Information Systems").
+//         assignMemberDescription("Recently transfered students, who may not yet be in the SIS database").
+//         assignSaveMode(SaveMode.INSERT_OR_UPDATE).
+//         assignReplaceAllSettings(true).
+//         save()
+
 
 
 /* Add groups to global_deny */
