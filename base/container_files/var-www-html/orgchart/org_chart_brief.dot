@@ -1,0 +1,54 @@
+digraph G {
+
+layout="dot";
+
+rankdir="BT";
+splines="ortho";
+ranksep=.5;
+
+node[ shape="rect"  ];
+
+10000 [label="10000\nBoard of Trustees"];
+10100 [label="10100\nPresident"];
+10200 [label="10200\nProvost"];
+10300 [label="10300\nCommunications"];
+10400 [label="10400\nInstitutional Advancement"];
+10500 [label="10500\nStudent Affairs"];
+10600 [label="10600\nGeneral Counsel"];
+10700 [label="10700\nDiversity Equity & Inclusion"];
+10800 [label="10800\nFinance & Administration"];
+10900 [label="10900\nInformation Technology Services"];
+20000 [label="20000\nCollege of Arts and Sciences"];
+30000 [label="30000\nGraduate School of Arts and Sciences"];
+40000 [label="40000\nLibrary"];
+45000 [label="45000\nSchool for Social Policy and Management"];
+50000 [label="50000\nSchool of Business"];
+55000 [label="55000\nOffice of Research Administration"];
+60000 [label="60000\nSchool of Continuing Studies"];
+70000 [label="70000\nOffice of the Vice Provost of Research"];
+80000 [label="80000\nOffice of Institutional Research"];
+85000 [label="85000\nArt Museum"];
+90000 [label="90000\nCenters & Institutes"];
+
+10100 -> 10000;
+10200 -> 10100;
+10300 -> 10100;
+10400 -> 10100;
+10500 -> 10100;
+10600 -> 10100;
+10700 -> 10100;
+10800 -> 10100;
+10900 -> 10100;
+20000 -> 10200;
+30000 -> 10200;
+40000 -> 10200;
+45000 -> 10200;
+50000 -> 10200;
+55000 -> 10200;
+60000 -> 10200;
+70000 -> 10200;
+80000 -> 10200;
+85000 -> 10200;
+90000 -> 10200;
+
+}
