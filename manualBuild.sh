@@ -7,10 +7,10 @@ pushd ex101
 ./manualBuild.sh
 popd
 
-# pushd ex201
-# ./manualBuild.sh
-# popd
-#
+ pushd ex201
+ ./manualBuild.sh
+ popd
+
 # pushd ex211
 # ./manualBuild.sh
 # popd
