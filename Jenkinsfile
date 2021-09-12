@@ -13,6 +13,7 @@
  *  Each step is an associated docker image.
  *  exerciseSets has the class name and an array of the number of steps for module.     
 **/
+// TODO unused?
 exerciseSets = ['101.1.1', ]
 
 pipeline {
@@ -84,6 +85,7 @@ pipeline {
                             def exerciseFolders = [
                                 "base":       "base",
                                 "101.1.1":    "ex101/ex101.1.1",
+                                "201.end":    "ex201/ex201.end",
                                 //"201.1.1":    "ex201/ex201.1.1",
                                 //"201.1.end":  "ex201/ex201.1.end",
                                 //"201.2.1":    "ex201/ex201.2.1",

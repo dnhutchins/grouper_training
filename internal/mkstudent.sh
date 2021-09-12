@@ -2,7 +2,7 @@
 
 export GROUPER_GTE_BRANCH=GROUPER_BUILD_CLOUD_FORMATION
 #export GROUPER_GTE_DOCKER_BRANCH=GROUPER_BUILD_CLOUD_FORMATION
-export GROUPER_GTE_DOCKER_BRANCH=202106
+export GROUPER_GTE_DOCKER_BRANCH=202109
 
 echo "$GROUPER_GTE_BRANCH" > /root/grouperGteBranch.txt
 chmod a+r /root/grouperGteBranch.txt
@@ -16,25 +16,9 @@ yum -y install docker
 
 systemctl start docker
 
-docker pull "tier/gte:401.3.end-$GROUPER_GTE_DOCKER_BRANCH"
-docker pull "tier/gte:401.3.1-$GROUPER_GTE_DOCKER_BRANCH"
-docker pull "tier/gte:401.1.end-$GROUPER_GTE_DOCKER_BRANCH"
-docker pull "tier/gte:401.1.1-$GROUPER_GTE_DOCKER_BRANCH"
-docker pull "tier/gte:301.4.1-$GROUPER_GTE_DOCKER_BRANCH"
-docker pull "tier/gte:211.1.1-$GROUPER_GTE_DOCKER_BRANCH"
-docker pull "tier/gte:201.5.end-$GROUPER_GTE_DOCKER_BRANCH"
-docker pull "tier/gte:201.5.1-$GROUPER_GTE_DOCKER_BRANCH"
-docker pull "tier/gte:201.4.end-$GROUPER_GTE_DOCKER_BRANCH"
-docker pull "tier/gte:201.4.1-$GROUPER_GTE_DOCKER_BRANCH"
-docker pull "tier/gte:201.3.end-$GROUPER_GTE_DOCKER_BRANCH"
-docker pull "tier/gte:201.3.1-$GROUPER_GTE_DOCKER_BRANCH"
-docker pull "tier/gte:201.2.end-$GROUPER_GTE_DOCKER_BRANCH"
-docker pull "tier/gte:201.2.1-$GROUPER_GTE_DOCKER_BRANCH"
-docker pull "tier/gte:201.1.end-$GROUPER_GTE_DOCKER_BRANCH"
-docker pull "tier/gte:201.1.1-$GROUPER_GTE_DOCKER_BRANCH"
-docker pull "tier/gte:101.1.1-$GROUPER_GTE_DOCKER_BRANCH"
-docker pull "tier/gte:full_demo-$GROUPER_GTE_DOCKER_BRANCH"
 docker pull "tier/gte:base-$GROUPER_GTE_DOCKER_BRANCH"
+docker pull "tier/gte:101.1.1-$GROUPER_GTE_DOCKER_BRANCH"
+docker pull "tier/gte:201.end-$GROUPER_GTE_DOCKER_BRANCH"
 docker pull rabbitmq:management
 
 

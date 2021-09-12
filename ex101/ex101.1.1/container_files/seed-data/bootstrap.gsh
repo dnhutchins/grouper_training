@@ -365,8 +365,6 @@ config.propertyName("provisioner.eduPersonEntitlement.userSearchBaseDn").value('
 
 textConfig.propertyName("md_entitlementValue_eduPersonEntitlement_label").value('''Entitlement String''').store()
 
-md_entitlementValue_eduPersonEntitlement_label = Entitlement String
-
 /* for this exercise, they will create a full sync provisioner in the UI */
 
 

@@ -1,7 +1,7 @@
 #! /bin/bash
 
 REPOSITORY=tier/gte
-VERSION_TAG=202109-new-data
+VERSION_TAG=202109
 
 EXTRA_ARGS=
 RABBITMQ_FL=
