@@ -11,6 +11,9 @@ ENV USERTOKEN=gte-201.end
 
 COPY container_files/seed-data/ /seed-data/
 
++# won't work if no files in here, since the folder won't be in git. Uncomment only if there are any property files to override
++#COPY container_files/conf/ /opt/grouper/grouperWebapp/WEB-INF/classes/
+
 #  && setupFiles
 RUN . /usr/local/bin/library.sh \
     && prep_conf && prep_finish; \

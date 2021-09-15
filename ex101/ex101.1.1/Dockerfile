@@ -10,7 +10,9 @@ LABEL author="tier-packaging@internet2.edu <tier-packaging@internet2.edu>" \
 ENV USERTOKEN=gte-101.1.1
 
 COPY container_files/seed-data/ /seed-data/
-COPY container_files/conf/ /opt/grouper/grouperWebapp/WEB-INF/classes/
+
+# won't work if no files in here, since the folder won't be in git. Uncomment only if there are any property files to override
+#COPY container_files/conf/ /opt/grouper/grouperWebapp/WEB-INF/classes/
 
 # && setupFiles; \
 
