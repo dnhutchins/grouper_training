@@ -44,6 +44,30 @@ assignObjectTypeForGroup(closure, "ref", "IAM", "Accounts in the process of bein
 Group globalDeny = new GroupSave(gs).assignName("ref:iam:global_deny").assignCreateParentStemsIfNotExist(true).save()
 assignObjectTypeForGroup(globalDeny, "ref", "Identity and Access Management", "Global deny group")
 
+
+// Set include/exclude properties
+
+GrouperDbConfig config = new GrouperDbConfig().configFileName("grouper.properties")
+
+config.propertyName("provisioner.eduPersonAffiliation.canFullSync").value('''true''').store()
+
+// Autopopulate policy deny group
+config.propertyName("grouper.lockoutGroup.name.0").value('''ref:iam:global_deny''').store()
+
+// Used for policy "require users in other group"
+config.propertyName("grouper.requireGroup.name.0").value('''ref:role:all_facstaff''').store()
+
+// Used in membership filter
+config.propertyName("grouper.membership.customComposite.uiKey.0").value('''customCompositeAllFacStaff''').store()
+config.propertyName("grouper.membership.customComposite.compositeType.0").value('''intersection''').store()
+config.propertyName("grouper.membership.customComposite.groupName.0").value('''ref:role:all_facstaff''').store()
+
+config.propertyName("grouper.membership.customComposite.uiKey.1").value('''customCompositeMinusFacStaff''').store()
+config.propertyName("grouper.membership.customComposite.compositeType.1").value('''complement''').store()
+config.propertyName("grouper.membership.customComposite.groupName.1").value('''ref:role:all_facstaff''').store()
+
+
+
 /***** Employee by Dept Loader *****/
 
 def group = new GroupSave(gs).assignName("etc:loader:hr:employeeDeptLoader").assignCreateParentStemsIfNotExist(true).assignDisplayName("etc:loader:HR:employeeDeptLoader").save()
