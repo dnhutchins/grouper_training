@@ -285,7 +285,7 @@ config.propertyName("provisioner.eduPersonAffiliation.subjectSourcesToProvision"
 config.propertyName("provisioner.eduPersonAffiliation.targetEntityAttribute.0.fieldName").value('''name''').store()
 config.propertyName("provisioner.eduPersonAffiliation.targetEntityAttribute.0.isFieldElseAttribute").value('''true''').store()
 config.propertyName("provisioner.eduPersonAffiliation.targetEntityAttribute.0.select").value('''true''').store()
-config.propertyName("provisioner.eduPersonAffiliation.targetEntityAttribute.0.translateExpression").value('''${'uid=' + grouperProvisioningEntity.subjectId + ',ou=people,dc=internet2,dc=edu'}''').store()
+config.propertyName("provisioner.eduPersonAffiliation.targetEntityAttribute.0.translateExpression").value('''${'uid=' + grouperProvisioningEntity.retrieveAttributeValueString('subjectIdentifier0') + ',ou=people,dc=internet2,dc=edu'}''').store()
 config.propertyName("provisioner.eduPersonAffiliation.targetEntityAttribute.0.translateExpressionType").value('''translationScript''').store()
 config.propertyName("provisioner.eduPersonAffiliation.targetEntityAttribute.0.translateToMemberSyncField").value('''memberToId2''').store()
 config.propertyName("provisioner.eduPersonAffiliation.targetEntityAttribute.0.valueType").value('''string''').store()
@@ -295,7 +295,7 @@ config.propertyName("provisioner.eduPersonAffiliation.targetEntityAttribute.1.na
 config.propertyName("provisioner.eduPersonAffiliation.targetEntityAttribute.1.searchAttribute").value('''true''').store()
 config.propertyName("provisioner.eduPersonAffiliation.targetEntityAttribute.1.select").value('''true''').store()
 config.propertyName("provisioner.eduPersonAffiliation.targetEntityAttribute.1.translateExpressionType").value('''grouperProvisioningEntityField''').store()
-config.propertyName("provisioner.eduPersonAffiliation.targetEntityAttribute.1.translateFromGrouperProvisioningEntityField").value('''subjectId''').store()
+config.propertyName("provisioner.eduPersonAffiliation.targetEntityAttribute.1.translateFromGrouperProvisioningEntityField").value('''attribute__subjectIdentifier0''').store()
 config.propertyName("provisioner.eduPersonAffiliation.targetEntityAttribute.1.valueType").value('''string''').store()
 config.propertyName("provisioner.eduPersonAffiliation.targetEntityAttribute.2.isFieldElseAttribute").value('''false''').store()
 config.propertyName("provisioner.eduPersonAffiliation.targetEntityAttribute.2.membershipAttribute").value('''true''').store()
@@ -337,7 +337,7 @@ config.propertyName("provisioner.eduPersonEntitlement.subjectSourcesToProvision"
 config.propertyName("provisioner.eduPersonEntitlement.targetEntityAttribute.0.fieldName").value('''name''').store()
 config.propertyName("provisioner.eduPersonEntitlement.targetEntityAttribute.0.isFieldElseAttribute").value('''true''').store()
 config.propertyName("provisioner.eduPersonEntitlement.targetEntityAttribute.0.select").value('''true''').store()
-config.propertyName("provisioner.eduPersonEntitlement.targetEntityAttribute.0.translateExpression").value('''${'uid=' + grouperProvisioningEntity.subjectId + ',ou=people,dc=internet2,dc=edu'}''').store()
+config.propertyName("provisioner.eduPersonEntitlement.targetEntityAttribute.0.translateExpression").value('''${'uid=' + grouperProvisioningEntity.retrieveAttributeValueString('subjectIdentifier0') + ',ou=people,dc=internet2,dc=edu'}''').store()
 config.propertyName("provisioner.eduPersonEntitlement.targetEntityAttribute.0.translateExpressionType").value('''translationScript''').store()
 config.propertyName("provisioner.eduPersonEntitlement.targetEntityAttribute.0.valueType").value('''string''').store()
 config.propertyName("provisioner.eduPersonEntitlement.targetEntityAttribute.1.isFieldElseAttribute").value('''false''').store()
@@ -346,7 +346,7 @@ config.propertyName("provisioner.eduPersonEntitlement.targetEntityAttribute.1.na
 config.propertyName("provisioner.eduPersonEntitlement.targetEntityAttribute.1.searchAttribute").value('''true''').store()
 config.propertyName("provisioner.eduPersonEntitlement.targetEntityAttribute.1.select").value('''true''').store()
 config.propertyName("provisioner.eduPersonEntitlement.targetEntityAttribute.1.translateExpressionType").value('''grouperProvisioningEntityField''').store()
-config.propertyName("provisioner.eduPersonEntitlement.targetEntityAttribute.1.translateFromGrouperProvisioningEntityField").value('''subjectId''').store()
+config.propertyName("provisioner.eduPersonEntitlement.targetEntityAttribute.1.translateFromGrouperProvisioningEntityField").value('''attribute__subjectIdentifier0''').store()
 config.propertyName("provisioner.eduPersonEntitlement.targetEntityAttribute.1.valueType").value('''string''').store()
 config.propertyName("provisioner.eduPersonEntitlement.targetEntityAttribute.2.isFieldElseAttribute").value('''false''').store()
 config.propertyName("provisioner.eduPersonEntitlement.targetEntityAttribute.2.membershipAttribute").value('''true''').store()
@@ -356,7 +356,7 @@ config.propertyName("provisioner.eduPersonEntitlement.targetEntityAttribute.2.tr
 config.propertyName("provisioner.eduPersonEntitlement.targetEntityAttribute.2.valueType").value('''string''').store()
 config.propertyName("provisioner.eduPersonEntitlement.targetGroupAttribute.0.isFieldElseAttribute").value('''false''').store()
 config.propertyName("provisioner.eduPersonEntitlement.targetGroupAttribute.0.name").value('''entitlement''').store()
-config.propertyName("provisioner.eduPersonEntitlement.targetGroupAttribute.0.translateExpression").value('''${grouperUtil.defaultIfBlank(grouperProvisioningGroup.retrieveAttributeValueString('md_entitlementValue') , grouperProvisioningGroup.extension )}''').store()
+config.propertyName("provisioner.eduPersonEntitlement.targetGroupAttribute.0.translateExpression").value('''${grouperUtil.defaultIfBlank(grouperProvisioningGroup.retrieveAttributeValueString('md_entitlementValue') , grouperProvisioningGroup.name )}''').store()
 config.propertyName("provisioner.eduPersonEntitlement.targetGroupAttribute.0.translateExpressionType").value('''translationScript''').store()
 config.propertyName("provisioner.eduPersonEntitlement.targetGroupAttribute.0.translateGrouperToGroupSyncField").value('''groupFromId2''').store()
 config.propertyName("provisioner.eduPersonEntitlement.targetGroupAttribute.0.valueType").value('''string''').store()
@@ -364,6 +364,8 @@ config.propertyName("provisioner.eduPersonEntitlement.userSearchAllFilter").valu
 config.propertyName("provisioner.eduPersonEntitlement.userSearchBaseDn").value('''ou=people,dc=internet2,dc=edu''').store()
 
 textConfig.propertyName("md_entitlementValue_eduPersonEntitlement_label").value('''Entitlement String''').store()
+textConfig.propertyName("md_entitlementValue_eduPersonEntitlement_description").value(
+        '''Static string value to use as the entitlement. Will use the group name if not set''').store()
 
 /* for this exercise, they will create a full sync provisioner in the UI */
 
@@ -508,8 +510,3 @@ def group = new GroupSave(gs).assignName("ref:role:all_facstaff").assignDisplayE
 /***** Schedule jobs is an upgrade task for 2.5.55 ****/
 
 GrouperLoader.scheduleJobs()
-
-/* TODO
- * - Groups not picking up object types from parent folder, even after running object type daemon
- * - Check the groupOfNames provisioner for grouper authoritative -- it is deleting vpn_users
- */

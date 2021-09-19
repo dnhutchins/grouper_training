@@ -6,6 +6,9 @@ import edu.internet2.middleware.grouper.app.grouperTypes.*
 import edu.internet2.middleware.grouper.app.provisioning.GrouperProvisioningAttributeNames
 import edu.internet2.middleware.grouper.app.provisioning.GrouperProvisioningSettings
 import edu.internet2.middleware.grouper.cfg.dbConfig.GrouperDbConfig
+import edu.internet2.middleware.grouper.app.attestation.*;
+import java.text.SimpleDateFormat;
+
 
 /***** START Defaults that may need to be changed for each class *****/
 
@@ -17,8 +20,7 @@ java.util.Date RECENT_GRAD_END_DATE = cal.time
 
 /***** END Defaults that may need to be changed for each class *****/
 
-
-GrouperSession gs = GrouperSession.startRootSession()
+GrouperSession gs = GrouperSession.start(SubjectFinder.findByIdentifierAndSource("banderson", "eduLDAP", true))
 
 /* Creating a class for methods helps with gsh from the command line, which can't do functions called from other functions */
 class HelperMethods {
@@ -44,10 +46,14 @@ class HelperMethods {
                 save()
     }
 
+    static int countPersonSubjects(Group g) {
+        return g.members.findAll {it.subjectType.name == "person"}.size()
+    }
+
     static void addSubjectWithCount(Group g, Subject s) {
-        int countBefore = g.members.findAll {it.subjectType.name == "person"}.size()
+        int countBefore = countPersonSubjects(g)
         g.addMember(s, false)
-        int countAfter = g.members.findAll {it.subjectType.name == "person"}.size()
+        int countAfter = countPersonSubjects(g)
         println "\tAdd ${s.name} to ${g.name}: ${countBefore} -> ${countAfter} (${countAfter - countBefore})"
     }
 
@@ -109,24 +115,44 @@ class HelperMethods {
         }
     }
 
-    static void provisionObject(AttributeAssignable object, String provisioningTargetId) {
-        AttributeDefName provisioningMarkerAttributeDefName = GrouperProvisioningAttributeNames.retrieveAttributeDefNameBase()
-        AttributeDefName provisioningDirectAttributeDefName = GrouperProvisioningAttributeNames.retrieveAttributeDefNameDirectAssignment()
-        AttributeDefName provisioningTargetAttributeDefName = GrouperProvisioningAttributeNames.retrieveAttributeDefNameTarget()
-        AttributeDefName provisioningStemScopeAttributeDefName = GrouperProvisioningAttributeNames.retrieveAttributeDefNameStemScope()
-        AttributeDefName provisioningDoProvisionAttributeDefName = GrouperProvisioningAttributeNames.retrieveAttributeDefNameDoProvision()
-        // GRP-3592 no method for provisioningMetadataJson
-        AttributeDefName provisioningMdJsonAttributeDefName = AttributeDefNameFinder.findByName(
-                GrouperProvisioningSettings.provisioningConfigStemName() + ":" + GrouperProvisioningAttributeNames.PROVISIONING_METADATA_JSON, true)
+    static void provisionObject(AttributeAssignable object, String provisioningTargetId, String metadataJson=null) {
 
+        AttributeAssign attributeAssign = object.attributeDelegate.assignAttribute(GrouperProvisioningAttributeNames.retrieveAttributeDefNameBase()).getAttributeAssign()
+        attributeAssign.attributeValueDelegate.with {
+            assignValue(GrouperProvisioningAttributeNames.retrieveAttributeDefNameDirectAssignment().getName(), "true")
+            assignValue(GrouperProvisioningAttributeNames.retrieveAttributeDefNameDoProvision().getName(), provisioningTargetId)
+            assignValue(GrouperProvisioningAttributeNames.retrieveAttributeDefNameTarget().getName(), provisioningTargetId)
 
-        AttributeAssign aa = object.getAttributeDelegate().addAttribute(provisioningMarkerAttributeDefName).getAttributeAssign()
-        aa.getAttributeValueDelegate().assignValue(provisioningDirectAttributeDefName.getName(), "true")
-        aa.getAttributeValueDelegate().assignValue(provisioningTargetAttributeDefName.getName(), provisioningTargetId)
-        aa.getAttributeValueDelegate().assignValue(provisioningDoProvisionAttributeDefName.getName(), "false")
-        aa.getAttributeValueDelegate().assignValue(provisioningStemScopeAttributeDefName.getName(), "sub")
-        aa.getAttributeValueDelegate().assignValue(provisioningMdJsonAttributeDefName.getName(), '''{"md_grouper_allowPolicyGroupOverride":true}''')
+            if (object instanceof Stem) {
+                assignValue(GrouperProvisioningAttributeNames.retrieveAttributeDefNameStemScope().getName(), "sub")
+            }
 
+            if (metadataJson != null) {
+                // GRP-3592 no method for provisioningMetadataJson
+                assignValue(AttributeDefNameFinder.findByName(
+                        GrouperProvisioningSettings.provisioningConfigStemName() + ":" + GrouperProvisioningAttributeNames.PROVISIONING_METADATA_JSON, true).
+                        getName(), metadataJson)
+            }
+        }
+
+    }
+
+    static void addAttestation(g, isSendMail, daysUntilRecertify) {
+        AttributeAssign attributeAssign = g.attributeDelegate.assignAttribute(GrouperAttestationJob.retrieveAttributeDefNameValueDef()).getAttributeAssign()
+        // Set date certified to today, so that it won't force attestation until the next time due
+        def date = new SimpleDateFormat("yyyy/MM/dd").format(new Date())
+        attributeAssign.attributeValueDelegate.with {
+            assignValue(GrouperAttestationJob.retrieveAttributeDefNameDirectAssignment().getName(), "true")
+            assignValue(GrouperAttestationJob.retrieveAttributeDefNameSendEmail().getName(), isSendMail)
+            assignValue(GrouperAttestationJob.retrieveAttributeDefNameHasAttestation().getName(), "true")
+            assignValue(GrouperAttestationJob.retrieveAttributeDefNameEmailAddresses().getName(), null)
+            assignValue(GrouperAttestationJob.retrieveAttributeDefNameDaysUntilRecertify().getName(), daysUntilRecertify)
+            assignValue(GrouperAttestationJob.retrieveAttributeDefNameDateCertified().getName(), date)
+        }
+    }
+
+    static void attestGroup(Group g) {
+        //TODO
     }
 }
 
@@ -251,10 +277,10 @@ Stem policyStem = StemFinder.findByName(gs, "app:eduPersonAffiliation:service:po
 HelperMethods.assignObjectTypeForStem(policyStem, "policy")
 
 [
-        "ePA_student": ["ref:student:students"],
-        "ePA_staff": ["ref:role:emp:staff"],
-        "ePA_faculty": ["ref:role:emp:faculty"],
-        "ePA_member": ["${policyStem.name}:ePA_student", "${policyStem.name}:ePA_staff", "${policyStem.name}:ePA_faculty"]
+        "student": ["ref:student:students"],
+        "staff": ["ref:role:emp:staff"],
+        "faculty": ["ref:role:emp:faculty"],
+        "member": ["${policyStem.name}:student", "${policyStem.name}:staff", "${policyStem.name}:faculty"]
 ].each { policyName, memberNames ->
     Group group = new GroupSave(gs).assignName("${policyStem.name}:${policyName}").save()
     memberNames.each { memberName ->
@@ -263,9 +289,8 @@ HelperMethods.assignObjectTypeForStem(policyStem, "policy")
     }
 }
 
-/* Provisioning - the edupersonAffiliation provisioner should already be set up in 101.1.1 */
-HelperMethods.provisionObject(policyStem, "eduPersonAffiliation")
-
+/* Provisioning - the eduPersonAffiliation provisioner should already be set up in 101.1.1 */
+HelperMethods.provisionObject(policyStem, "eduPersonAffiliation", '''{"md_grouper_allowPolicyGroupOverride":true}''')
 
 
 /***** 201.4 eduPersonEntitlement *****/
@@ -314,10 +339,84 @@ config.propertyName("otherJob.eduPersonEntitlement_full_sync.provisionerConfigId
 config.propertyName("otherJob.eduPersonEntitlement_full_sync.quartzCron").value('''0 0 4 * * ?''').store()
 
 
+/* Provisioning - the eduPersonEntitlement provisioner should already be set up in 101.1.1 */
+Group group = GroupFinder.findByName(gs, "app:wiki:service:policy:wiki_user", true)
+
+HelperMethods.provisionObject(group, "eduPersonEntitlement", '''{"md_entitlementValue":"http://sp.example.org/wiki"}''')
 
 
-/* Provisioning - the edupersonAffiliation provisioner should already be set up in 101.1.1 */
-HelperMethods.provisionObject(policyStem, "eduPersonAffiliation")
+/***** 201.5: Policy groups and dynamic application permissions (Cognos) *****/
 
-/* TODO ePA and ePT full sync provisioners are not working */
+HelperMethods.newApplicationTemplate(StemFinder.findByName(gs, "app", true),
+        "cognos",
+        "cognos",
+        "Manage poicy roles for Cognos application",
+        null)
 
+Stem policyStem = StemFinder.findByName(gs, "app:cognos:service:policy", true)
+ArrayList<String> myServiceActionIds = [
+        'policyGroupCreate',
+        'policyGroupType',
+        'policyGroupAllowGroupCreate',
+        'allowIntermediatgeGroupType',
+        //'policyGroupAllowManualGroupCreate',
+        //'policyGroupAddManualToAllow',
+        //'allowManualGroupType',
+        'policyGroupDenyGroupCreate',
+        'denyIntermediatgeGroupType',
+        'policyGroupLockoutGroup_0',
+        //'policyGroupDenyManualGroupCreate',
+        //'policyGroupAddManualToDeny',
+        //'denyManualGroupType',
+        //'policyGroupRequireGroup_0'
+]
+
+HelperMethods.newPolicyTemplate(policyStem,
+        "cg_fin_report_reader",
+        "cg_fin_report_reader",
+        "Report Reader Access Policy",
+        myServiceActionIds
+)
+
+HelperMethods.newPolicyTemplate(policyStem,
+        "cg_fin_report_writer",
+        "cg_fin_report_writer",
+        "Report Writer Access Policy",
+        myServiceActionIds
+)
+
+
+Group financeStaff = GroupFinder.findByName(gs, "basis:hr:employee:dept:10810:staff", true)
+Group cg_fin_report_reader_allow = GroupFinder.findByName(gs, "app:cognos:service:policy:cg_fin_report_reader_allow", true)
+"app:cognos:service:policy:cg_fin_report_reader_allow"
+
+HelperMethods.addSubjectWithCount(cg_fin_report_reader_allow, financeStaff.toSubject())
+
+
+Group financeWritersRef = new GroupSave(gs).assignName("app:cognos:service:ref:finance_report_writer").
+        assignCreateParentStemsIfNotExist(true).
+        save()
+
+HelperMethods.assignObjectTypeForGroup(financeWritersRef, "ref", "Finance Manager", $/Employees authorized by the Finance Manager have access to write reports/$)
+
+
+Group financeMgrRole = new GroupSave(gs).assignName("ref:role:financeManager").
+        assignDisplayExtension("Finance Manager").
+        save()
+HelperMethods.assignObjectTypeForGroup(financeMgrRole, "ref")
+
+Subject driddle = SubjectFinder.findByIdentifierAndSource("driddle", "eduLDAP", true)
+financeMgrRole.addMember(driddle, false)
+
+financeWritersRef.grantPriv(financeMgrRole.toSubject(), AccessPrivilege.READ, false)
+financeWritersRef.grantPriv(financeMgrRole.toSubject(), AccessPrivilege.UPDATE, false)
+
+HelperMethods.addAttestation(financeWritersRef, "true", "30")
+
+GrouperSession gs2 = GrouperSession.start(SubjectFinder.findByIdentifierAndSource("driddle", "eduLDAP", true))
+
+Subject ccampbe2 = SubjectFinder.findByIdentifierAndSource("ccampbe2", "eduLDAP", true)
+financeWritersRef.addMember(ccampbe2, false)
+
+// Mark reviewed
+//TODO HelperMethods.attestGroup(financeWritersRef)

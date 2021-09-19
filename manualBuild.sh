@@ -7,9 +7,9 @@ pushd ex101
 ./manualBuild.sh
 popd
 
- pushd ex201
- ./manualBuild.sh
- popd
+pushd ex201
+./manualBuild.sh
+popd
 
 # pushd ex211
 # ./manualBuild.sh
@@ -18,11 +18,10 @@ popd
 # pushd ex301
 # ./manualBuild.sh
 # popd
-#
-# pushd ex401
-# ./manualBuild.sh
-# popd
-#
+
+pushd ex401
+./manualBuild.sh
+popd
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   say full build complete
