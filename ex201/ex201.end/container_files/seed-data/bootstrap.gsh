@@ -350,7 +350,7 @@ HelperMethods.provisionObject(group, "eduPersonEntitlement", '''{"md_entitlement
 HelperMethods.newApplicationTemplate(StemFinder.findByName(gs, "app", true),
         "cognos",
         "cognos",
-        "Manage poicy roles for Cognos application",
+        "Manage policy roles for Cognos application",
         null)
 
 Stem policyStem = StemFinder.findByName(gs, "app:cognos:service:policy", true)
