@@ -254,8 +254,8 @@ GrouperLoader.runOnceByJobName(gs, "OTHER_JOB_groupOfNames_full_sync")
 
 // Create ref group vpn_consultants
 
-Group vpnConsultantsRef = new GroupSave(gs).assignName("app:vpn:service:ref:vpn_consultants").save()
-Group wri250Ref = new GroupSave(gs).assignName("app:vpn:service:ref:vpn_wri250").save()
+Group vpnConsultantsRef = new GroupSave(gs).assignName("app:vpn:service:policy:vpn_consultants").save()
+Group wri250Ref = new GroupSave(gs).assignName("app:vpn:service:policy:vpn_wri250").save()
 Group manualGroup = GroupFinder.findByName(gs, "app:vpn:service:policy:vpn_authorized_allow_manual", true)
 
 [vpnConsultantsRef, wri250Ref].each {
