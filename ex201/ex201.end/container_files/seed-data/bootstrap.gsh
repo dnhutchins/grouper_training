@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 Range<Integer> ACTIVE_CLASS_YEARS = 2022..2025
 int RECENT_GRADUATE_YEAR = 2021
 java.util.Calendar cal = Calendar.getInstance()
-cal.set(2021, Calendar.DECEMBER, 31, 17, 0, 0)
+cal.set(2022, Calendar.MARCH, 31, 17, 0, 0)
 java.util.Date RECENT_GRAD_END_DATE = cal.time
 
 /***** END Defaults that may need to be changed for each class *****/
@@ -199,10 +199,12 @@ HelperMethods.addSubjectWithCount(studentGroup, classSubject)
 
 /* Create adhoc transfer student group and add members */
 
-Stem xferStudentStem = new StemSave(gs).assignName("basis:adhoc:student").save()
-Group xferStudentGroup = new GroupSave(gs).assignName("${xferStudentStem.name}:transfer_student").save()
-HelperMethods.assignObjectTypeForGroup(xferStudentGroup, "basis")
-HelperMethods.assignObjectTypeForGroup(xferStudentGroup, "manual")
+Group xferStudentGroup = new GroupSave(gs).assignName("ref:student:transfer_student").
+        assignDisplayExtension("Transfer Student").
+        assignDescription($/Students recently transfered but not yet in SIS/$).
+        save()
+
+HelperMethods.assignObjectTypeForGroup(xferStudentGroup, "manual", "Registrar", "Ad-hoc recent transfer students not yet in SIS")
 
 ['whawkins', 'hyoung', 'jmejia'].each {
     Subject s = SubjectFinder.findByIdentifier(it, true)
@@ -213,7 +215,7 @@ HelperMethods.assignObjectTypeForGroup(xferStudentGroup, "manual")
 classSubject = xferStudentGroup.toSubject()
 HelperMethods.addSubjectWithCount(studentGroup, classSubject)
 
-/* Add transfer students to All Students */
+/* Add leave of absence students to All Students */
 classSubject = GroupFinder.findByName(gs, "basis:sis:prog_status:all:la", true).toSubject()
 HelperMethods.addSubjectWithCount(studentGroup, classSubject)
 
@@ -226,7 +228,7 @@ HelperMethods.addSubjectWithCount(studentGroup, classSubject)
 HelperMethods.newApplicationTemplate(StemFinder.findByName(gs, "app", true),
     "gitlab",
     "GitLab",
-    "Access policy for the ITS GitLab version control system",
+    "Access policies for the ITS GitLab version control system",
     null)
 
 
@@ -251,17 +253,23 @@ ArrayList<String> myServiceActionIds = [
 
 HelperMethods.newPolicyTemplate(policyStem,
         "gitlab_access",
-        "GitLab",
-        "Access policy for the ITS GitLab version control system",
+        "GitLab Access",
+        "Overall access policy for the ITS GitLab version control system",
         myServiceActionIds
 )
 
 /* Add members to gitlab_access_allow */
 Group gitlabAccessAllow = GroupFinder.findByName(gs, "app:gitlab:service:policy:gitlab_access_allow", true)
-["ref:role:emp:staff", "ref:role:emp:faculty", "basis:hr:employee:dept:10901:affiliate"].each {
+["ref:role:all_facstaff", "basis:hr:employee:dept:10901:affiliate"].each {
     Subject s = SubjectFinder.findByIdentifierAndSource(it, "g:gsa", true)
     HelperMethods.addSubjectWithCount(gitlabAccessAllow, s)
 }
+
+/* Grant update to Infrastructure staff */
+
+Group gitlabUpdaters = GroupFinder.findByName(gs, "app:gitlab:security:gitlabUpdaters", true)
+Group infrastructureStaff = GroupFinder.findByName(gs, "basis:hr:employee:dept:10903:staff", true)
+HelperMethods.addSubjectWithCount(gitlabUpdaters, infrastructureStaff.toSubject())
 
 
 
