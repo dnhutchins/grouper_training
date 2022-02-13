@@ -14,6 +14,8 @@ yum -y install java-1.8.0-openjdk java-1.8.0-openjdk-devel wget mlocate emacs na
 
 yum -y install docker
 
+pip3 install docker-compose
+
 systemctl start docker
 
 docker pull "tier/gte:base-$GROUPER_GTE_DOCKER_BRANCH"
