@@ -5,15 +5,14 @@ TODO
 202202
 -------
 
-- (NO IT REQUIRES JAVA 11+) Upgrade Shibboleth IDP to latest 4.1.4 (low priority). But the configs have been modified to reduces 
-- Remove folders for unused images; in Sept. 2021 we were fine with 101.1, 201.end and 401.end
+- (NO IT REQUIRES JAVA 11+) Upgrade Shibboleth IDP to latest 4.1.4 (low priority). But the configs have been modified to reduce warnings
 - How to get rid of the LDAP warnings that come up the first time the page comes up?
 - The All Faculty/Staff group is missing the ref type
 - Fix this error
 
         Loading class `com.mysql.jdbc.Driver'. This is deprecated. The new driver class is `com.mysql.cj.jdbc.Driver'. The driver is automatically registered via the SPI and manual loading of the driver class is generally unnecessary.
-- maturity0 container: "Your source IP address (192.168.16.1) is not allowed to access the Configuration UI (in grouper-ui configuration)"
 - Main wiki page doesn't have a link to container configure, install, etc.
+- Add a gsh report to 401.2
 
 Slide updates:
 201.1.1
