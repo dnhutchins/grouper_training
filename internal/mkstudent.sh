@@ -19,7 +19,7 @@ systemctl start docker
 docker pull "tier/gte:base-$GROUPER_GTE_DOCKER_BRANCH"
 docker pull "tier/gte:101.1.1-$GROUPER_GTE_DOCKER_BRANCH"
 docker pull "tier/gte:201.end-$GROUPER_GTE_DOCKER_BRANCH"
-docker pull rabbitmq:management
+docker pull "tier/gte:401.end-$GROUPER_GTE_DOCKER_BRANCH"
 
 
 # Who am i?
@@ -59,7 +59,6 @@ wget "https://github.internet2.edu/docker/grouper_training/raw/$GROUPER_GTE_BRAN
 wget "https://github.internet2.edu/docker/grouper_training/raw/$GROUPER_GTE_BRANCH/gte-gsh"
 wget "https://github.internet2.edu/docker/grouper_training/raw/$GROUPER_GTE_BRANCH/gte-logs"
 wget "https://github.internet2.edu/docker/grouper_training/raw/$GROUPER_GTE_BRANCH/gte-shell"
-wget "https://github.internet2.edu/docker/grouper_training/raw/$GROUPER_GTE_BRANCH/start-rabbitmq.sh"
 wget "https://github.internet2.edu/docker/grouper_training/raw/$GROUPER_GTE_BRANCH/README.md"
 
 chown student.student /home/student/*
@@ -68,8 +67,6 @@ chmod +x /home/student/gte
 chmod +x /home/student/gte-gsh
 chmod +x /home/student/gte-logs
 chmod +x /home/student/gte-shell
-chmod +x /home/student/start-rabbitmq.sh
-
 
 updatedb
 

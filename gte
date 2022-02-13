@@ -4,11 +4,9 @@ REPOSITORY=tier/gte
 VERSION_TAG=202202
 
 EXTRA_ARGS=
-RABBITMQ_FL=
 
 show_help() {
-  echo "$0 [--rabbitmq] [--sql] [--ldap] [--fg|-it] [docker args ...] <gte lesson id> [container cmd ...]"
-  echo "    --rabbitmq:    also start up a rabbitmq container, and link it as name 'rabbitmq'"
+  echo "$0 [--sql] [--ldap] [--fg|-it] [docker args ...] <gte lesson id> [container cmd ...]"
   echo "    --sql:         Expose port 3306"
   echo "    --ldap:        Expose port 389"
   echo "    --fg:          Don't detach (i.e., don't run container with -d flag"
@@ -21,7 +19,6 @@ for arg in $*; do
   case $arg in
         --sql) EXTRA_ARGS="$EXTRA_ARGS -p 3306:3306"; shift;;
         --ldap) EXTRA_ARGS="$EXTRA_ARGS -p 389:389"; shift;;
-        --rabbitmq) EXTRA_ARGS="$EXTRA_ARGS --link rabbitmq:rabbitmq"; RABBITMQ_FL=1; shift;;
         --fg) is_foreground=1; shift;;
         -it) is_foreground=1; EXTRA_ARGS="$EXTRA_ARGS $1"; shift;;
         -h|--help) show_help; exit 0;;
@@ -32,7 +29,6 @@ done
 
 #echo args=$*
 #echo EXTRA_ARGS=$EXTRA_ARGS
-#echo RABBITMQ_FL=$RABBITMQ
 
 if [ "$is_foreground" != 1 ]; then
   EXTRA_ARGS="$EXTRA_ARGS -d"
@@ -62,19 +58,10 @@ if [ ! -z "$CONTAINERS" ]; then
   docker rm -f $CONTAINERS
 fi
 
-if [ "$RABBITMQ_FL" == 1 ]; then
-  echo Removing any old rabbitmq containers
-  docker rm -f rabbitmq 2> /dev/null
-  #DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-  #$DIR/start-rabbitmq.sh
-  echo "Starting container rabbitmq:management"
-  docker run -d -p 15672:15672 --env RABBITMQ_NODENAME=docker-rabbit --hostname rabbitmq --name=rabbitmq rabbitmq:management
-fi
-
 # lets see which 
 
 #docker stop "$1" 2> /dev/null
 #docker rm "$1" 2> /dev/null
-#docker run -d -p 8443:443 --link rabbitmq:rabbitmq --name $1 tier/gte:"$1"-202202
+#docker run -d -p 8443:443 --name $1 tier/gte:"$1"-202202
 echo "Starting container tier/gte:"$LESSON_ID"-$VERSION_TAG"
 docker run -p 8443:443 $EXTRA_ARGS --name $LESSON_ID tier/gte:"$LESSON_ID"-$VERSION_TAG $*
