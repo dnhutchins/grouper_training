@@ -1,12 +1,15 @@
+import edu.internet2.middleware.grouper.app.attestation.*;
+import edu.internet2.middleware.grouper.app.grouperTypes.*
+import edu.internet2.middleware.grouper.app.provisioning.GrouperProvisioningAttributeNames
+import edu.internet2.middleware.grouper.app.provisioning.GrouperProvisioningSettings
+import edu.internet2.middleware.grouper.app.reports.GrouperReportConfigAttributeNames
+import edu.internet2.middleware.grouper.app.reports.GrouperReportSettings
 import edu.internet2.middleware.grouper.grouperUi.beans.ui.GrouperNewServiceTemplateLogic
 import edu.internet2.middleware.grouper.grouperUi.beans.ui.GrouperTemplatePolicyGroupLogic
 import edu.internet2.middleware.grouper.grouperUi.beans.ui.ServiceAction
 import edu.internet2.middleware.grouper.grouperUi.beans.ui.StemTemplateContainer
-import edu.internet2.middleware.grouper.app.grouperTypes.*
-import edu.internet2.middleware.grouper.app.provisioning.GrouperProvisioningAttributeNames
-import edu.internet2.middleware.grouper.app.provisioning.GrouperProvisioningSettings
-import edu.internet2.middleware.grouper.app.attestation.*;
 import java.text.SimpleDateFormat;
+
 
 GrouperSession gs = GrouperSession.start(SubjectFinder.findByIdentifierAndSource("banderson", "eduLDAP", true))
 
@@ -194,6 +197,53 @@ Group vpnLegacyExceptions = new GroupSave(gs).assignName("test:vpn:vpn_legacy_ex
 vpnLegacyExceptions.assignCompositeMember(CompositeType.COMPLEMENT, vpnLegacyGroup, allFacStaff)
 
 println "${vpnLegacyExceptions.extension}: Person subjects = ${HelperMethods.countPersonSubjects(vpnLegacyExceptions)}"
+
+
+// Grant privs to networking staff, add a report
+Subject networkingStaff = SubjectFinder.findByIdentifierAndSource("basis:hr:employee:dept:10906:staff", "g:gsa", false);
+vpnLegacyExceptions.grantPriv(networkingStaff, Privilege.READ, false)
+
+AttributeAssign attributeAssign = vpnLegacyExceptions.attributeDelegate.assignAttribute(GrouperReportConfigAttributeNames.retrieveAttributeDefNameBase()).getAttributeAssign()
+attributeAssign.attributeValueDelegate.with {
+    assignValue(GrouperReportSettings.reportConfigStemName() + ":" + GrouperReportConfigAttributeNames.GROUPER_REPORT_CONFIG_NAME, "vpnLegacyExceptions")
+    assignValue(GrouperReportSettings.reportConfigStemName() + ":" + GrouperReportConfigAttributeNames.GROUPER_REPORT_CONFIG_TYPE, "GSH")
+    assignValue(GrouperReportSettings.reportConfigStemName() + ":" + GrouperReportConfigAttributeNames.GROUPER_REPORT_CONFIG_FORMAT, "CSV")
+    assignValue(GrouperReportSettings.reportConfigStemName() + ":" + GrouperReportConfigAttributeNames.GROUPER_REPORT_CONFIG_FILE_NAME, 'vpnLegacyExceptions_$$timestamp$$.csv')
+    assignValue(GrouperReportSettings.reportConfigStemName() + ":" + GrouperReportConfigAttributeNames.GROUPER_REPORT_CONFIG_DESCRIPTION, "Members of the vpn legacy exceptions group, with extra LDAP fields")
+    assignValue(GrouperReportSettings.reportConfigStemName() + ":" + GrouperReportConfigAttributeNames.GROUPER_REPORT_CONFIG_VIEWERS_GROUP_ID, networkingStaff.id)
+    assignValue(GrouperReportSettings.reportConfigStemName() + ":" + GrouperReportConfigAttributeNames.GROUPER_REPORT_CONFIG_QUARTZ_CRON, "0 0 6 * * ?")
+    assignValue(GrouperReportSettings.reportConfigStemName() + ":" + GrouperReportConfigAttributeNames.GROUPER_REPORT_CONFIG_SEND_EMAIL, "false")
+    assignValue(GrouperReportSettings.reportConfigStemName() + ":" + GrouperReportConfigAttributeNames.GROUPER_REPORT_CONFIG_STORE_WITH_NO_DATA, "false")
+    assignValue(GrouperReportSettings.reportConfigStemName() + ":" + GrouperReportConfigAttributeNames.GROUPER_REPORT_CONFIG_ENABLED, "true")
+    //skipped: reportConfigEmailBody
+    //skipped: reportConfigSendEmailWithNoData
+    //skipped: reportConfigEmailSubject
+    //skipped: reportConfigSendEmailToViewers
+    //skipped: reportConfigQuery
+    //skipped: reportConfigSendEmailToGroupId
+    
+    assignValue(GrouperReportSettings.reportConfigStemName() + ":" + GrouperReportConfigAttributeNames.GROUPER_REPORT_CONFIG_SCRIPT, '''
+        Group g = gsh_builtin_gshReportRuntime.ownerGroup
+        GrouperReportData grouperReportData = gsh_builtin_gshReportRuntime.grouperReportData
+        
+        grouperReportData.headers = ['Row', 'ID', 'UID', 'Name', 'Email']
+        grouperReportData.data = new ArrayList<String[]>()
+        
+        g.members.eachWithIndex { it, i ->
+            String[] row = [
+                    i+1,
+                    it.subject.getAttributeValue('employeenumber'),
+                    it.subject.getAttributeValue('uid'),
+                    it.subject.getAttributeValue('cn'),
+                    it.subject.getAttributeValue('mail'),
+            ]
+        
+            grouperReportData.data << row
+        }
+        '''.stripIndent())
+}
+
+
 
 // Create app template
 
