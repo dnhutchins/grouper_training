@@ -12,10 +12,10 @@ import java.text.SimpleDateFormat;
 
 /***** START Defaults that may need to be changed for each class *****/
 
-Range<Integer> ACTIVE_CLASS_YEARS = 2022..2025
-int RECENT_GRADUATE_YEAR = 2021
+Range<Integer> ACTIVE_CLASS_YEARS = 2023..2026
+int RECENT_GRADUATE_YEAR = 2022
 java.util.Calendar cal = Calendar.getInstance()
-cal.set(2022, Calendar.MARCH, 31, 17, 0, 0)
+cal.set(2022, Calendar.DECEMBER, 31, 17, 0, 0)
 java.util.Date RECENT_GRAD_END_DATE = cal.time
 
 /***** END Defaults that may need to be changed for each class *****/
