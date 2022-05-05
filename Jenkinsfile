@@ -12,7 +12,7 @@
  *  EXERCISE_FOLDERS has the image name and corresponding build folder
 **/
 
-TARGET_BRANCH = '202202'
+TARGET_BRANCH = '202205'
 
 EXERCISE_FOLDERS = [
     "base":       "base",

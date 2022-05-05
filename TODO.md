@@ -2,6 +2,11 @@ TODO
 =====
 
 
+202205
+-------
+- Once upgrading to 2.6.9, can remove gsh code marked "Temporary fix for GRP-4024" from bootstrap.gsh files
+
+
 202202
 -------
 

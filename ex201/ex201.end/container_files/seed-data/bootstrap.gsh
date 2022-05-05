@@ -1,7 +1,7 @@
 import edu.internet2.middleware.grouper.grouperUi.beans.ui.GrouperNewServiceTemplateLogic
 import edu.internet2.middleware.grouper.grouperUi.beans.ui.GrouperTemplatePolicyGroupLogic
 import edu.internet2.middleware.grouper.grouperUi.beans.ui.ServiceAction
-import edu.internet2.middleware.grouper.grouperUi.beans.ui.StemTemplateContainer
+import edu.internet2.middleware.grouper.grouperUi.beans.ui.GroupStemTemplateContainer
 import edu.internet2.middleware.grouper.app.grouperTypes.*
 import edu.internet2.middleware.grouper.app.provisioning.GrouperProvisioningAttributeNames
 import edu.internet2.middleware.grouper.app.provisioning.GrouperProvisioningSettings
@@ -20,6 +20,11 @@ java.util.Date RECENT_GRAD_END_DATE = cal.time
 
 /***** END Defaults that may need to be changed for each class *****/
 
+
+/***** Temporary fix for GRP-4024 *****/
+import edu.internet2.middleware.grouper.cfg.text.GrouperTextContainer
+
+/***** Start of script *****/
 GrouperSession gs = GrouperSession.start(SubjectFinder.findByIdentifierAndSource("banderson", "eduLDAP", true))
 
 /* Creating a class for methods helps with gsh from the command line, which can't do functions called from other functions */
@@ -58,7 +63,7 @@ class HelperMethods {
     }
 
     static void newApplicationTemplate(Stem parentStem, String templateKey, String templateFriendlyName, String templateDescription, List<String> myServiceActionIds = []) {
-        def stemTemplateContainer = new StemTemplateContainer()
+        def stemTemplateContainer = new GroupStemTemplateContainer()
         stemTemplateContainer.templateKey = templateKey
         stemTemplateContainer.templateFriendlyName = templateFriendlyName
         stemTemplateContainer.templateDescription = templateDescription
@@ -66,6 +71,9 @@ class HelperMethods {
         GrouperNewServiceTemplateLogic templateLogic = new GrouperNewServiceTemplateLogic()
         templateLogic.stemId = parentStem.uuid
         templateLogic.stemTemplateContainer = stemTemplateContainer
+
+        /***** Temporary fix for GRP-4024 *****/
+        GrouperTextContainer.assignThreadLocalVariable("groupStemTemplateContainer", stemTemplateContainer)
 
         List<ServiceAction> selectedServiceActions = []
         if (myServiceActionIds == null || myServiceActionIds.isEmpty()) {
@@ -87,7 +95,7 @@ class HelperMethods {
 
     static void newPolicyTemplate(Stem parentStem, String templateKey, String templateFriendlyName, String templateDescription, List<String> myServiceActionIds = []) {
         // note that this doesn't work < 2.5.56 due to dependence on the UI
-        def policyStemTemplateContainer = new StemTemplateContainer()
+        def policyStemTemplateContainer = new GroupStemTemplateContainer()
         policyStemTemplateContainer.templateKey = templateKey
         policyStemTemplateContainer.templateFriendlyName = templateFriendlyName
         policyStemTemplateContainer.templateDescription = templateDescription
@@ -95,6 +103,9 @@ class HelperMethods {
         GrouperTemplatePolicyGroupLogic policyTemplateLogic = new GrouperTemplatePolicyGroupLogic()
         policyTemplateLogic.stemId = parentStem.uuid
         policyTemplateLogic.stemTemplateContainer = policyStemTemplateContainer
+
+        /***** Temporary fix for GRP-4024 *****/
+        GrouperTextContainer.assignThreadLocalVariable("groupStemTemplateContainer", policyStemTemplateContainer)
 
         // simulate checking certain boxes in the ui
         List<ServiceAction> selectedServiceActions = []
