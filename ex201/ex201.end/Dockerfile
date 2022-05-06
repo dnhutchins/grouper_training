@@ -16,7 +16,7 @@ COPY container_files/seed-data/ /seed-data/
 
 #  && setupFiles
 RUN . /usr/local/bin/library.sh \
-    && prep_conf && prep_finish; \
+    && prep_conf && . /usr/local/bin/library.sh && setupFiles_localLogging && prep_finish; \
     (/usr/sbin/slapd -h "ldap:/// ldaps:/// ldapi:///" -u ldap &) \
     && while ! curl -s ldap://localhost:389 > /dev/null; do echo waiting for ldap to start; sleep 1; done; \
     (mysqld_safe & ) \
@@ -25,6 +25,7 @@ RUN . /usr/local/bin/library.sh \
     && ldapadd -x -D cn=root,dc=internet2,dc=edu -w password -f /seed-data/users.ldif \
     && mysql grouper < /seed-data/sisData.sql \
     && if [ ! -f /usr/local/bin/java ]; then ln -s /usr/lib/jvm/java-1.8.0-amazon-corretto/bin/java /usr/local/bin/java; fi \
+    && chmod a+rw /opt/grouper/logs/*.log \
     && sudo --preserve-env=PATH -u tomcat bin/gsh.sh /seed-data/bootstrap.gsh \
     && pkill -HUP slapd \
     && while curl -s ldap://localhost:389 > /dev/null; do echo waiting for ldap to stop; sleep 1; done; \
