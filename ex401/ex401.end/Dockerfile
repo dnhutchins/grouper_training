@@ -16,7 +16,7 @@ COPY container_files/seed-data/ /seed-data/
 
 #  && setupFiles
 RUN . /usr/local/bin/library.sh \
-    && prep_conf && setupFiles_localLogging && prep_finish; \
+    && prep_conf && prep_finish; \
     (/usr/sbin/slapd -h "ldap:/// ldaps:/// ldapi:///" -u ldap &) \
     && while ! curl -s ldap://localhost:389 > /dev/null; do echo waiting for ldap to start; sleep 1; done; \
     (mysqld_safe & ) \

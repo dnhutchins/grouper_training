@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration status="info">
+    <Properties>
+        <Property name="layout">%d{ISO8601}: [%t] %-5p %C{1}.%M(%L) - %x - %m%n</Property>
+    </Properties>
+    <Appenders>
+        <File name="CATALINA" fileName="/tmp/logpipe">
+            <PatternLayout pattern="tomee;catalina.out;${env:ENV};${env:USERTOKEN};${layout}"/>
+        </File>
+        <Console name="stderr" target="SYSTEM_ERR">
+          <PatternLayout pattern="grouper;${ENV};${USERTOKEN};${layout}"/>
+        </Console>
+        <File name="grouper_error" fileName="/tmp/logpipe">
+            <PatternLayout pattern="grouper;grouper_error.log;${ENV};${USERTOKEN};${layout}"/>
+        </File>
+        <File name="grouper_daemon" fileName="/tmp/logpipe">
+            <PatternLayout pattern="grouper;grouperDaemon.log;${ENV};${USERTOKEN};${layout}"/>
+        </File>
+        <File name="grouper_pspng" fileName="/tmp/logpipe">
+            <PatternLayout pattern="grouper;pspng.log;${ENV};${USERTOKEN};${layout}"/>
+        </File>
+        <File name="grouper_provisioning" fileName="/tmp/logpipe">
+            <PatternLayout pattern="grouper;provisioning.log;${ENV};${USERTOKEN};${layout}"/>
+        </File>
+        <File name="grouper_ws" fileName="/tmp/logpipe">
+            <PatternLayout pattern="grouper;grouper_ws.log;${ENV};${USERTOKEN};${layout}"/>
+        </File>
+        <File name="grouper_ws_longRunning" fileName="/tmp/logpipe">
+            <PatternLayout pattern="grouper;grouper_ws_longRunning.log;${ENV};${USERTOKEN};${layout}"/>
+        </File>
+    </Appenders>
+
+    <Loggers>
+        <Root level="error">
+            <AppenderRef ref="grouper_error"/>
+        </Root>
+        <Logger name="org.apache.catalina" level="info" additivity="false">
+            <AppenderRef ref="CATALINA"/>
+        </Logger>
+        <Logger name="edu.internet2.middleware" level="warn" additivity="false">
+            <AppenderRef ref="grouper_error"/>
+        </Logger>
+        <Logger name="edu.internet2.middleware.grouper.app.loader.GrouperLoaderLog" level="debug" additivity="false">
+            <AppenderRef ref="grouper_daemon"/>
+        </Logger>
+        <Logger name="edu.internet2.middleware.grouper.pspng" level="info" additivity="false">
+            <AppenderRef ref="grouper_pspng"/>
+        </Logger>
+        <Logger name="edu.internet2.middleware.grouper.app.provisioning.GrouperProvisioningObjectLog" level="debug" additivity="false">
+            <AppenderRef ref="grouper_provisioning"/>
+        </Logger>
+        <Logger name="edu.internet2.middleware.grouper.app.syncToGrouper.SyncToGrouperFromSqlDaemon" level="debug" additivity="false">
+            <AppenderRef ref="grouper_error"/>
+        </Logger>
+        <Logger name="edu.internet2.middleware.grouper.app.provisioning.GrouperProvisioningLogCommands" level="debug" additivity="false">
+            <AppenderRef ref="grouper_error"/>
+        </Logger>
+        <Logger name="edu.internet2.middleware.grouper.stem.StemViewPrivilegeEsbListener" level="debug" additivity="false">
+            <AppenderRef ref="grouper_error"/>
+        </Logger>
+        <Logger name="edu.internet2.middleware.grouper.stem.StemViewPrivilegeFullDaemonLogic" level="debug" additivity="false">
+            <AppenderRef ref="grouper_error"/>
+        </Logger>
+        <Logger name="org.apache.tools.ant" level="warn" additivity="false">
+            <AppenderRef ref="grouper_error"/>
+        </Logger>
+        <Logger name="edu.internet2.middleware.grouper.util.PerformanceLogger" level="info" additivity="false">
+            <AppenderRef ref="grouper_error"/>
+        </Logger>
+        
+        <Logger name="edu.internet2.middleware.grouper.ws.util.GrouperWsLog" level="off" additivity="false">
+            <AppenderRef ref="grouper_ws"/>
+        </Logger>
+        <Logger name="edu.internet2.middleware.grouper.ws.util.GrouperWsLongRunningLog" level="off" additivity="false">
+            <AppenderRef ref="grouper_ws_longRunning"/>
+        </Logger>
+
+    </Loggers>
+</Configuration>

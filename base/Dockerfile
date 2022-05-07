@@ -62,8 +62,6 @@ RUN (/usr/sbin/slapd -h "ldap:/// ldaps:/// ldapi:///" -u ldap &) \
     (mysqld_safe & ) \
     && while ! curl -s localhost:3306 > /dev/null; do echo waiting for mysqld to start; sleep 3; done; \
     cd /opt/grouper/grouperWebapp/WEB-INF/bin \
-    && . /usr/local/bin/library.sh \
-    && setupFiles_localLogging \
     && ./gsh.sh -registry -check -runscript -noprompt \
     && ./gsh.sh /seed-data/bootstrap.gsh \
     && pkill -HUP slapd \
