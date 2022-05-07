@@ -5,7 +5,7 @@ TODO
 202205
 -------
 - Once upgrading to 2.6.9, can remove gsh code marked "Temporary fix for GRP-4024" from bootstrap.gsh files
-
+- Bug in 2.6.8, attr_read isn't enough to see attributes; need admin privileges on the object to see the option in the menu
 
 202202
 -------
