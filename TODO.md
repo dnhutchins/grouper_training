@@ -6,6 +6,8 @@ TODO
 -------
 - Once upgrading to 2.6.9, can remove gsh code marked "Temporary fix for GRP-4024" from bootstrap.gsh files
 - Bug in 2.6.8, attr_read isn't enough to see attributes; need admin privileges on the object to see the option in the menu
+- 301.6 and 301.7 slides need to be finished
+- 301.8 view privilege on the App folder not enough for kjenkins to view; needs create priv
 
 202202
 -------

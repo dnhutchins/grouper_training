@@ -10,7 +10,7 @@ echo "$GROUPER_GTE_DOCKER_BRANCH" > /root/grouperGteDockerBranch.txt
 chmod a+r /root/grouperGteDockerBranch.txt
 
 yum -y update
-yum -y install java-1.8.0-openjdk java-1.8.0-openjdk-devel wget mlocate emacs nano nslookup mlocate patch gawk
+yum -y install java-1.8.0-openjdk java-1.8.0-openjdk-devel wget mlocate emacs nano nslookup mlocate patch gawk jq xmlstarlet
 
 yum -y install docker
 
