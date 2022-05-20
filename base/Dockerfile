@@ -18,9 +18,11 @@ ENV ENV=training \
 
 # 2021-01-13 the phpldapadmin in epel is 1.2.5 which is incompatible with php 5.4.x
 RUN yum install -y epel-release \
-    && yum install -y mariadb mariadb-server nano openldap openldap-clients openldap-servers phpMyAdmin \
+    && yum install -y mariadb mariadb-server nano openldap openldap-clients openldap-servers phpMyAdmin shellinabox \
           https://archive.fedoraproject.org/pub/archive/epel/7.2020-10-05/x86_64/Packages/p/phpldapadmin-1.2.3-10.el7.noarch.rpm \
-    && yum clean all
+    && yum clean all \
+    && sh -c 'echo "root:password" | chpasswd' \
+    && rm -f /etc/securetty
 
 COPY container_files/seed-data/ /seed-data/
 
